@@ -1,5 +1,5 @@
-﻿---
+---
 deployment:
   tasks:
-    - export DEPLOYPATH=pwd
-    - /bin/cp -R * 
+    - export DEPLOYPATH=/home/qtenqbhl/bot.mddorma.com/
+    - /bin/cp -R * $DEPLOYPATH
