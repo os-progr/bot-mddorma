@@ -71,9 +71,9 @@
         <span id="estado-feed" class="hidden sm:inline-flex items-center gap-1 rounded border border-gray-700 bg-gray-900 px-2 py-1 text-[10px] font-bold text-gray-400">
           <span id="dot-feed" class="h-1.5 w-1.5 rounded-full bg-gray-500"></span><span>Conectando...</span>
         </span>
-        <span id="chip-dias" class="hidden md:inline-flex rounded border border-emerald-500/40 bg-emerald-500/10 px-2 py-1 text-[10px] font-bold text-emerald-300">🎁 Día X de 7</span>
-        <span class="inline-flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-fuchsia-600 text-xs font-black text-white" title="Mi perfil">Q</span>
-        <a id="link-telegram" href="https://t.me/tu_canal_oficial" target="_blank" rel="noopener" class="rounded bg-sky-600 hover:bg-sky-500 px-2.5 py-1 text-[11px] font-bold text-white transition">✈️ VIP</a>
+        <span class="hidden md:inline-flex rounded border border-emerald-500/40 bg-emerald-500/10 px-2 py-1 text-[10px] font-bold text-emerald-300">🎁 100% Gratuito</span>
+        <span class="inline-flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 text-xs font-black text-white" title="Acceso Libre">Q</span>
+        <a id="link-telegram" href="https://t.me/tu_canal_oficial" target="_blank" rel="noopener" class="rounded bg-emerald-500 hover:bg-emerald-400 px-2.5 py-1 text-[11px] font-bold text-slate-950 transition">✈️ Telegram Gratis</a>
       </div>
     </div>
   </header>
@@ -216,15 +216,14 @@
       </div>
     </section>
 
-    <!-- ================= EMBUDO VIP (compacto) ================= -->
-    <section class="mt-2.5 rounded-xl border border-violet-500/40 bg-gradient-to-r from-violet-600/15 via-fuchsia-600/10 to-violet-600/15 p-3 flex flex-col sm:flex-row sm:items-center gap-2.5">
+    <!-- ================= COMUNIDAD 100% GRATIS ================= -->
+    <section class="mt-2.5 rounded-xl border border-emerald-500/40 bg-gradient-to-r from-emerald-600/15 via-teal-600/10 to-emerald-600/15 p-3 flex flex-col sm:flex-row sm:items-center gap-2.5">
       <div class="flex-1 min-w-0">
-        <h2 class="text-sm sm:text-base font-extrabold text-white">💎 Señales sonoras en tu Telegram, $19/mes</h2>
-        <p class="text-[11px] text-gray-400 leading-snug">O lanza tu plan base desde $5/mes. <span class="text-gray-500">Stripe · Binance Pay · PayPal.</span></p>
+        <h2 class="text-sm sm:text-base font-extrabold text-white">🎁 Comunidad Abierta — 100% Gratuito (0 Soles)</h2>
+        <p class="text-[11px] text-gray-400 leading-snug">Fase de validación pública y auditoría en vivo. Sin cobros ni tarjetas. Recibe las alertas gratis en Telegram.</p>
       </div>
       <div class="flex gap-2 shrink-0">
-        <a id="btn-tg-vip" href="https://t.me/tu_canal_oficial" target="_blank" rel="noopener" class="rounded-lg bg-sky-600 hover:bg-sky-500 px-3.5 py-2 text-xs font-bold text-white transition">✈️ Telegram VIP</a>
-        <a id="btn-pase-vip" href="https://pago.ejemplo.com/vip" target="_blank" rel="noopener" class="rounded-lg bg-gradient-to-r from-violet-500 to-fuchsia-600 hover:from-violet-400 hover:to-fuchsia-500 px-3.5 py-2 text-xs font-bold text-white transition">⚡ Activar Pase</a>
+        <a id="btn-tg-vip" href="https://t.me/tu_canal_oficial" target="_blank" rel="noopener" class="rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-4 py-2 text-xs transition shadow-md">✈️ Canal Telegram Gratis</a>
       </div>
     </section>
 
@@ -403,7 +402,7 @@
       art.className = 'rounded-xl border border-gray-700 bg-gray-900/70 p-3 flex flex-col hover:border-violet-400/50 transition';
       art.innerHTML =
         '<div class="flex items-start justify-between gap-1">' +
-          '<span class="rounded px-2 py-0.5 text-[10px] font-black ' + s.badge + '">' + s.etiqueta + '</span>' +
+          '<span id="badge-' + s.id + '" class="rounded px-2 py-0.5 text-[10px] font-black ' + s.badge + '">' + s.etiqueta + '</span>' +
           '<span class="text-[10px] font-bold text-gray-400 font-num">' + s.ratio + '</span>' +
         '</div>' +
         '<div class="mt-1.5 flex items-center justify-between gap-2">' +
@@ -414,9 +413,9 @@
           '<span id="precio-' + s.id + '" class="font-num">$' + fmt(s.precioDemo, s.decimales) + '</span>' +
         '</p>' +
         '<div class="mt-1.5 space-y-1 text-[11px]">' +
-          '<p class="flex justify-between"><span class="text-gray-500">Entrada</span><strong class="text-white font-num">$' + fmt(s.entrada, Math.max(s.decimales,2)) + '</strong></p>' +
-          '<p class="flex justify-between"><span class="text-gray-500">Take Profit</span><strong class="text-teal-300 font-num">$' + fmt(s.tp, Math.max(s.decimales,2)) + '</strong></p>' +
-          '<p class="flex justify-between"><span class="text-gray-500">Stop Loss</span><strong class="text-rose-300 font-num">$' + fmt(s.sl, Math.max(s.decimales,2)) + '</strong></p>' +
+          '<p class="flex justify-between"><span class="text-gray-500">Entrada</span><strong id="entrada-' + s.id + '" class="text-white font-num">$' + fmt(s.entrada, Math.max(s.decimales,2)) + '</strong></p>' +
+          '<p class="flex justify-between"><span class="text-gray-500">Take Profit</span><strong id="tp-' + s.id + '" class="text-teal-300 font-num">$' + fmt(s.tp, Math.max(s.decimales,2)) + '</strong></p>' +
+          '<p class="flex justify-between"><span class="text-gray-500">Stop Loss</span><strong id="sl-' + s.id + '" class="text-rose-300 font-num">$' + fmt(s.sl, Math.max(s.decimales,2)) + '</strong></p>' +
         '</div>' +
         '<p class="mt-1.5 inline-flex self-start items-center gap-1 rounded bg-gray-950 border border-gray-800 px-1.5 py-0.5 text-[10px] font-black ' + s.probClase + '">🎯 ' + s.prob + '</p>' +
         '<div class="mt-auto pt-1.5 grid grid-cols-2 gap-1.5">' +
@@ -667,6 +666,99 @@
     } catch(e){}
 
     recalc();
+  </script>
+
+  <!-- ============ FASE 3 · SEÑALES EN VIVO DESDE EL BOT (hub & spoke) ============ -->
+  <script>
+    /* Polling ligero a api/obtener_senales.php cada 4 s.
+     * El bot actualiza el JSON vía api/actualizar_senales.php (X-Api-Key).
+     * Si la API aún no está desplegada, el fetch falla silenciosamente y
+     * el dashboard continúa en modo demo. */
+    (function () {
+      var API = 'api/obtener_senales.php';
+      var INTERVALO_MS = 4000;
+      var estadoRemoto = {};          // simbolo -> fingerprint
+      var primerCarga = true;         // evitar spam de sonido/toast al abrir
+
+      function localPorSimbolo(simbolo) {
+        var clave = String(simbolo).split('/')[0].toUpperCase();
+        for (var i = 0; i < SEÑALES.length; i++) {
+          if (SEÑALES[i].id === clave) return SEÑALES[i];
+        }
+        return null;
+      }
+
+      function marcarActiva(s, activa) {
+        var badge = $('badge-' + s.id);
+        if (!badge) return;
+        if (activa) {
+          badge.className = 'rounded px-2 py-0.5 text-[10px] font-black bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
+          badge.textContent = '🔴 SEÑAL ACTIVA';
+        } else {
+          badge.className = 'rounded px-2 py-0.5 text-[10px] font-black ' + s.badge;
+          badge.textContent = s.etiqueta;
+        }
+      }
+
+      function aplicarRemota(r, esNueva) {
+        var s = localPorSimbolo(r.simbolo);
+        if (!s) return;
+
+        if (r.entrada !== undefined) s.entrada = String(r.entrada);
+        if (r.sl !== undefined)      s.sl = String(r.sl);
+        if (r.tp !== undefined)      s.tp = String(r.tp);
+        if (r.rr)                    s.ratio = String(r.rr);
+        if (r.probabilidad !== undefined) s.prob = String(r.probabilidad) + '%';
+
+        ['entrada', 'sl', 'tp'].forEach(function (k) {
+          var el = $(k + '-' + s.id);
+          if (el) el.textContent = '$' + fmt(s[k], Math.max(s.decimales, 2));
+        });
+
+        if (String(r.estado) === 'cerrada') {
+          marcarActiva(s, false);
+          if (esNueva && !primerCarga) {
+            toast('🔒 Señal ' + s.simbolo + ' cerrada' + (r.resultado ? ' · ' + r.resultado : ''), false);
+          }
+          return;
+        }
+
+        marcarActiva(s, true);
+        if (esNueva && !primerCarga) {
+          beep(true);
+          senalActiva = s;
+          recalc();
+          toast('🚀 Nueva señal del bot: ' + s.simbolo + ' — calculadora pre-seleccionada', true);
+          var art = (function () {
+            var el = $('precio-' + s.id);
+            return el ? el.closest('article') : null;
+          })();
+          if (art) {
+            art.classList.add('ring-2', 'ring-emerald-400');
+            setTimeout(function () { art.classList.remove('ring-2', 'ring-emerald-400'); }, 3000);
+          }
+        }
+      }
+
+      function cargarSenalesEnVivo() {
+        fetch(API, { cache: 'no-store' })
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .then(function (d) {
+            if (!d || !Array.isArray(d.señales)) return;
+            d.señales.forEach(function (r) {
+              var fp = [r.simbolo, r.estado, r.entrada, r.sl, r.tp, r.resultado].join('|');
+              var nueva = estadoRemoto[r.simbolo] !== fp;
+              estadoRemoto[r.simbolo] = fp;
+              aplicarRemota(r, nueva);
+            });
+            primerCarga = false;
+          })
+          .catch(function () { /* API aún no desplegada: seguir en modo demo */ });
+      }
+
+      cargarSenalesEnVivo();
+      setInterval(cargarSenalesEnVivo, INTERVALO_MS);
+    })();
   </script>
 </body>
 </html>

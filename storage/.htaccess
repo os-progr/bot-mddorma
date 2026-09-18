@@ -1,0 +1,14 @@
+# ============================================================
+# storage/.htaccess — PROTECCIÓN
+# Bloquea todo acceso web directo a los archivos de esta carpeta
+# (senales_activas.json, historial.json). Los endpoints PHP del
+# propio servidor sí pueden leerlos; el navegador, no.
+# ============================================================
+
+Options -Indexes
+Require all denied
+
+<IfModule mod_access_compat.c>
+  Order deny,allow
+  Deny from all
+</IfModule>
