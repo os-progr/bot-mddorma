@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QUANTUM.AI | HFT Analytical Engine & Radar de Señales</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              dark: '#0a0d14',
+              card: '#101522',
+              cardBorder: '#1c2438',
+              accent: '#00f2a9',
+              accentHover: '#00d694',
+              warn: '#f59e0b',
+              danger: '#ef4444',
+              info: '#38bdf8'
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #080b11;
+      color: #e2e8f0;
+    }
+    .badge-live {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .5; transform: scale(0.92); }
+    }
+  </style>
+</head>
+<body class="font-sans antialiased min-h-screen flex flex-col md:flex-row text-slate-200">
+
+  <!-- ================= SIDEBAR ================= -->
+  <aside class="w-full md:w-64 bg-[#0c101a] border-r border-[#1a2337] flex-shrink-0 flex flex-col justify-between">
+    <div>
+      <div class="p-4 border-b border-[#1a2337]">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 font-black text-lg">
+            ⚡
+          </div>
+          <div>
+            <h1 class="font-bold text-sm tracking-wider text-white flex items-center gap-1.5">
+              QUANTUM<span class="text-emerald-400">.AI</span>
+            </h1>
+            <p class="text-[10px] font-mono text-slate-400">HFT ANALYTICAL ENGINE</p>
+          </div>
+        </div>
+        <div class="mt-3 flex items-center justify-between text-[11px] font-mono bg-[#111827] px-2.5 py-1.5 rounded border border-[#1f293d]">
+          <span class="text-slate-400">KERNEL V4.2</span>
+          <span class="text-emerald-400 flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 badge-live"></span> 99.98% OK
+          </span>
+        </div>
+      </div>
+
+      <nav class="p-3 space-y-1 text-sm font-medium">
+        <a href="#radar" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          <span class="text-base">🎯</span> Radar Señales IA
+        </a>
+        <a href="#confluencia" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/40 transition">
+          <span class="text-base">📊</span> Gráficos Confluencia
+        </a>
+        <a href="#calculadora" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/40 transition">
+          <span class="text-base">🛡️</span> Calculadora Riesgo
+        </a>
+        <a href="#fusion" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/40 transition">
+          <span class="text-base">🤖</span> Fusión Bots (Tensor)
+        </a>
+        <a href="#historial" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/40 transition">
+          <span class="text-base">📜</span> Historial Auditado
+        </a>
+        <a href="#terminal" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/40 transition">
+          <span class="text-base">⚡</span> Terminal DOM / Tape
+        </a>
+      </nav>
+    </div>
+
+    <div class="p-4 border-t border-[#1a2337] text-[11px] font-mono space-y-2 text-slate-400 bg-[#090d16]">
+      <div class="flex justify-between">
+        <span>LATENCY</span>
+        <span class="text-emerald-400 font-bold">4.2ms Fix</span>
+      </div>
+      <div class="flex justify-between">
+        <span>CLUSTER IA</span>
+        <span class="text-cyan-400">12 Nodes Sync</span>
+      </div>
+      <button class="w-full mt-2 py-1.5 rounded bg-slate-800/60 hover:bg-slate-800 text-slate-300 border border-slate-700/60 transition flex items-center justify-center gap-1.5 text-[10px]">
+        ⚡ API Direct DMA
+      </button>
+    </div>
+  </aside>
+
+  <!-- ================= MAIN CONTAINER ================= -->
+  <main class="flex-1 flex flex-col min-w-0 bg-[#080b11]">
+
+    <!-- Top Alert Bar -->
+    <header class="bg-[#0f1422] border-b border-[#1b2438] px-4 py-2.5 flex flex-wrap items-center justify-between gap-3 text-xs">
+      <div class="flex items-center gap-2 flex-wrap">
+        <span class="font-bold text-slate-300 flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 badge-live"></span> EL PULSO DEL MERCADO:
+        </span>
+        <span class="bg-amber-500/10 border border-amber-500/30 text-amber-300 px-2.5 py-0.5 rounded-full font-mono font-medium flex items-center gap-1">
+          ⚠️ NOTICIA FED / IPC EN: <span id="macroTimer">02H 45M 12S</span> — VOLATILIDAD ALTA
+        </span>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded font-mono text-[11px]">
+          7 Días Gratis Activos (Día 3 de 7)
+        </span>
+        <a href="#vip" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-3 py-1 rounded transition text-xs flex items-center gap-1">
+          👑 VIP ($5/mes)
+        </a>
+      </div>
+    </header>
+
+    <!-- Content Area -->
+    <div class="p-4 md:p-6 space-y-6 max-w-7xl mx-auto w-full">
+
+      <!-- PASO 1: SEMÁFORO MACRO -->
+      <section class="bg-gradient-to-r from-emerald-950/40 via-[#0e1b20] to-[#0c1424] border border-emerald-500/30 rounded-xl p-4 md:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div class="flex items-center gap-3.5">
+          <div class="w-10 h-10 rounded-full bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center text-emerald-400 text-xl font-bold flex-shrink-0">
+            ✓
+          </div>
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="bg-emerald-500 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded uppercase tracking-wider">
+                PASO 1: ESTADO DEL MERCADO
+              </span>
+              <span class="text-emerald-400 font-bold text-sm tracking-wide flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 badge-live"></span> MERCADO SEGURO PARA OPERAR
+              </span>
+            </div>
+            <p class="text-slate-300 text-xs mt-1">
+              Sin noticias de alto impacto en los próximos 90 minutos. Confluencia macro favorable para operar señales en cripto y metales.
+            </p>
+          </div>
+        </div>
+        <div class="font-mono text-xs text-slate-400 bg-black/40 px-3.5 py-2 rounded-lg border border-slate-800 flex items-center gap-2 flex-shrink-0">
+          <span>🕒 Próxima noticia FED:</span>
+          <span class="text-emerald-400 font-bold">2h 45m</span>
+        </div>
+      </section>
+
+      <!-- PASO 2: TARJETAS DE SEÑALES -->
+      <section id="radar">
+        <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
+          <div class="flex items-center gap-2">
+            <span class="bg-slate-800 text-slate-300 text-[10px] font-bold px-2 py-0.5 rounded uppercase">
+              PASO 2
+            </span>
+            <h2 class="text-base md:text-lg font-bold text-white">
+              Señales Claras de Alta Probabilidad
+            </h2>
+            <span class="text-xs text-slate-400 bg-slate-800/60 px-2 py-0.5 rounded border border-slate-700/50 hidden sm:inline">
+              Regla de 3 segundos
+            </span>
+          </div>
+          <span class="text-xs font-mono text-slate-400">
+            Filtrado por IA • Sin jerga compleja
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+          <!-- Card 1: SOL/USDT -->
+          <div class="signal-card bg-[#0e1320] border-2 border-emerald-500/50 rounded-xl p-4 relative overflow-hidden transition-all hover:border-emerald-400 group cursor-pointer shadow-lg shadow-emerald-950/20" onclick="selectSignal('SOL/USDT', 138.20, 136.50, 141.00, 'BUY')">
+            <div class="flex items-center justify-between mb-3">
+              <div>
+                <span class="text-xs font-mono text-slate-400 uppercase">Solana</span>
+                <h3 class="text-lg font-bold text-white">SOL/USDT</h3>
+              </div>
+              <span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 font-bold text-xs px-2.5 py-1 rounded-md flex items-center gap-1">
+                ↗ COMPRA AHORA
+              </span>
+            </div>
+
+            <div class="space-y-2 py-2 border-y border-slate-800/80 font-mono text-xs">
+              <div class="flex justify-between">
+                <span class="text-slate-400">Precio de Entrada</span>
+                <span class="text-white font-bold text-sm">$138.20</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-400">Take Profit (Objetivo)</span>
+                <span class="text-emerald-400 font-bold">$141.00 <span class="text-[10px] text-emerald-300">(+2.0%)</span></span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-400">Stop Loss (Seguridad)</span>
+                <span class="text-rose-400 font-bold">$136.50 <span class="text-[10px] text-rose-300">(-1.2%)</span></span>
+              </div>
+            </div>
+
+            <div class="flex justify-between items-center mt-3 text-xs">
+              <span class="text-emerald-400 font-mono font-medium flex items-center gap-1">
+                🛡️ 85% Probabilidad
+              </span>
+              <span class="text-slate-300 font-mono">
+                Ganancia est.: <strong class="text-white">+1.7R</strong>
+              </span>
+            </div>
+
+            <div class="mt-3.5 grid grid-cols-5 gap-2">
+              <button onclick="event.stopPropagation(); selectSignal('SOL/USDT', 138.20, 136.50, 141.00, 'BUY')" class="col-span-4 bg-emerald-500/20 hover:bg-emerald-500 hover:text-slate-950 text-emerald-400 border border-emerald-500/40 font-bold py-1.5 px-3 rounded-lg text-xs transition flex items-center justify-center gap-1.5">
+                🧮 Calcular Posición
+              </button>
+              <button onclick="event.stopPropagation(); copySignal('SOL/USDT', 'BUY', '138.20', '136.50', '141.00')" title="Copiar Señal" class="col-span-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg flex items-center justify-center transition border border-slate-700">
+                📋
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 2: BTC/USDT -->
+          <div class="signal-card bg-[#0e1320] border border-slate-800 rounded-xl p-4 relative overflow-hidden transition-all hover:border-cyan-400 group cursor-pointer" onclick="selectSignal('BTC/USDT', 64150, 63400, 65500, 'BUY')">
+            <div class="flex items-center justify-between mb-3">
+              <div>
+                <span class="text-xs font-mono text-slate-400 uppercase">Bitcoin</span>
+                <h3 class="text-lg font-bold text-white">BTC/USDT</h3>
+              </div>
+              <span class="bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 font-bold text-xs px-2.5 py-1 rounded-md flex items-center gap-1">
+                ⏳ COMPRAR EN RETEST
+              </span>
+            </div>
+
+            <div class="space-y-2 py-2 border-y border-slate-800/80 font-mono text-xs">
+              <div class="flex justify-between">
+                <span class="text-slate-400">Precio de Entrada</span>
+                <span class="text-white font-bold text-sm">$64,150</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-400">Take Profit (Objetivo)</span>
+                <span class="text-emerald-400 font-bold">$65,500 <span class="text-[10px] text-emerald-300">(+2.1%)</span></span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-400">Stop Loss (Seguridad)</span>
+                <span class="text-rose-400 font-bold">$63,400 <span class="text-[10px] text-rose-300">(-1.1%)</span></span>
+              </div>
+            </div>
+
+            <div class="flex justify-between items-center mt-3 text-xs">
+              <span class="text-cyan-400 font-mono font-medium flex items-center gap-1">
+                🛡️ 78% Probabilidad
+              </span>
+              <span class="text-slate-300 font-mono">
+                Ganancia est.: <strong class="text-white">+1.8R</strong>
+              </span>
+            </div>
+
+            <div class="mt-3.5 grid grid-cols-5 gap-2">
+              <button onclick="event.stopPropagation(); selectSignal('BTC/USDT', 64150, 63400, 65500, 'BUY')" class="col-span-4 bg-slate-800/80 hover:bg-cyan-500 hover:text-slate-950 text-cyan-400 border border-cyan-500/30 font-bold py-1.5 px-3 rounded-lg text-xs transition flex items-center justify-center gap-1.5">
+                🧮 Calcular Posición
+              </button>
+              <button onclick="event.stopPropagation(); copySignal('BTC/USDT', 'BUY RETEST', '64150', '63400', '65500')" title="Copiar Señal" class="col-span-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg flex items-center justify-center transition border border-slate-700">
+                📋
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 3: XAU/USD -->
+          <div class="signal-card bg-[#0e1320] border border-slate-800 rounded-xl p-4 relative overflow-hidden transition-all hover:border-rose-400 group cursor-pointer" onclick="selectSignal('XAU/USD', 4396.00, 4403.00, 4370.00, 'SELL')">
+            <div class="flex items-center justify-between mb-3">
+              <div>
+                <span class="text-xs font-mono text-slate-400 uppercase">Oro Spot</span>
+                <h3 class="text-lg font-bold text-white">XAU/USD</h3>
+              </div>
+              <span class="bg-rose-500/20 text-rose-400 border border-rose-500/40 font-bold text-xs px-2.5 py-1 rounded-md flex items-center gap-1">
+                ↘ VENTA
+              </span>
+            </div>
+
+            <div class="space-y-2 py-2 border-y border-slate-800/80 font-mono text-xs">
+              <div class="flex justify-between">
+                <span class="text-slate-400">Precio de Entrada</span>
+                <span class="text-white font-bold text-sm">$4,396.00</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-400">Take Profit (Objetivo)</span>
+                <span class="text-emerald-400 font-bold">$4,370.00 <span class="text-[10px] text-emerald-300">(+0.6%)</span></span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-400">Stop Loss (Seguridad)</span>
+                <span class="text-rose-400 font-bold">$4,403.00 <span class="text-[10px] text-rose-300">(-0.16%)</span></span>
+              </div>
+            </div>
+
+            <div class="flex justify-between items-center mt-3 text-xs">
+              <span class="text-rose-400 font-mono font-medium flex items-center gap-1">
+                🛡️ 82% Probabilidad
+              </span>
+              <span class="text-slate-300 font-mono">
+                Ganancia est.: <strong class="text-white">+3.7R</strong>
+              </span>
+            </div>
+
+            <div class="mt-3.5 grid grid-cols-5 gap-2">
+              <button onclick="event.stopPropagation(); selectSignal('XAU/USD', 4396.00, 4403.00, 4370.00, 'SELL')" class="col-span-4 bg-slate-800/80 hover:bg-rose-500 hover:text-white text-rose-400 border border-rose-500/30 font-bold py-1.5 px-3 rounded-lg text-xs transition flex items-center justify-center gap-1.5">
+                🧮 Calcular Posición
+              </button>
+              <button onclick="event.stopPropagation(); copySignal('XAU/USD', 'SELL', '4396.00', '4403.00', '4370.00')" title="Copiar Señal" class="col-span-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg flex items-center justify-center transition border border-slate-700">
+                📋
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- PASO 3 & HISTORIAL -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6" id="calculadora">
+
+        <!-- Left: Calculadora Antiquemado -->
+        <section class="lg:col-span-7 bg-[#0e1320] border border-slate-800/90 rounded-xl p-5 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center gap-2">
+                <span class="bg-emerald-500 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded uppercase">
+                  PASO 3
+                </span>
+                <h3 class="font-bold text-white text-sm md:text-base">
+                  Calculadora Antiquemado (Protección 100%)
+                </h3>
+              </div>
+              <span class="text-emerald-400 text-xs font-mono bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30">
+                🛡️ Blindaje Anti-Liquidación
+              </span>
+            </div>
+
+            <div class="space-y-2 mb-4">
+              <label class="text-xs font-semibold text-slate-300 flex justify-between">
+                <span>1. ¿CUÁNTO CAPITAL TIENES EN TU CUENTA?</span>
+                <span class="text-emerald-400 font-mono font-bold" id="lblCapital">$50 USD</span>
+              </label>
+              <div class="grid grid-cols-4 gap-2">
+                <button type="button" onclick="setCapital(20)" class="btn-capital py-2 rounded-lg font-mono text-xs font-bold border border-slate-700 bg-slate-800 text-slate-300 hover:border-emerald-400 transition" data-val="20">$20</button>
+                <button type="button" onclick="setCapital(50)" class="btn-capital py-2 rounded-lg font-mono text-xs font-bold border border-emerald-500 bg-emerald-500 text-slate-950 transition" data-val="50">$50</button>
+                <button type="button" onclick="setCapital(100)" class="btn-capital py-2 rounded-lg font-mono text-xs font-bold border border-slate-700 bg-slate-800 text-slate-300 hover:border-emerald-400 transition" data-val="100">$100</button>
+                <button type="button" onclick="setCapital(500)" class="btn-capital py-2 rounded-lg font-mono text-xs font-bold border border-slate-700 bg-slate-800 text-slate-300 hover:border-emerald-400 transition" data-val="500">$500</button>
+              </div>
+            </div>
+
+            <div class="space-y-2 mb-5">
+              <div class="flex justify-between items-center text-xs">
+                <span class="font-semibold text-slate-300">2. ¿CUÁNTO ESTÁS DISPUESTO A ARRIESGAR COMO MÁXIMO?</span>
+                <span class="text-emerald-400 font-mono font-bold" id="lblRiskUsd">1% de tu cuenta ($0.50 USD)</span>
+              </div>
+              <div class="grid grid-cols-3 gap-2">
+                <button type="button" onclick="setRisk(0.01)" class="btn-risk py-2 px-1 rounded-lg font-mono text-[11px] font-bold border border-emerald-500 bg-emerald-500 text-slate-950 transition text-center" data-val="0.01">
+                  Perder máx <span id="btnRiskVal1">$0.50</span> (1%)
+                </button>
+                <button type="button" onclick="setRisk(0.02)" class="btn-risk py-2 px-1 rounded-lg font-mono text-[11px] font-bold border border-slate-700 bg-slate-800 text-slate-300 hover:border-emerald-400 transition text-center" data-val="0.02">
+                  Perder máx <span id="btnRiskVal2">$1.00</span> (2%)
+                </button>
+                <button type="button" onclick="setRisk(0.03)" class="btn-risk py-2 px-1 rounded-lg font-mono text-[11px] font-bold border border-slate-700 bg-slate-800 text-slate-300 hover:border-emerald-400 transition text-center" data-val="0.03">
+                  Perder máx <span id="btnRiskVal3">$1.50</span> (3%)
+                </button>
+              </div>
+            </div>
+
+            <div class="bg-[#090d16] border border-emerald-500/40 rounded-xl p-4 space-y-3">
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-slate-400 uppercase font-mono">RESULTADO DIRECTO PARA TU BROKER / EXCHANGE:</span>
+                <span class="text-emerald-400 font-mono font-bold bg-emerald-500/10 px-2 py-0.5 rounded" id="calcPairLabel">Operando en SOL/USDT</span>
+              </div>
+
+              <div class="text-lg md:text-xl font-extrabold text-white flex items-center gap-2">
+                <span>👉</span>
+                <span id="calcLotesResult" class="text-emerald-400">Abre 0.03 lotes (0.29 SOL)</span>
+              </div>
+
+              <p class="text-xs text-slate-300 leading-relaxed" id="calcExplanation">
+                Si el precio toca tu Stop Loss en <span class="text-rose-400 font-bold">$136.50</span>, <strong class="text-emerald-300 underline">SOLO perderás $0.50 USD</strong>. Tu capital está totalmente a salvo sin riesgo de quiebra.
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between flex-wrap gap-2 text-xs">
+            <span class="text-slate-400 flex items-center gap-1 font-mono text-[11px]">
+              🔒 Cálculo matemático en tiempo real
+            </span>
+            <button onclick="copyLoteSize()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-4 py-2 rounded-lg text-xs transition flex items-center gap-1.5 shadow-lg shadow-emerald-500/20">
+              📋 Copiar Tamaño de Lote
+            </button>
+          </div>
+        </section>
+
+        <!-- Right: Historial Transparente -->
+        <section class="lg:col-span-5 bg-[#0e1320] border border-slate-800/90 rounded-xl p-5 flex flex-col justify-between" id="historial">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="font-bold text-white text-sm md:text-base flex items-center gap-2">
+                <span>📜</span> Historial Transparente
+              </h3>
+              <span class="text-xs font-mono text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/30">
+                Auditado On-Chain
+              </span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 mb-4">
+              <div class="bg-[#090d16] border border-slate-800 p-3 rounded-lg text-center">
+                <span class="text-[10px] font-mono text-slate-400 uppercase tracking-wider block">EFECTIVIDAD GLOBAL</span>
+                <span class="text-2xl font-black text-emerald-400 font-mono">64.2%</span>
+                <span class="text-[10px] text-slate-400 block mt-0.5">Últimas 120 señales</span>
+              </div>
+              <div class="bg-[#090d16] border border-slate-800 p-3 rounded-lg text-center">
+                <span class="text-[10px] font-mono text-slate-400 uppercase tracking-wider block">FACTOR DE BENEFICIO</span>
+                <span class="text-2xl font-black text-cyan-400 font-mono">2.41</span>
+                <span class="text-[10px] text-slate-400 block mt-0.5">Relación Win / Loss</span>
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <span class="text-[11px] font-mono text-slate-400 block uppercase">ÚLTIMAS 3 OPERACIONES CERRADAS:</span>
+
+              <div class="bg-[#090d16] border border-slate-800/80 px-3 py-2 rounded-lg flex items-center justify-between text-xs font-mono">
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                  <span class="font-bold text-white">SOL/USDT</span>
+                  <span class="text-slate-400 text-[10px]">Hace 45 min</span>
+                </div>
+                <span class="text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded">+$75.00 WIN</span>
+              </div>
+
+              <div class="bg-[#090d16] border border-slate-800/80 px-3 py-2 rounded-lg flex items-center justify-between text-xs font-mono">
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                  <span class="font-bold text-white">BTC/USDT</span>
+                  <span class="text-slate-400 text-[10px]">Hace 2h</span>
+                </div>
+                <span class="text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded">+$180.00 WIN</span>
+              </div>
+
+              <div class="bg-[#090d16] border border-slate-800/80 px-3 py-2 rounded-lg flex items-center justify-between text-xs font-mono">
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-rose-400"></span>
+                  <span class="font-bold text-white">ETH/USDT</span>
+                  <span class="text-slate-400 text-[10px]">Hace 5h</span>
+                </div>
+                <span class="text-rose-400 font-bold bg-rose-500/10 px-2 py-0.5 rounded">-$50.00 STOP</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-slate-800/80 text-[11px] font-mono text-slate-400 flex items-center gap-2">
+            <span class="text-emerald-400">✓</span> Transparencia 100%: Pérdidas controladas sin quiebras
+          </div>
+        </section>
+
+      </div>
+
+      <!-- BANNER VIP -->
+      <section id="vip" class="bg-gradient-to-r from-slate-900 via-[#0a1f1b] to-slate-900 border border-emerald-500/40 rounded-xl p-5 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 text-2xl flex-shrink-0">
+            💎
+          </div>
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <h3 class="font-bold text-white text-base">Pase VIP Quantum Engine</h3>
+              <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-mono font-bold px-2 py-0.5 rounded border border-emerald-500/30">
+                1 mes gratis para suscriptores
+              </span>
+            </div>
+            <p class="text-slate-300 text-xs mt-1">
+              Recibe las señales en tu celular vía Telegram con alerta sonora instantánea y ejecución automática por solo <strong class="text-white">$5 USD / mes</strong>.
+            </p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 flex-shrink-0 w-full md:w-auto">
+          <a href="https://t.me/" target="_blank" class="flex-1 md:flex-initial text-center bg-slate-800 hover:bg-slate-700 text-white font-semibold px-4 py-2.5 rounded-lg text-xs transition border border-slate-700 flex items-center justify-center gap-2">
+            ✈️ Canal Telegram VIP
+          </a>
+          <button onclick="alert('¡Tu cuenta tiene 1 mes VIP gratis activo! Al lanzar el servicio recibirás tus credenciales por email.')" class="flex-1 md:flex-initial text-center bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-5 py-2.5 rounded-lg text-xs transition shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-1.5">
+            ⚡ Activar Pase VIP
+          </button>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="mt-auto border-t border-[#1a2337] bg-[#0c101a] px-6 py-4 text-xs font-mono text-slate-400 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div>
+        QUANTUM-AI ENGINE © 2026 • INSTITUTIONAL GRADE LATENCY EXECUTION
+      </div>
+      <div class="flex items-center gap-4">
+        <span>SERVER REGION: LD4 EQUINIX LONDON</span>
+        <span class="text-emerald-400 flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 badge-live"></span> TERMINAL READY
+        </span>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-6 right-6 bg-emerald-500 text-slate-950 px-4 py-3 rounded-lg font-bold text-xs shadow-2xl flex items-center gap-2 transform translate-y-24 opacity-0 transition-all duration-300 z-50">
+    <span>✓</span> <span id="toastMsg">Copiado al portapapeles</span>
+  </div>
+
+  <script>
+    let currentSignal = {
+      pair: 'SOL/USDT',
+      entry: 138.20,
+      stop: 136.50,
+      tp: 141.00,
+      type: 'BUY'
+    };
+    let currentCapital = 50;
+    let currentRiskPct = 0.01;
+
+    function updateCalculator() {
+      const riskUsd = currentCapital * currentRiskPct;
+      const stopDistance = Math.abs(currentSignal.entry - currentSignal.stop);
+      
+      let units = riskUsd / stopDistance;
+      let lotes = 0;
+      let unitStr = '';
+
+      if (currentSignal.pair === 'SOL/USDT') {
+        units = Math.round(units * 100) / 100;
+        lotes = (units / 10).toFixed(2);
+        unitStr = 'Abre ' + lotes + ' lotes (' + units + ' SOL)';
+      } else if (currentSignal.pair === 'BTC/USDT') {
+        units = Math.round(units * 1000) / 1000;
+        lotes = units.toFixed(3);
+        unitStr = 'Abre ' + lotes + ' BTC ($' + (units * currentSignal.entry).toFixed(0) + ' USD)';
+      } else if (currentSignal.pair === 'XAU/USD') {
+        let pips = stopDistance;
+        let mt5Lot = (riskUsd / (pips * 100)).toFixed(2);
+        if (parseFloat(mt5Lot) < 0.01) mt5Lot = '0.01';
+        unitStr = 'Abre ' + mt5Lot + ' lotes en MT5 (' + units.toFixed(2) + ' oz Oro)';
+      }
+
+      document.getElementById('lblCapital').textContent = '$' + currentCapital + ' USD';
+      document.getElementById('lblRiskUsd').textContent = (currentRiskPct * 100).toFixed(0) + '% de tu cuenta ($' + riskUsd.toFixed(2) + ' USD)';
+      
+      document.getElementById('btnRiskVal1').textContent = '$' + (currentCapital * 0.01).toFixed(2);
+      document.getElementById('btnRiskVal2').textContent = '$' + (currentCapital * 0.02).toFixed(2);
+      document.getElementById('btnRiskVal3').textContent = '$' + (currentCapital * 0.03).toFixed(2);
+
+      document.getElementById('calcPairLabel').textContent = 'Operando en ' + currentSignal.pair + ' (' + currentSignal.type + ')';
+      document.getElementById('calcLotesResult').textContent = '👉 ' + unitStr;
+
+      document.getElementById('calcExplanation').innerHTML = 
+        'Si el precio toca tu Stop Loss en <span class="text-rose-400 font-bold">$' + currentSignal.stop.toLocaleString() + '</span>, ' +
+        '<strong class="text-emerald-300 underline">SOLO perderás $' + riskUsd.toFixed(2) + ' USD</strong>. ' +
+        'Tu capital está 100% blindado contra quiebras.';
+    }
+
+    function setCapital(val) {
+      currentCapital = val;
+      document.querySelectorAll('.btn-capital').forEach(btn => {
+        if (parseInt(btn.getAttribute('data-val')) === val) {
+          btn.className = 'btn-capital py-2 rounded-lg font-mono text-xs font-bold border border-emerald-500 bg-emerald-500 text-slate-950 transition';
+        } else {
+          btn.className = 'btn-capital py-2 rounded-lg font-mono text-xs font-bold border border-slate-700 bg-slate-800 text-slate-300 hover:border-emerald-400 transition';
+        }
+      });
+      updateCalculator();
+    }
+
+    function setRisk(val) {
+      currentRiskPct = val;
+      document.querySelectorAll('.btn-risk').forEach(btn => {
+        if (parseFloat(btn.getAttribute('data-val')) === val) {
+          btn.className = 'btn-risk py-2 px-1 rounded-lg font-mono text-[11px] font-bold border border-emerald-500 bg-emerald-500 text-slate-950 transition text-center';
+        } else {
+          btn.className = 'btn-risk py-2 px-1 rounded-lg font-mono text-[11px] font-bold border border-slate-700 bg-slate-800 text-slate-300 hover:border-emerald-400 transition text-center';
+        }
+      });
+      updateCalculator();
+    }
+
+    function selectSignal(pair, entry, stop, tp, type) {
+      currentSignal = { pair, entry, stop, tp, type };
+      updateCalculator();
+      showToast('🎯 Seleccionado ' + pair + ' para la calculadora.');
+      document.getElementById('calculadora').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function copySignal(pair, type, entry, stop, tp) {
+      const text = '🎯 SEÑAL QUANTUM.AI\\nPar: ' + pair + '\\nTipo: ' + type + '\\nEntrada: $' + entry + '\\nTP: $' + tp + '\\nSL: $' + stop;
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('📋 Señal ' + pair + ' copiada al portapapeles');
+      }).catch(() => {
+        showToast('📋 Copiado: ' + pair + ' ' + type + ' @ ' + entry);
+      });
+    }
+
+    function copyLoteSize() {
+      const lotText = document.getElementById('calcLotesResult').textContent.replace('👉 ', '');
+      navigator.clipboard.writeText(lotText).then(() => {
+        showToast('📋 Tamaño de lote copiado: ' + lotText);
+      }).catch(() => {
+        showToast('📋 Copiado: ' + lotText);
+      });
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMsg');
+      toastMsg.textContent = msg;
+      toast.classList.remove('translate-y-24', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-24', 'opacity-0');
+      }, 2500);
+    }
+
+    let seconds = 2 * 3600 + 45 * 60 + 12;
+    setInterval(() => {
+      if (seconds > 0) seconds--;
+      const h = String(Math.floor(seconds / 3600)).padStart(2, '0');
+      const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
+      const s = String(seconds % 60).padStart(2, '0');
+      const el = document.getElementById('macroTimer');
+      if (el) el.textContent = h + 'H ' + m + 'M ' + s + 'S';
+    }, 1000);
+
+    updateCalculator();
+  </script>
+</body>
+</html>
