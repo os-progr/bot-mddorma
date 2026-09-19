@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" class="dark">
+<html lang="es" class="dark scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,12 +21,6 @@
               400: '#fbbf24',
               500: '#f59e0b',
               600: '#d97706',
-            },
-            obsidian: {
-              950: '#05070d',
-              900: '#070b16',
-              800: '#0c1222',
-              700: '#141d33'
             }
           },
           fontFamily: {
@@ -39,12 +33,14 @@
   </script>
   <style>
     body {
-      background-color: #05070d;
+      background-color: #060911;
       color: #e2e8f0;
       font-size: 13px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
     .gold-glow {
-      box-shadow: 0 0 25px rgba(245, 158, 11, 0.22);
+      box-shadow: 0 0 20px rgba(245, 158, 11, 0.18);
     }
     .badge-pulse {
       animation: pulseDot 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
@@ -56,21 +52,27 @@
     .custom-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
     .custom-scroll::-webkit-scrollbar-track { background: #070a12; }
     .custom-scroll::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
-    html { scroll-behavior: smooth; }
+    .nav-pill-active {
+      background: #111827;
+      color: #ffffff;
+      border: 1px solid #334155;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
   </style>
   <link rel="icon" type="image/png" href="/assets/logo.png">
 </head>
-<body class="font-sans antialiased min-h-screen bg-[#05070d] text-slate-200 flex">
+<body class="font-sans antialiased min-h-screen bg-[#060911] text-slate-200 flex overflow-x-hidden">
 
   <!-- ================= BARRA LATERAL IZQUIERDA (DOCK VERTICAL SLIM) ================= -->
-  <aside class="w-14 bg-[#060911] border-r border-slate-800/80 flex flex-col items-center py-4 justify-between shrink-0 sticky top-0 h-screen z-40 hidden sm:flex">
-    <!-- Top Brand Icon & Tool Nav -->
+  <aside class="w-14 bg-[#070b14] border-r border-slate-800/80 flex flex-col items-center py-4 justify-between shrink-0 sticky top-0 h-screen z-40 hidden sm:flex select-none">
+    
+    <!-- Top Brand Icon & Nav Icons -->
     <div class="flex flex-col items-center gap-6">
       <a href="/" class="group" title="Quantum.AI Terminal">
         <img src="/assets/logo.png" alt="Logo" class="w-8 h-8 object-contain drop-shadow-[0_0_12px_rgba(245,158,11,0.5)] group-hover:scale-110 transition duration-200">
       </a>
 
-      <div class="flex flex-col items-center gap-3 text-slate-400">
+      <div class="flex flex-col items-center gap-3.5 text-slate-400">
         <!-- Sliders / Clima -->
         <button onclick="scrollToSec('sec-macro')" class="p-2.5 rounded-xl hover:text-white hover:bg-[#0f172a] transition cursor-pointer" title="Clima de Mercado">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
@@ -80,10 +82,10 @@
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
         </button>
         <!-- Señales Radar -->
-        <button onclick="scrollToSec('sec-signals')" class="p-2.5 rounded-xl hover:text-white hover:bg-[#0f172a] transition cursor-pointer" title="Señales Algorítmicas">
+        <button onclick="scrollToSec('sec-signals')" class="p-2.5 rounded-xl hover:text-white hover:bg-[#0f172a] transition cursor-pointer" title="Señales en Vivo">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
         </button>
-        <!-- Calculadora -->
+        <!-- Calculadora de Riesgo -->
         <button onclick="scrollToSec('sec-calculator')" class="p-2.5 rounded-xl hover:text-white hover:bg-[#0f172a] transition cursor-pointer" title="Calculadora de Riesgo">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
         </button>
@@ -105,24 +107,24 @@
   <div class="flex-1 flex flex-col min-w-0">
 
     <!-- ================= BARRA SUPERIOR EXACTA STITCH ================= -->
-    <header class="bg-[#070b16] border-b border-slate-800/80 px-3 sm:px-6 py-2.5 flex items-center justify-between gap-3 sticky top-0 z-30 backdrop-blur-md">
+    <header class="bg-[#070b14] border-b border-slate-800/80 px-3 sm:px-6 py-2.5 flex items-center justify-between gap-3 sticky top-0 z-30 backdrop-blur-md">
       
       <!-- Brand & Subtítulo Institucional -->
       <div class="flex items-center gap-3 shrink-0">
         <a href="/" class="flex items-center gap-2.5">
-          <img src="/assets/logo.png" alt="Quantum AI" class="w-8 h-8 object-contain drop-shadow-[0_0_10px_rgba(245,158,11,0.5)]">
+          <img src="/assets/logo.png" alt="Quantum AI" class="w-7 h-7 sm:w-8 sm:h-8 object-contain drop-shadow-[0_0_10px_rgba(245,158,11,0.5)]">
           <div>
-            <div class="flex items-center gap-1.5">
+            <div class="flex items-center gap-1.5 leading-none">
               <span class="font-black text-sm sm:text-base tracking-wider text-white">QUANTUM<span class="text-amber-400">.AI</span></span>
             </div>
-            <p class="text-[9px] font-mono tracking-widest text-amber-400/90 font-bold uppercase">TERMINAL INSTITUCIONAL</p>
+            <p class="text-[9px] font-mono tracking-widest text-amber-400/90 font-bold uppercase mt-0.5">TERMINAL INSTITUCIONAL</p>
           </div>
         </a>
       </div>
 
       <!-- Navegación de Pestañas Principales (Stitch Exacto) -->
-      <nav class="hidden lg:flex items-center gap-1.5 bg-[#090f1f] p-1 rounded-xl border border-slate-800/90 text-xs font-bold">
-        <button onclick="scrollToSec('sec-macro')" class="px-3.5 py-1.5 rounded-lg bg-[#121a2d] text-white border border-slate-700/80 shadow-sm cursor-pointer transition">
+      <nav class="hidden md:flex items-center gap-1 bg-[#090f1e] p-1 rounded-xl border border-slate-800/90 text-xs font-bold">
+        <button onclick="scrollToSec('sec-macro')" class="px-3.5 py-1.5 rounded-lg nav-pill-active cursor-pointer transition">
           Terminal Unificado
         </button>
         <button onclick="scrollToSec('sec-signals')" class="px-3.5 py-1.5 rounded-lg text-slate-400 hover:text-white transition cursor-pointer">
@@ -134,24 +136,18 @@
         <button onclick="scrollToSec('sec-history')" class="px-3.5 py-1.5 rounded-lg text-slate-400 hover:text-white transition cursor-pointer">
           Historial Auditado
         </button>
-        <a href="/telegram/" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-sky-300 transition flex items-center gap-1">
-          <span>📱</span> <span>Bot</span>
-        </a>
-        <a href="/vip/" class="px-3 py-1.5 rounded-lg text-amber-400 hover:text-amber-300 transition flex items-center gap-1">
-          <span>👑</span> <span>VIP</span>
-        </a>
       </nav>
 
       <!-- Estado en Tiempo Real & Usuario -->
       <div class="flex items-center gap-2 sm:gap-3 shrink-0">
         <!-- Latencia Equinix -->
-        <div class="hidden xl:flex items-center gap-1.5 text-[11px] font-mono text-emerald-400 font-semibold bg-[#080e1c] px-2.5 py-1 rounded-lg border border-slate-800">
+        <div class="hidden xl:flex items-center gap-1.5 text-[11px] font-mono text-emerald-400 font-semibold bg-[#090f1e] px-2.5 py-1 rounded-lg border border-slate-800">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 badge-pulse"></span>
           <span>LD4 EQUINIX: <strong class="text-white">4.2ms</strong></span>
         </div>
 
         <!-- WebSocket Binance -->
-        <div class="hidden xl:flex items-center gap-1.5 text-[11px] font-mono text-emerald-400 font-semibold bg-[#080e1c] px-2.5 py-1 rounded-lg border border-slate-800">
+        <div class="hidden lg:flex items-center gap-1.5 text-[11px] font-mono text-emerald-400 font-semibold bg-[#090f1e] px-2.5 py-1 rounded-lg border border-slate-800">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 badge-pulse"></span>
           <span>BINANCE WS: <strong class="text-white">99.99%</strong></span>
         </div>
@@ -163,11 +159,11 @@
 
         <!-- User Profile Area -->
         <div id="userHeaderArea" class="flex items-center gap-2 pl-1">
-          <a href="/login.php" class="flex items-center gap-2 bg-[#090f1f] hover:bg-[#11192e] border border-slate-700/80 px-3 py-1 rounded-xl text-xs transition">
+          <a href="/login.php" class="flex items-center gap-2 bg-[#090f1e] hover:bg-[#11192e] border border-slate-700/80 px-2.5 sm:px-3 py-1 rounded-xl text-xs transition">
             <div class="w-6 h-6 rounded-full bg-gradient-to-tr from-amber-500 to-amber-300 text-slate-950 font-black text-[10px] flex items-center justify-center">
               Q
             </div>
-            <div class="hidden md:flex flex-col text-left leading-tight">
+            <div class="hidden sm:flex flex-col text-left leading-tight">
               <span class="text-white font-bold text-xs" id="userHeaderName">Quantum Ops</span>
               <span class="text-[9px] text-slate-400 font-mono">Institutional Prime</span>
             </div>
@@ -181,9 +177,9 @@
     <main class="flex-1 flex flex-col p-3 sm:p-5 max-w-[1440px] mx-auto w-full space-y-4">
 
       <!-- ================= 1. FILA DE ESTADO MACRO (3 TARJETAS) ================= -->
-      <section id="sec-macro" class="grid grid-cols-1 md:grid-cols-3 gap-3">
+      <section id="sec-macro" class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
         <!-- Bolsa S&P 500 -->
-        <div class="bg-[#080d1a] border border-slate-800/90 rounded-2xl p-3.5 flex items-center justify-between">
+        <div class="bg-[#080d19] border border-slate-800/90 rounded-2xl p-3.5 flex items-center justify-between">
           <div>
             <span class="text-[10px] text-slate-400 font-mono font-bold tracking-wider block">BOLSA DE EE.UU. (S&P 500)</span>
             <div class="text-white text-base font-black mt-0.5 flex items-center gap-1.5">
@@ -196,7 +192,7 @@
         </div>
 
         <!-- Dólar Mundial (DXY) -->
-        <div class="bg-[#080d1a] border border-slate-800/90 rounded-2xl p-3.5 flex items-center justify-between">
+        <div class="bg-[#080d19] border border-slate-800/90 rounded-2xl p-3.5 flex items-center justify-between">
           <div>
             <span class="text-[10px] text-slate-400 font-mono font-bold tracking-wider block">DÓLAR MUNDIAL (DXY)</span>
             <div class="text-emerald-400 text-base font-black mt-0.5 flex items-center gap-1">
@@ -209,7 +205,7 @@
         </div>
 
         <!-- Estado del Mercado -->
-        <div class="bg-[#080d1a] border border-slate-800/90 rounded-2xl p-3.5 flex items-center justify-between">
+        <div class="bg-[#080d19] border border-slate-800/90 rounded-2xl p-3.5 flex items-center justify-between">
           <div>
             <span class="text-[10px] text-slate-400 font-mono font-bold tracking-wider block">ESTADO DEL MERCADO</span>
             <div class="text-emerald-300 text-base font-black mt-0.5">
@@ -221,7 +217,7 @@
       </section>
 
       <!-- ================= 2. GRÁFICO INSTITUCIONAL COMPLETO ================= -->
-      <section id="sec-chart" class="bg-[#080d1a] border border-slate-800/90 rounded-2xl p-3.5 sm:p-4 flex flex-col space-y-3">
+      <section id="sec-chart" class="bg-[#080d19] border border-slate-800/90 rounded-2xl p-3.5 sm:p-4 flex flex-col space-y-3">
         <!-- Barra de selección de Moneda -->
         <div class="flex flex-wrap items-center justify-between gap-3 pb-1 border-b border-slate-800/80">
           <div class="flex items-center gap-2 overflow-x-auto custom-scroll pb-1">
@@ -251,7 +247,7 @@
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
               <span>SOL/USDT en Vivo</span>
             </span>
-            <span class="text-[11px] text-slate-400 font-mono bg-[#070b16] px-2 py-0.5 rounded border border-slate-800">Temporalidad: 15m</span>
+            <span class="text-[11px] text-slate-400 font-mono bg-[#060911] px-2 py-0.5 rounded border border-slate-800">Temporalidad: 15m</span>
           </div>
         </div>
 
@@ -277,9 +273,9 @@
           </div>
         </div>
 
-        <!-- Contenedor Oficial de TradingView -->
-        <div class="w-full h-[430px] bg-black rounded-xl overflow-hidden border border-slate-800" id="tvChartContainer">
-          <!-- Widget TradingView se inicializa aquí -->
+        <!-- Contenedor Oficial de TradingView Ajustado -->
+        <div class="w-full h-[350px] sm:h-[370px] bg-black rounded-xl overflow-hidden border border-slate-800" id="tvChartContainer">
+          <!-- Widget TradingView -->
         </div>
       </section>
 
@@ -287,7 +283,7 @@
       <section id="sec-signals" class="flex flex-col space-y-3.5">
         
         <!-- Header de Señales con Filtros -->
-        <div class="bg-[#080d1a] border border-slate-800/90 rounded-2xl p-3.5 sm:p-4 flex flex-wrap items-center justify-between gap-3">
+        <div class="bg-[#080d19] border border-slate-800/90 rounded-2xl p-3.5 sm:p-4 flex flex-wrap items-center justify-between gap-3">
           <div class="flex items-center gap-3">
             <div class="w-9 h-9 rounded-xl bg-rose-500/15 border border-rose-500/30 flex items-center justify-center text-rose-400 text-lg shrink-0">
               🎯
@@ -316,7 +312,7 @@
           </div>
         </div>
 
-        <!-- Grid de 3 Tarjetas de Señales (Stitch Exacto) -->
+        <!-- Grid de 3 Tarjetas de Señales (Stitch Exacto: BNB, ETH, SOL) -->
         <div id="signalsGridClean" class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <!-- Generadas dinámicamente -->
         </div>
@@ -324,90 +320,93 @@
       </section>
 
       <!-- ================= 4. DOS COLUMNAS: CALCULADORA & HISTORIAL ================= -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
         
         <!-- CALCULADORA PARA PROTEGER TU CUENTA (7 COLS) -->
-        <section id="sec-calculator" class="lg:col-span-7 bg-[#080d1a] border border-slate-800/90 rounded-2xl p-4 sm:p-5 flex flex-col space-y-4">
-          <div class="flex items-center gap-3">
-            <div class="w-9 h-9 rounded-xl bg-sky-500/15 border border-sky-500/30 flex items-center justify-center text-sky-400 text-lg shrink-0">
-              🛡️
-            </div>
-            <div>
-              <h3 class="text-white font-black text-base">Calculadora para Proteger tu Cuenta</h3>
-              <p class="text-xs text-slate-400 mt-0.5">
-                Dile cuánto dinero tienes y te dirá exactamente cuánto comprar para <strong>no perder más de $0.50 USD</strong> si la operación sale mal.
-              </p>
-            </div>
-          </div>
-
-          <!-- 1. Saldo en cuenta -->
-          <div class="space-y-1.5">
-            <label class="block text-xs font-bold text-slate-300">1. ¿Cuánto dinero tienes en tu cuenta?</label>
-            <div class="grid grid-cols-4 gap-2">
-              <button onclick="setCalcCapital(10)" class="calc-cap-btn py-2 rounded-xl border border-slate-800 bg-[#050811] text-slate-300 font-bold hover:border-slate-700 transition cursor-pointer" data-cap="10">$10 USD</button>
-              <button onclick="setCalcCapital(20)" class="calc-cap-btn py-2 rounded-xl border border-slate-800 bg-[#050811] text-slate-300 font-bold hover:border-slate-700 transition cursor-pointer" data-cap="20">$20 USD</button>
-              <button onclick="setCalcCapital(35)" class="calc-cap-btn py-2 rounded-xl border border-slate-800 bg-[#050811] text-slate-300 font-bold hover:border-slate-700 transition cursor-pointer" data-cap="35">$35 USD</button>
-              <button onclick="setCalcCapital(50)" class="calc-cap-btn py-2 rounded-xl border border-amber-500 bg-amber-500 text-slate-950 font-black transition cursor-pointer shadow-sm" data-cap="50">$50 USD ⭐</button>
-            </div>
-          </div>
-
-          <!-- 2. Apalancamiento -->
-          <div class="space-y-1.5">
-            <div class="flex items-center justify-between text-xs font-bold text-slate-300">
-              <span>2. Apalancamiento en Binance:</span>
-              <span id="calcLevLabel" class="text-amber-400 font-mono font-bold">10x (Recomendado)</span>
-            </div>
-            <div class="grid grid-cols-3 gap-2">
-              <button onclick="setCalcLev(5)" class="calc-lev-btn py-1.5 rounded-xl border border-slate-800 bg-[#050811] text-slate-300 font-bold hover:border-slate-700 transition cursor-pointer" data-lev="5">5x (Conservador)</button>
-              <button onclick="setCalcLev(10)" class="calc-lev-btn py-1.5 rounded-xl border border-amber-500 bg-amber-500/20 text-amber-300 font-bold transition cursor-pointer" data-lev="10">10x (Recomendado)</button>
-              <button onclick="setCalcLev(20)" class="calc-lev-btn py-1.5 rounded-xl border border-slate-800 bg-[#050811] text-slate-300 font-bold hover:border-slate-700 transition cursor-pointer" data-lev="20">20x (Máximo)</button>
-            </div>
-          </div>
-
-          <!-- 3. Criptomoneda a operar -->
-          <div class="space-y-1.5">
-            <label class="block text-xs font-bold text-slate-300">3. ¿Qué criptomoneda vas a operar?</label>
-            <div class="grid grid-cols-3 gap-2">
-              <button onclick="selectCalcSignal('SOL/USDT', 138.40, 136.80, 142.20, 'LONG')" id="calcSigBtn-SOL" class="calc-sig-btn p-2.5 rounded-xl border border-amber-500 bg-amber-500/15 text-white font-bold transition text-left cursor-pointer">
-                <span class="block text-xs">SOL/USDT</span>
-                <span class="text-[10px] text-emerald-400 font-normal">Compra en $138.40</span>
-              </button>
-              <button onclick="selectCalcSignal('BTC/USDT', 64280, 63600, 65850, 'LONG')" id="calcSigBtn-BTC" class="calc-sig-btn p-2.5 rounded-xl border border-slate-800 bg-[#050811] text-slate-300 font-bold transition text-left hover:border-slate-700 cursor-pointer">
-                <span class="block text-xs">BTC/USDT</span>
-                <span class="text-[10px] text-emerald-400 font-normal">Compra en $64,280</span>
-              </button>
-              <button onclick="selectCalcSignal('ETH/USDT', 3485.50, 3525, 3390, 'SHORT')" id="calcSigBtn-ETH" class="calc-sig-btn p-2.5 rounded-xl border border-slate-800 bg-[#050811] text-slate-300 font-bold transition text-left hover:border-slate-700 cursor-pointer">
-                <span class="block text-xs">ETH/USDT</span>
-                <span class="text-[10px] text-rose-400 font-normal">Venta en $3,485</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- RESULTADO DIRECTO -->
-          <div class="bg-[#050811] border-2 border-amber-500/60 rounded-2xl p-4 space-y-2.5 gold-glow">
-            <span class="text-[11px] font-bold text-amber-400 uppercase tracking-wider block">👉 LO QUE DEBES PONER EN BINANCE:</span>
-            
-            <div class="text-base sm:text-lg font-black text-white" id="calcOutputMaster">
-              Abre exactamente: <span class="text-amber-400 font-mono">0.3125 SOL</span> <span class="text-slate-400 text-xs font-normal">($4.33 USD de margen)</span>
+        <section id="sec-calculator" class="lg:col-span-7 bg-[#080d19] border border-slate-800/90 rounded-2xl p-4 sm:p-5 flex flex-col justify-between space-y-4">
+          <div class="space-y-4">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-xl bg-sky-500/15 border border-sky-500/30 flex items-center justify-center text-sky-400 text-lg shrink-0">
+                🛡️
+              </div>
+              <div>
+                <h3 class="text-white font-black text-base">Calculadora para Proteger tu Cuenta</h3>
+                <p class="text-xs text-slate-400 mt-0.5">
+                  Dile cuánto dinero tienes y te dirá exactamente cuánto comprar para <strong>no perder más de $0.50 USD</strong> si la operación sale mal.
+                </p>
+              </div>
             </div>
 
-            <div class="text-xs text-slate-300 leading-relaxed bg-[#0a0f1d] p-3 rounded-xl border border-slate-800" id="calcDescMaster">
-              🛡️ Si la operación no sale bien y toca tu Stop Loss en <strong>$136.80</strong>, <strong>SOLO perderás $0.50 USD</strong>. Tu cuenta está 100% a salvo de liquidaciones indeseadas.
+            <!-- 1. Saldo en cuenta -->
+            <div class="space-y-1.5">
+              <label class="block text-xs font-bold text-slate-300">1. ¿Cuánto dinero tienes en tu cuenta?</label>
+              <div class="grid grid-cols-4 gap-2">
+                <button onclick="setCalcCapital(10)" class="calc-cap-btn py-2 rounded-xl border border-slate-800 bg-[#050811] text-slate-300 font-bold hover:border-slate-700 transition cursor-pointer" data-cap="10">$10 USD</button>
+                <button onclick="setCalcCapital(20)" class="calc-cap-btn py-2 rounded-xl border border-slate-800 bg-[#050811] text-slate-300 font-bold hover:border-slate-700 transition cursor-pointer" data-cap="20">$20 USD</button>
+                <button onclick="setCalcCapital(35)" class="calc-cap-btn py-2 rounded-xl border border-slate-800 bg-[#050811] text-slate-300 font-bold hover:border-slate-700 transition cursor-pointer" data-cap="35">$35 USD</button>
+                <button onclick="setCalcCapital(50)" class="calc-cap-btn py-2 rounded-xl border border-amber-500 bg-amber-500 text-slate-950 font-black transition cursor-pointer shadow-sm" data-cap="50">$50 USD ⭐</button>
+              </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-2 pt-1">
-              <button onclick="copyCalcParams()" class="bg-[#12192a] hover:bg-[#1c273e] text-slate-200 border border-slate-700 font-bold py-2.5 rounded-xl text-xs transition cursor-pointer flex items-center justify-center gap-1.5">
-                <span>📋</span> <span>Copiar Cantidad</span>
-              </button>
-              <button onclick="applyToBinanceFutures()" class="bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-black py-2.5 rounded-xl text-xs transition shadow-md shadow-amber-500/20 cursor-pointer flex items-center justify-center gap-1.5">
-                <span>⚡</span> <span>Ir a Binance</span>
-              </button>
+            <!-- 2. Apalancamiento -->
+            <div class="space-y-1.5">
+              <div class="flex items-center justify-between text-xs font-bold text-slate-300">
+                <span>2. Apalancamiento en Binance:</span>
+                <span id="calcLevLabel" class="text-amber-400 font-mono font-bold">10x (Recomendado)</span>
+              </div>
+              <div class="grid grid-cols-3 gap-2">
+                <button onclick="setCalcLev(5)" class="calc-lev-btn py-1.5 rounded-xl border border-slate-800 bg-[#050811] text-slate-300 font-bold hover:border-slate-700 transition cursor-pointer" data-lev="5">5x (Conservador)</button>
+                <button onclick="setCalcLev(10)" class="calc-lev-btn py-1.5 rounded-xl border border-amber-500 bg-amber-500/20 text-amber-300 font-bold transition cursor-pointer" data-lev="10">10x (Recomendado)</button>
+                <button onclick="setCalcLev(20)" class="calc-lev-btn py-1.5 rounded-xl border border-slate-800 bg-[#050811] text-slate-300 font-bold hover:border-slate-700 transition cursor-pointer" data-lev="20">20x (Máximo)</button>
+              </div>
+            </div>
+
+            <!-- 3. Criptomoneda a operar -->
+            <div class="space-y-1.5">
+              <label class="block text-xs font-bold text-slate-300">3. ¿Qué criptomoneda vas a operar?</label>
+              <div class="grid grid-cols-3 gap-2">
+                <button onclick="selectCalcSignal('SOL/USDT', 138.40, 136.80, 142.20, 'LONG')" id="calcSigBtn-SOL" class="calc-sig-btn p-2.5 rounded-xl border border-amber-500 bg-amber-500/15 text-white font-bold transition text-left cursor-pointer">
+                  <span class="block text-xs">SOL/USDT</span>
+                  <span class="text-[10px] text-emerald-400 font-normal">Compra en $138.40</span>
+                </button>
+                <button onclick="selectCalcSignal('BTC/USDT', 64280, 63600, 65850, 'LONG')" id="calcSigBtn-BTC" class="calc-sig-btn p-2.5 rounded-xl border border-slate-800 bg-[#050811] text-slate-300 font-bold transition text-left hover:border-slate-700 cursor-pointer">
+                  <span class="block text-xs">BTC/USDT</span>
+                  <span class="text-[10px] text-emerald-400 font-normal">Compra en $64,280</span>
+                </button>
+                <button onclick="selectCalcSignal('ETH/USDT', 3485.50, 3525, 3390, 'SHORT')" id="calcSigBtn-ETH" class="calc-sig-btn p-2.5 rounded-xl border border-slate-800 bg-[#050811] text-slate-300 font-bold transition text-left hover:border-slate-700 cursor-pointer">
+                  <span class="block text-xs">ETH/USDT</span>
+                  <span class="text-[10px] text-rose-400 font-normal">Venta en $3,485</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- RESULTADO DIRECTO -->
+            <div class="bg-[#050811] border-2 border-amber-500/60 rounded-2xl p-4 space-y-2.5 gold-glow">
+              <span class="text-[11px] font-bold text-amber-400 uppercase tracking-wider block">👉 LO QUE DEBES PONER EN BINANCE:</span>
+              
+              <div class="text-base sm:text-lg font-black text-white" id="calcOutputMaster">
+                Abre exactamente: <span class="text-amber-400 font-mono">0.3125 SOL</span> <span class="text-slate-400 text-xs font-normal">($4.33 USD de margen)</span>
+              </div>
+
+              <div class="text-xs text-slate-300 leading-relaxed bg-[#0a0f1d] p-3 rounded-xl border border-slate-800 flex items-start gap-2" id="calcDescMaster">
+                <span class="text-emerald-400 text-sm">🛡️</span>
+                <span>Si la operación no sale bien y toca tu Stop Loss en <strong>$136.80</strong>, <strong>SOLO perderás $0.50 USD</strong>. Tu cuenta está 100% a salvo de liquidaciones indeseadas.</span>
+              </div>
+
+              <div class="grid grid-cols-2 gap-2 pt-1">
+                <button onclick="copyCalcParams()" class="bg-[#12192a] hover:bg-[#1c273e] text-slate-200 border border-slate-700 font-bold py-2.5 rounded-xl text-xs transition cursor-pointer flex items-center justify-center gap-1.5">
+                  <span>📋</span> <span>Copiar Cantidad</span>
+                </button>
+                <button onclick="applyToBinanceFutures()" class="bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-black py-2.5 rounded-xl text-xs transition shadow-md shadow-amber-500/20 cursor-pointer flex items-center justify-center gap-1.5">
+                  <span>⚡</span> <span>Ir a Binance</span>
+                </button>
+              </div>
             </div>
           </div>
         </section>
 
         <!-- HISTORIAL DE RESULTADOS AUDITADO (5 COLS) -->
-        <section id="sec-history" class="lg:col-span-5 bg-[#080d1a] border border-slate-800/90 rounded-2xl p-4 sm:p-5 flex flex-col justify-between space-y-4">
+        <section id="sec-history" class="lg:col-span-5 bg-[#080d19] border border-slate-800/90 rounded-2xl p-4 sm:p-5 flex flex-col justify-between space-y-4">
           <div>
             <div class="flex items-center gap-3">
               <div class="w-9 h-9 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 text-lg shrink-0">
@@ -494,7 +493,7 @@
     </main>
 
     <!-- ================= FOOTER DISCRETO ================= -->
-    <footer class="bg-[#060a14] border-t border-slate-800/80 px-4 lg:px-8 py-3.5 text-xs text-slate-400 flex flex-wrap items-center justify-between gap-3 mt-auto">
+    <footer class="bg-[#050810] border-t border-slate-800/80 px-4 lg:px-8 py-3.5 text-xs text-slate-400 flex flex-wrap items-center justify-between gap-3 mt-auto select-none">
       <div class="flex items-center gap-2">
         <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
         <span class="text-white font-bold">Quantum.AI Terminal Institucional</span>
@@ -530,9 +529,8 @@
     let currentChartSymbol = 'BINANCE:SOLUSDT';
     let currentChartLabel = 'SOL/USDT';
     let currentFilter = 'all';
-    let soundEnabled = true;
 
-    // SEÑALES PRECALIBRADAS
+    // SEÑALES PRECALIBRADAS (EXACTAS STITCH)
     const defaultSignals = [
       {
         simbolo: 'BNB/USDT',
@@ -541,6 +539,7 @@
         sl: 754.7343,
         tp: 767.4903,
         probabilidad: 65.2,
+        badgeBg: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
         explicacion: 'Señales detectadas con alta precisión algorítmica y volumen favorable.'
       },
       {
@@ -550,6 +549,7 @@
         sl: 2608.38,
         tp: 2652.46,
         probabilidad: 68.4,
+        badgeBg: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30',
         explicacion: 'Señales detectadas con alta precisión algorítmica y volumen favorable.'
       },
       {
@@ -559,6 +559,7 @@
         sl: 136.80,
         tp: 142.20,
         probabilidad: 71.0,
+        badgeBg: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
         explicacion: 'Rompimiento de liquidez alcista confirmado con libro L2 en Binance.'
       }
     ];
@@ -569,23 +570,25 @@
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    // TRADINGVIEW
+    // TRADINGVIEW NATIVO COMPACTO
     function initTvChart() {
       const container = document.getElementById('tvChartContainer');
       if (!container || !window.TradingView) return;
       container.innerHTML = '';
       new TradingView.widget({
-        width: "100%",
-        height: "100%",
+        autosize: true,
         symbol: currentChartSymbol,
         interval: "15",
         timezone: "America/Lima",
         theme: "dark",
         style: "1",
         locale: "es",
-        toolbar_bg: "#080d1a",
+        toolbar_bg: "#070b14",
         enable_publishing: false,
-        allow_symbol_change: true,
+        hide_top_toolbar: true,
+        hide_legend: false,
+        save_image: false,
+        hide_volume: false,
         container_id: "tvChartContainer"
       });
     }
@@ -633,14 +636,14 @@
         const isLong = String(s.tipo).toUpperCase().includes('COMPRA') || String(s.tipo).toUpperCase().includes('LONG');
         const base = s.simbolo.split('/')[0];
         const card = document.createElement('div');
-        card.className = "bg-[#080d1a] border border-slate-800 hover:border-amber-500/50 rounded-2xl p-4 flex flex-col justify-between space-y-3.5 shadow-md transition";
+        card.className = "bg-[#080d19] border border-slate-800 hover:border-amber-500/50 rounded-2xl p-4 flex flex-col justify-between space-y-3.5 shadow-md transition";
         
         card.innerHTML = `
           <div>
             <!-- Header Tarjeta -->
             <div class="flex items-center justify-between pb-2.5 border-b border-slate-800">
               <div class="flex items-center gap-2">
-                <span class="w-8 h-8 rounded-xl bg-[#0e1628] border border-slate-800 flex items-center justify-center text-amber-400 font-mono font-black text-xs">
+                <span class="w-8 h-8 rounded-xl ${s.badgeBg || 'bg-amber-500/20 text-amber-300 border-amber-500/30'} border flex items-center justify-center font-mono font-black text-xs">
                   ${base}
                 </span>
                 <div>
@@ -766,10 +769,13 @@
       const desc = document.getElementById('calcDescMaster');
 
       if (out) {
-        out.innerHTML = `Abre exactamente: <span class="text-amber-400 font-mono">${fmt} ${p.base}</span> <span class="text-slate-400 text-xs font-normal">($${marginUsed.toFixed(2)} USD de margen)</span>`;
+        out.innerHTML = `Abre exactamente: <span class="text-amber-400 font-mono font-black">${fmt} ${p.base}</span> <span class="text-slate-400 text-xs font-normal">($${marginUsed.toFixed(2)} USD de margen)</span>`;
       }
       if (desc) {
-        desc.innerHTML = `🛡️ Si la operación no sale bien y toca tu Stop Loss en <strong>$${p.sl}</strong>, <strong>SOLO perderás $${currentCalcLoss.toFixed(2)} USD</strong>. Tu cuenta está 100% a salvo de liquidaciones indeseadas.`;
+        desc.innerHTML = `
+          <span class="text-emerald-400 text-sm">🛡️</span>
+          <span>Si la operación no sale bien y toca tu Stop Loss en <strong>$${p.sl}</strong>, <strong>SOLO perderás $${currentCalcLoss.toFixed(2)} USD</strong>. Tu cuenta está 100% a salvo de liquidaciones indeseadas.</span>
+        `;
       }
     }
 
