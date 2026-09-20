@@ -533,23 +533,6 @@ $inicial_nombre = mb_strtoupper(mb_substr($nombre_actual, 0, 1));
 
   </main>
 
-  <!-- ================= PIE DE PÁGINA INSTITUCIONAL ================= -->
-  <footer class="mt-auto border-t border-slate-800/80 bg-[#04060b] py-6 px-4 lg:px-8 text-center text-xs text-slate-500 space-y-2">
-    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-      <div class="flex items-center gap-2">
-        <span class="text-white font-black tracking-wider">QUANTUM.AI</span>
-        <span class="text-slate-600">•</span>
-        <span class="font-mono text-[11px]">Enclave de Trading Institucional & Algorítmico</span>
-      </div>
-      <div class="flex items-center gap-4 text-[11px] font-mono">
-        <a href="/" class="hover:text-amber-400 transition">Terminal Principal</a>
-        <a href="/vip/" class="hover:text-amber-400 transition">Membresía VIP</a>
-        <a href="/telegram/" class="hover:text-amber-400 transition">Telegram</a>
-        <a href="/calculadora.php" class="hover:text-amber-400 transition">Calculadora</a>
-      </div>
-    </div>
-  </footer>
-
   <!-- ================= NOTIFICACIÓN TOAST FLOTANTE ================= -->
   <div id="toast" class="fixed bottom-6 right-6 hidden z-50 items-center gap-3 bg-[#0b0f19] border border-amber-500/40 text-white px-5 py-3 rounded-2xl shadow-2xl shadow-amber-500/20 backdrop-blur-xl transition-all duration-300">
     <div id="toastIcon" class="w-6 h-6 rounded-full bg-amber-400/20 text-amber-400 flex items-center justify-center text-xs font-black">
