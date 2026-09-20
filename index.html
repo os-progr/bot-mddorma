@@ -137,6 +137,12 @@
           <span>BINANCE WS: <strong class="text-white">99.99%</strong></span>
         </div>
 
+        <!-- Live Simulated Equity Badge -->
+        <div id="simBalanceBadge" class="hidden sm:flex items-center gap-1.5 text-[11px] font-mono text-amber-300 font-semibold bg-amber-500/10 px-2.5 py-1 rounded-lg border border-amber-500/30" title="Balance simulado en tiempo real">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 badge-pulse"></span>
+          <span>SIM USDT: <strong class="text-white" id="simBalanceVal">$49.39</strong></span>
+        </div>
+
         <!-- VIP Badge -->
         <div class="px-2.5 py-1 rounded-lg bg-amber-500/15 border border-amber-500/40 text-amber-300 font-mono text-[10px] font-black tracking-wider">
           VIP TIER III
@@ -419,44 +425,46 @@
             <div class="space-y-2 text-xs">
               <span class="text-[10px] text-slate-500 font-mono font-bold tracking-wider block uppercase">ÚLTIMAS 4 CONCLUSIONES AUDITADAS:</span>
 
-              <div class="p-2.5 rounded-xl bg-[#050811] border border-slate-800/80 flex items-center justify-between">
-                <div>
-                  <strong class="text-white font-bold block">SOL/USDT (Compra)</strong>
-                  <span class="text-[11px] text-slate-400">Entrada: $134.10 → TP: $138.00</span>
+              <div id="auditedHistoryList" class="space-y-2">
+                <div class="p-2.5 rounded-xl bg-[#050811] border border-slate-800/80 flex items-center justify-between">
+                  <div>
+                    <strong class="text-white font-bold block">ETH/USDT (LONG)</strong>
+                    <span class="text-[11px] text-slate-400">Entrada: $2645.10 → Salida: $2660.97 (TP)</span>
+                  </div>
+                  <span class="text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-1 rounded-lg text-[11px] font-mono">
+                    +$0.24 GANADA
+                  </span>
                 </div>
-                <span class="text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-1 rounded-lg text-[11px] font-mono">
-                  +$92.00 GANADA
-                </span>
-              </div>
 
-              <div class="p-2.5 rounded-xl bg-[#050811] border border-slate-800/80 flex items-center justify-between">
-                <div>
-                  <strong class="text-white font-bold block">BTC/USDT (Compra)</strong>
-                  <span class="text-[11px] text-slate-400">Entrada: $63,800 → TP: $65,200</span>
+                <div class="p-2.5 rounded-xl bg-[#050811] border border-slate-800/80 flex items-center justify-between">
+                  <div>
+                    <strong class="text-white font-bold block">ETH/USDT (LONG)</strong>
+                    <span class="text-[11px] text-slate-400">Entrada: $2651.43 → Salida: $2653.55 (Trailing BE)</span>
+                  </div>
+                  <span class="text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-1 rounded-lg text-[11px] font-mono">
+                    +$0.02 GANADA
+                  </span>
                 </div>
-                <span class="text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-1 rounded-lg text-[11px] font-mono">
-                  +$140.00 GANADA
-                </span>
-              </div>
 
-              <div class="p-2.5 rounded-xl bg-[#050811] border border-slate-800/80 flex items-center justify-between">
-                <div>
-                  <strong class="text-white font-bold block">ETH/USDT (Venta)</strong>
-                  <span class="text-[11px] text-slate-400">Entrada: $3,520 → Cortó en SL</span>
+                <div class="p-2.5 rounded-xl bg-[#050811] border border-slate-800/80 flex items-center justify-between">
+                  <div>
+                    <strong class="text-white font-bold block">ETH/USDT (LONG)</strong>
+                    <span class="text-[11px] text-slate-400">Entrada: $2634.20 → Salida: $2618.39 (SL)</span>
+                  </div>
+                  <span class="text-rose-400 font-bold bg-rose-500/10 border border-rose-500/30 px-2.5 py-1 rounded-lg text-[11px] font-mono">
+                    -$0.29 PROTEGIDA
+                  </span>
                 </div>
-                <span class="text-rose-400 font-bold bg-rose-500/10 border border-rose-500/30 px-2.5 py-1 rounded-lg text-[11px] font-mono">
-                  -$0.50 PROTEGIDA
-                </span>
-              </div>
 
-              <div class="p-2.5 rounded-xl bg-[#050811] border border-slate-800/80 flex items-center justify-between">
-                <div>
-                  <strong class="text-white font-bold block">LINK/USDT (Compra)</strong>
-                  <span class="text-[11px] text-slate-400">Entrada: $15.80 → TP: $16.45</span>
+                <div class="p-2.5 rounded-xl bg-[#050811] border border-slate-800/80 flex items-center justify-between">
+                  <div>
+                    <strong class="text-white font-bold block">ETH/USDT (LONG)</strong>
+                    <span class="text-[11px] text-slate-400">Entrada: $2646.97 → Salida: $2631.08 (SL)</span>
+                  </div>
+                  <span class="text-rose-400 font-bold bg-rose-500/10 border border-rose-500/30 px-2.5 py-1 rounded-lg text-[11px] font-mono">
+                    -$0.29 PROTEGIDA
+                  </span>
                 </div>
-                <span class="text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-1 rounded-lg text-[11px] font-mono">
-                  +$45.00 GANADA
-                </span>
               </div>
             </div>
           </div>
@@ -832,6 +840,69 @@
       }
     }
 
+    // CARGAR TELEMETRÍA DE SIMULACIÓN DE BINANCE EN VIVO
+    async function fetchSimState() {
+      try {
+        const res = await fetch('api/simulacion.php?action=account', { cache: 'no-store' });
+        if (!res.ok) return;
+        const json = await res.json();
+        if (!json.success || !json.data) return;
+        const d = json.data;
+
+        // 1. Actualizar balance simulado en header
+        const valEl = document.getElementById('simBalanceVal');
+        if (valEl && d.equity !== undefined) {
+          valEl.textContent = `$${parseFloat(d.equity).toFixed(2)}`;
+        }
+
+        // 2. Si hay historial real de simulación, actualizar la lista auditada
+        if (Array.isArray(d.historial_cerrado) && d.historial_cerrado.length > 0) {
+          renderAuditedHistory(d.historial_cerrado.slice(0, 4));
+        }
+
+        // 3. Si hay evaluaciones activas, actualizar las tarjetas de señales
+        if (Array.isArray(d.evaluaciones) && d.evaluaciones.length > 0) {
+          const mapped = d.evaluaciones.filter(e => e.actionable || e.score >= 50).map(e => ({
+            simbolo: e.simbolo,
+            tipo: e.direction === 'long' ? 'COMPRA (LONG)' : (e.direction === 'short' ? 'VENTA (SHORT)' : 'EN ESPERA (HOLD)'),
+            entrada: e.entrada,
+            sl: e.sl,
+            tp: e.tp,
+            probabilidad: e.score,
+            badgeBg: e.direction === 'long' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' : 'bg-amber-500/20 text-amber-300 border-amber-500/30',
+            explicacion: (e.reasons && e.reasons.length > 0) ? e.reasons.join(', ') : 'Confluencia cuántica institucional detectada.'
+          }));
+          if (mapped.length > 0) {
+            renderSignals(mapped);
+          }
+        }
+      } catch (err) {}
+    }
+
+    function renderAuditedHistory(items) {
+      const container = document.getElementById('auditedHistoryList');
+      if (!container || !items || items.length === 0) return;
+      container.innerHTML = items.map(t => {
+        const isWin = parseFloat(t.pnl) >= 0;
+        const pnlFormatted = `${isWin ? '+' : ''}$${parseFloat(t.pnl).toFixed(2)}`;
+        const pnlBadgeClass = isWin 
+          ? 'text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-1 rounded-lg text-[11px] font-mono'
+          : 'text-rose-400 font-bold bg-rose-500/10 border border-rose-500/30 px-2.5 py-1 rounded-lg text-[11px] font-mono';
+        const label = isWin ? 'GANADA' : 'PROTEGIDA';
+        return `
+          <div class="p-2.5 rounded-xl bg-[#050811] border border-slate-800/80 flex items-center justify-between">
+            <div>
+              <strong class="text-white font-bold block">${t.simbolo} (${t.side})</strong>
+              <span class="text-[11px] text-slate-400">Entrada: $${t.entrada} → Salida: $${t.salida} (${t.motivo})</span>
+            </div>
+            <span class="${pnlBadgeClass}">
+              ${pnlFormatted} ${label}
+            </span>
+          </div>
+        `;
+      }).join('');
+    }
+
     // INICIALIZACIÓN
     window.addEventListener('DOMContentLoaded', () => {
       initTvChart();
@@ -839,6 +910,8 @@
       recalcMaster();
       initSseStream();
       checkUserSession();
+      fetchSimState();
+      setInterval(fetchSimState, 10000);
 
       // Manejo de parámetro ?tab= para scroll directo si se accede con enlace viejo
       const urlParams = new URLSearchParams(window.location.search);
