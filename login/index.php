@@ -8,7 +8,7 @@
 declare(strict_types=1);
 
 define('AUTH_LIB_ONLY', true);
-require_once __DIR__ . '/api/auth.php';
+require_once file_exists(__DIR__ . '/api/auth.php') ? __DIR__ . '/api/auth.php' : dirname(__DIR__) . '/api/auth.php';
 
 // Si ya tiene sesión activa válida, redirigir al terminal
 if (!empty($_SESSION['id_usuario']) && !empty($pdo)) {
@@ -260,7 +260,7 @@ $mostrar_alerta_expirado = ($mensaje === 'session_expired');
       const action = isRegisterMode ? 'register' : 'login';
       const payload = isRegisterMode ? { correo: email, password: pass, nombre } : { correo: email, password: pass };
 
-      fetch(`api/auth.php?action=${action}`, {
+      fetch(`/api/auth.php?action=${action}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

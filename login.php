@@ -260,7 +260,7 @@ $mostrar_alerta_expirado = ($mensaje === 'session_expired');
       const action = isRegisterMode ? 'register' : 'login';
       const payload = isRegisterMode ? { correo: email, password: pass, nombre } : { correo: email, password: pass };
 
-      fetch(`api/auth.php?action=${action}`, {
+      fetch(`/api/auth.php?action=${action}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
