@@ -474,7 +474,7 @@ $inicial_nombre = mb_strtoupper(mb_substr($user['nombre'] ?: 'O', 0, 1));
               <!-- Nueva Clave -->
               <div>
                 <label for="inputNewPass" class="block text-xs font-semibold text-slate-300 mb-1.5">
-                  Nueva Contraseña <span class="text-slate-500 font-normal">(≥ 6 car.)</span>
+                  Nueva Contraseña <span class="text-slate-500 font-normal">(≥ 8 car., A-Z, a-z, 0-9, #!?)</span>
                 </label>
                 <div class="relative">
                   <input 
@@ -482,7 +482,8 @@ $inicial_nombre = mb_strtoupper(mb_substr($user['nombre'] ?: 'O', 0, 1));
                     id="inputNewPass" 
                     name="new_password" 
                     required 
-                    minlength="6" 
+                    minlength="8" 
+                    oninput="checkPasswordStrength()"
                     class="w-full bg-[#080d19] border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-white font-mono text-xs focus:outline-none focus:border-amber-400 transition pr-10"
                     placeholder="••••••••••••"
                   >
@@ -503,13 +504,46 @@ $inicial_nombre = mb_strtoupper(mb_substr($user['nombre'] ?: 'O', 0, 1));
                     id="inputConfirmPass" 
                     name="confirm_password" 
                     required 
-                    minlength="6" 
+                    minlength="8" 
+                    oninput="checkPasswordMatch()"
                     class="w-full bg-[#080d19] border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-white font-mono text-xs focus:outline-none focus:border-amber-400 transition pr-10"
                     placeholder="••••••••••••"
                   >
                   <button type="button" onclick="togglePassVisibility('inputConfirmPass')" class="absolute right-3.5 top-2.5 text-slate-400 hover:text-white text-xs">
                     👁️
                   </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Medidor de Robustez y Verificador de Requisitos en Vivo -->
+            <div class="bg-[#070b14] border border-slate-800/80 rounded-2xl p-3.5 space-y-2.5">
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-slate-400 font-mono text-[11px]">Nivel de Seguridad:</span>
+                <span id="strengthLabel" class="font-mono text-[11px] font-bold text-slate-500">Sin evaluar</span>
+              </div>
+              
+              <!-- Barra de Progreso -->
+              <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                <div id="strengthBar" class="h-full w-0 bg-slate-600 transition-all duration-300 rounded-full"></div>
+              </div>
+
+              <!-- Checklist de Requisitos -->
+              <div class="grid grid-cols-2 sm:grid-cols-5 gap-1.5 text-[10px] font-mono pt-1">
+                <div id="reqLength" class="flex items-center gap-1 text-slate-500 bg-slate-900/60 px-2 py-1 rounded-lg border border-slate-800">
+                  <span class="icon">✕</span> <span>8+ car.</span>
+                </div>
+                <div id="reqUpper" class="flex items-center gap-1 text-slate-500 bg-slate-900/60 px-2 py-1 rounded-lg border border-slate-800">
+                  <span class="icon">✕</span> <span>Mayúscula</span>
+                </div>
+                <div id="reqLower" class="flex items-center gap-1 text-slate-500 bg-slate-900/60 px-2 py-1 rounded-lg border border-slate-800">
+                  <span class="icon">✕</span> <span>Minúscula</span>
+                </div>
+                <div id="reqNumber" class="flex items-center gap-1 text-slate-500 bg-slate-900/60 px-2 py-1 rounded-lg border border-slate-800">
+                  <span class="icon">✕</span> <span>Número</span>
+                </div>
+                <div id="reqSymbol" class="col-span-2 sm:col-span-1 flex items-center gap-1 text-slate-500 bg-slate-900/60 px-2 py-1 rounded-lg border border-slate-800">
+                  <span class="icon">✕</span> <span>Símbolo (#@!)</span>
                 </div>
               </div>
             </div>
@@ -693,6 +727,77 @@ $inicial_nombre = mb_strtoupper(mb_substr($user['nombre'] ?: 'O', 0, 1));
     }
 
     // Solicitar Código de Verificación OTP vía KAIROS AI
+    // Validador de robustez en tiempo real (mínimo 8 caracteres, mayúscula, minúscula, número y símbolo)
+    function checkPasswordStrength() {
+      const pass = document.getElementById('inputNewPass').value;
+      
+      const hasLength = pass.length >= 8;
+      const hasUpper = /[A-Z]/.test(pass);
+      const hasLower = /[a-z]/.test(pass);
+      const hasNumber = /[0-9]/.test(pass);
+      const hasSymbol = /[^a-zA-Z0-9]/.test(pass);
+
+      const updatePill = (id, valid) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const icon = el.querySelector('.icon');
+        if (valid) {
+          el.className = 'flex items-center gap-1 text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-lg border border-emerald-500/30';
+          if (icon) icon.textContent = '✓';
+        } else {
+          el.className = 'flex items-center gap-1 text-slate-500 bg-slate-900/60 px-2 py-1 rounded-lg border border-slate-800';
+          if (icon) icon.textContent = '✕';
+        }
+      };
+
+      updatePill('reqLength', hasLength);
+      updatePill('reqUpper', hasUpper);
+      updatePill('reqLower', hasLower);
+      updatePill('reqNumber', hasNumber);
+      updatePill('reqSymbol', hasSymbol);
+
+      const score = (hasLength ? 1 : 0) + (hasUpper ? 1 : 0) + (hasLower ? 1 : 0) + (hasNumber ? 1 : 0) + (hasSymbol ? 1 : 0);
+      const bar = document.getElementById('strengthBar');
+      const label = document.getElementById('strengthLabel');
+
+      if (!pass) {
+        bar.style.width = '0%';
+        bar.className = 'h-full bg-slate-600 transition-all duration-300 rounded-full';
+        label.textContent = 'Sin evaluar';
+        label.className = 'font-mono text-[11px] font-bold text-slate-500';
+      } else if (score <= 2) {
+        bar.style.width = '30%';
+        bar.className = 'h-full bg-rose-500 transition-all duration-300 rounded-full shadow-[0_0_10px_rgba(244,63,94,0.5)]';
+        label.textContent = 'Débil ⚠️';
+        label.className = 'font-mono text-[11px] font-bold text-rose-400';
+      } else if (score <= 4) {
+        bar.style.width = '70%';
+        bar.className = 'h-full bg-amber-400 transition-all duration-300 rounded-full shadow-[0_0_10px_rgba(251,191,36,0.5)]';
+        label.textContent = 'Buena (completa requisitos)';
+        label.className = 'font-mono text-[11px] font-bold text-amber-400';
+      } else {
+        bar.style.width = '100%';
+        bar.className = 'h-full bg-emerald-400 transition-all duration-300 rounded-full shadow-[0_0_15px_rgba(52,211,153,0.6)]';
+        label.textContent = 'Blindada / Excelente 🛡️';
+        label.className = 'font-mono text-[11px] font-bold text-emerald-400';
+      }
+
+      return score === 5;
+    }
+
+    function checkPasswordMatch() {
+      const pass = document.getElementById('inputNewPass').value;
+      const confirm = document.getElementById('inputConfirmPass').value;
+      const box = document.getElementById('passwordAlertBox');
+      if (confirm && pass !== confirm) {
+        box.className = 'text-xs p-2.5 rounded-xl font-mono bg-rose-500/10 text-rose-300 border border-rose-500/30 block';
+        box.textContent = '⚠️ Las contraseñas no coinciden.';
+      } else if (confirm && pass === confirm) {
+        box.className = 'hidden';
+      }
+    }
+
+    // Solicitar Código de Verificación OTP vía KAIROS AI
     async function handleSendVerificationCode() {
       const btn = document.getElementById('btnSendCode');
       const text = document.getElementById('btnSendCodeText');
@@ -700,9 +805,37 @@ $inicial_nombre = mb_strtoupper(mb_substr($user['nombre'] ?: 'O', 0, 1));
       const newPass = document.getElementById('inputNewPass').value;
       const confirmPass = document.getElementById('inputConfirmPass').value;
 
-      if (!newPass || newPass.length < 6) {
+      if (!newPass || newPass.length < 8) {
         box.className = 'text-xs p-3 rounded-xl font-mono bg-rose-500/10 text-rose-300 border border-rose-500/30 block';
-        box.textContent = '⚠️ Primero escribe tu nueva contraseña (mínimo 6 caracteres).';
+        box.textContent = '⚠️ La nueva contraseña debe tener al menos 8 caracteres.';
+        document.getElementById('inputNewPass').focus();
+        return;
+      }
+
+      if (!/[a-z]/.test(newPass)) {
+        box.className = 'text-xs p-3 rounded-xl font-mono bg-rose-500/10 text-rose-300 border border-rose-500/30 block';
+        box.textContent = '⚠️ La contraseña debe incluir al menos una letra minúscula (a-z).';
+        document.getElementById('inputNewPass').focus();
+        return;
+      }
+
+      if (!/[A-Z]/.test(newPass)) {
+        box.className = 'text-xs p-3 rounded-xl font-mono bg-rose-500/10 text-rose-300 border border-rose-500/30 block';
+        box.textContent = '⚠️ La contraseña debe incluir al menos una letra mayúscula (A-Z).';
+        document.getElementById('inputNewPass').focus();
+        return;
+      }
+
+      if (!/[0-9]/.test(newPass)) {
+        box.className = 'text-xs p-3 rounded-xl font-mono bg-rose-500/10 text-rose-300 border border-rose-500/30 block';
+        box.textContent = '⚠️ La contraseña debe incluir al menos un número (0-9).';
+        document.getElementById('inputNewPass').focus();
+        return;
+      }
+
+      if (!/[^a-zA-Z0-9]/.test(newPass)) {
+        box.className = 'text-xs p-3 rounded-xl font-mono bg-rose-500/10 text-rose-300 border border-rose-500/30 block';
+        box.textContent = '⚠️ La contraseña debe incluir al menos un símbolo especial (!@#$%^&*...).';
         document.getElementById('inputNewPass').focus();
         return;
       }
@@ -760,9 +893,9 @@ $inicial_nombre = mb_strtoupper(mb_substr($user['nombre'] ?: 'O', 0, 1));
       const confirmPass = document.getElementById('inputConfirmPass').value;
       const otpCode = document.getElementById('inputOtpCode').value.trim();
 
-      if (!newPass || newPass.length < 6) {
+      if (!checkPasswordStrength()) {
         box.className = 'text-xs p-3 rounded-xl font-mono bg-rose-500/10 text-rose-300 border border-rose-500/30 block';
-        box.textContent = '⚠️ La nueva contraseña debe tener al menos 6 caracteres.';
+        box.textContent = '⚠️ Asegúrate de cumplir con los 5 requisitos de seguridad (8+ caracteres, mayúscula, minúscula, número y símbolo).';
         return;
       }
 
@@ -800,6 +933,7 @@ $inicial_nombre = mb_strtoupper(mb_substr($user['nombre'] ?: 'O', 0, 1));
           document.getElementById('inputNewPass').value = '';
           document.getElementById('inputConfirmPass').value = '';
           document.getElementById('inputOtpCode').value = '';
+          checkPasswordStrength();
           if (codeCountdownTimer) clearInterval(codeCountdownTimer);
           document.getElementById('btnSendCode').disabled = false;
           document.getElementById('btnSendCodeText').textContent = 'Enviar Código';

@@ -956,8 +956,29 @@ if ($action === 'verify_and_change_password' || $action === 'change_password') {
     $confirm_pass = (string)($input['confirm_password'] ?? '');
     $codigo_otp = trim((string)($input['verification_code'] ?? ($input['codigo'] ?? '')));
 
-    if (strlen($new_pass) < 6) {
-        echo json_encode(['success' => false, 'message' => 'La nueva contraseña debe tener al menos 6 caracteres.']);
+    // Validación estricta de robustez: >= 8 caracteres, minúscula, mayúscula, número y símbolo
+    if (strlen($new_pass) < 8) {
+        echo json_encode(['success' => false, 'message' => 'La nueva contraseña debe tener al menos 8 caracteres.']);
+        exit;
+    }
+
+    if (!preg_match('/[a-z]/', $new_pass)) {
+        echo json_encode(['success' => false, 'message' => 'La nueva contraseña debe incluir al menos una letra minúscula (a-z).']);
+        exit;
+    }
+
+    if (!preg_match('/[A-Z]/', $new_pass)) {
+        echo json_encode(['success' => false, 'message' => 'La nueva contraseña debe incluir al menos una letra mayúscula (A-Z).']);
+        exit;
+    }
+
+    if (!preg_match('/[0-9]/', $new_pass)) {
+        echo json_encode(['success' => false, 'message' => 'La nueva contraseña debe incluir al menos un número (0-9).']);
+        exit;
+    }
+
+    if (!preg_match('/[^a-zA-Z0-9]/', $new_pass)) {
+        echo json_encode(['success' => false, 'message' => 'La nueva contraseña debe incluir al menos un símbolo especial (!@#$%^&*...).']);
         exit;
     }
 
