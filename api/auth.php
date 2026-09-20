@@ -595,6 +595,122 @@ if ($action === 'validate_tx') {
 }
 
 // ==========================================
+// ACCIÓN: UPDATE_PROFILE (Actualizar datos básicos)
+// ==========================================
+if ($action === 'update_profile') {
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        http_response_code(405);
+        echo json_encode(['success' => false, 'message' => 'Método no permitido.']);
+        exit;
+    }
+
+    if (empty($_SESSION['id_usuario']) || empty($pdo)) {
+        http_response_code(401);
+        echo json_encode(['success' => false, 'message' => 'Debes iniciar sesión para actualizar tu perfil.']);
+        exit;
+    }
+
+    $input = json_decode(file_get_contents('php://input'), true) ?: $_POST;
+    $nombre = trim((string)($input['nombre'] ?? ''));
+
+    if (mb_strlen($nombre) < 2) {
+        echo json_encode(['success' => false, 'message' => 'El nombre debe tener al menos 2 caracteres.']);
+        exit;
+    }
+
+    if (mb_strlen($nombre) > 80) {
+        echo json_encode(['success' => false, 'message' => 'El nombre no puede exceder los 80 caracteres.']);
+        exit;
+    }
+
+    try {
+        $stmt = $pdo->prepare("UPDATE usuarios SET nombre = ? WHERE id_usuario = ?");
+        $stmt->execute([$nombre, (int)$_SESSION['id_usuario']]);
+        $_SESSION['nombre'] = $nombre;
+
+        echo json_encode([
+            'success' => true,
+            'message' => 'Perfil actualizado exitosamente.',
+            'nombre' => $nombre
+        ], JSON_UNESCAPED_UNICODE);
+        exit;
+    } catch (Throwable $e) {
+        echo json_encode(['success' => false, 'message' => 'Error al actualizar el perfil en la base de datos.']);
+        exit;
+    }
+}
+
+// ==========================================
+// ACCIÓN: CHANGE_PASSWORD (Cambiar Contraseña)
+// ==========================================
+if ($action === 'change_password') {
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        http_response_code(405);
+        echo json_encode(['success' => false, 'message' => 'Método no permitido.']);
+        exit;
+    }
+
+    if (empty($_SESSION['id_usuario']) || empty($pdo)) {
+        http_response_code(401);
+        echo json_encode(['success' => false, 'message' => 'Debes iniciar sesión para cambiar tu contraseña.']);
+        exit;
+    }
+
+    $input = json_decode(file_get_contents('php://input'), true) ?: $_POST;
+    $current_pass = (string)($input['current_password'] ?? '');
+    $new_pass = (string)($input['new_password'] ?? '');
+    $confirm_pass = (string)($input['confirm_password'] ?? '');
+
+    if (strlen($new_pass) < 6) {
+        echo json_encode(['success' => false, 'message' => 'La nueva contraseña debe tener al menos 6 caracteres.']);
+        exit;
+    }
+
+    if ($new_pass !== $confirm_pass) {
+        echo json_encode(['success' => false, 'message' => 'La confirmación de la nueva contraseña no coincide.']);
+        exit;
+    }
+
+    try {
+        $stmt = $pdo->prepare("SELECT password_hash FROM usuarios WHERE id_usuario = ? LIMIT 1");
+        $stmt->execute([(int)$_SESSION['id_usuario']]);
+        $row = $stmt->fetch();
+
+        if (!$row) {
+            echo json_encode(['success' => false, 'message' => 'Usuario no encontrado.']);
+            exit;
+        }
+
+        $existing_hash = $row['password_hash'] ?? '';
+
+        // Si ya tiene una contraseña configurada, verificar la actual
+        if (!empty($existing_hash)) {
+            if (empty($current_pass)) {
+                echo json_encode(['success' => false, 'message' => 'Por favor ingresa tu contraseña actual.']);
+                exit;
+            }
+            if (!password_verify($current_pass, $existing_hash)) {
+                echo json_encode(['success' => false, 'message' => 'La contraseña actual no es correcta.']);
+                exit;
+            }
+        }
+
+        $new_hash = password_hash($new_pass, PASSWORD_BCRYPT);
+        $update = $pdo->prepare("UPDATE usuarios SET password_hash = ? WHERE id_usuario = ?");
+        $update->execute([$new_hash, (int)$_SESSION['id_usuario']]);
+
+        echo json_encode([
+            'success' => true,
+            'message' => '¡Tu contraseña ha sido actualizada con éxito!'
+        ], JSON_UNESCAPED_UNICODE);
+        exit;
+    } catch (Throwable $e) {
+        echo json_encode(['success' => false, 'message' => 'Error al actualizar la contraseña en la base de datos.']);
+        exit;
+    }
+}
+
+// ==========================================
 // ACCIÓN: LOGOUT (Cerrar sesión)
 // ==========================================
 if ($action === 'logout') {
@@ -607,6 +723,16 @@ if ($action === 'logout') {
         );
     }
     session_destroy();
+
+    if (!empty($_GET['redirect'])) {
+        header('Location: ' . $_GET['redirect']);
+        exit;
+    }
+    if ((isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'text/html') !== false) || !empty($_GET['redirect_login'])) {
+        header('Location: /login.php');
+        exit;
+    }
+
     echo json_encode(['success' => true, 'message' => 'Sesión cerrada exitosamente.']);
     exit;
 }

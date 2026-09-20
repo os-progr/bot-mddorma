@@ -112,7 +112,7 @@ $dias_restantes = $acceso_usuario['dias_restantes'] ?? 7;
         </div>
       </a>
 
-      <!-- Navegación Central Modular (5 Pestañas) -->
+      <!-- Navegación Central Modular -->
       <nav class="hidden md:flex items-center gap-1 bg-[#0b0f19] border border-slate-800 p-1 rounded-xl text-xs font-semibold">
         <a href="/?tab=senales" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition flex items-center gap-1.5">
           <span>⚡</span> Señales
@@ -129,21 +129,24 @@ $dias_restantes = $acceso_usuario['dias_restantes'] ?? 7;
         <a href="/vip/" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition flex items-center gap-1.5">
           <span>👑</span> Membresía VIP
         </a>
+        <a href="/perfil/" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition flex items-center gap-1.5">
+          <span>👤</span> Mi Perfil
+        </a>
       </nav>
 
       <!-- Estado de Usuario -->
       <div class="flex items-center gap-3">
         <?php if ($usuario_logueado): ?>
-          <div class="flex items-center gap-2 bg-[#0b0f19] border border-slate-800 py-1.5 px-3 rounded-xl text-xs">
+          <a href="/perfil/" class="flex items-center gap-2 bg-[#0b0f19] hover:bg-[#121a2d] border border-slate-800 hover:border-amber-500/40 py-1.5 px-3 rounded-xl text-xs transition group" title="Ver Mi Perfil">
             <span class="w-2 h-2 rounded-full <?= $es_vip ? 'bg-amber-400 animate-pulse' : 'bg-emerald-400' ?>"></span>
-            <div class="flex flex-col">
-              <span class="text-white font-bold leading-tight"><?= htmlspecialchars($usuario_logueado['nombre'] ?: 'Trader') ?></span>
+            <div class="flex flex-col text-left">
+              <span class="text-white font-bold leading-tight group-hover:text-amber-300 transition"><?= htmlspecialchars($usuario_logueado['nombre'] ?: 'Trader') ?></span>
               <span class="text-[10px] font-mono <?= $es_vip ? 'text-amber-400 font-bold' : 'text-slate-400' ?>">
                 <?= $es_vip ? '👑 VIP Activo' : "Prueba: {$dias_restantes}d restantes" ?>
               </span>
             </div>
-            <a href="/login.php?logout=1" title="Cerrar Sesión" class="text-slate-500 hover:text-rose-400 ml-1 transition">✕</a>
-          </div>
+          </a>
+          <a href="/api/auth.php?action=logout&redirect_login=1" title="Cerrar Sesión" class="text-slate-500 hover:text-rose-400 ml-1 transition">✕</a>
         <?php else: ?>
           <a href="/login.php" class="bg-[#121a2d] hover:bg-[#18233c] text-sky-300 border border-sky-500/40 text-xs font-bold px-3 py-1.5 rounded-xl transition flex items-center gap-1.5">
             <span>👤</span> Iniciar Sesión

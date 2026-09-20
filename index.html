@@ -100,6 +100,9 @@
       <a href="/vip/" class="p-2.5 rounded-xl hover:text-amber-400 hover:bg-[#0f172a] transition" title="Membresía VIP">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
       </a>
+      <a href="/perfil/" class="p-2.5 rounded-xl hover:text-white hover:bg-[#0f172a] transition" title="Mi Perfil de Operador">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+      </a>
     </div>
   </aside>
 
@@ -901,6 +904,40 @@
           </div>
         `;
       }).join('');
+    }
+
+    function checkUserSession() {
+      const area = document.getElementById('userHeaderArea');
+      if (!area) return;
+
+      const user = window.serverCurrentUser;
+      const access = window.serverUserAccess;
+
+      if (user && user.id_usuario) {
+        const initial = (user.nombre || 'U').charAt(0).toUpperCase();
+        const isVip = access && access.es_vip;
+        const badgeText = isVip ? 'VIP Activo' : `Prueba: ${access.dias_restantes || 7}d`;
+        const badgeColor = isVip ? 'text-amber-400' : 'text-emerald-400';
+
+        area.innerHTML = `
+          <a href="/perfil/" class="flex items-center gap-2 bg-[#090f1e] hover:bg-[#11192e] border border-slate-700/80 hover:border-amber-500/40 px-2.5 sm:px-3 py-1 rounded-xl text-xs transition group" title="Ver mi perfil">
+            <div class="w-6 h-6 rounded-full bg-gradient-to-tr from-amber-500 to-amber-300 text-slate-950 font-black text-[10px] flex items-center justify-center shadow-sm">
+              ${initial}
+            </div>
+            <div class="hidden sm:flex flex-col text-left leading-tight">
+              <span class="text-white font-bold text-xs group-hover:text-amber-300 transition">${user.nombre || 'Operador'}</span>
+              <span class="text-[9px] ${badgeColor} font-mono font-semibold">${badgeText}</span>
+            </div>
+          </a>
+        `;
+      } else {
+        area.innerHTML = `
+          <a href="/login.php" class="flex items-center gap-1.5 bg-[#0e1726] hover:bg-[#142138] border border-slate-700/80 hover:border-sky-400/40 px-3 py-1.5 rounded-xl text-xs font-bold text-sky-300 transition">
+            <span>👤</span>
+            <span>Iniciar Sesión</span>
+          </a>
+        `;
+      }
     }
 
     // INICIALIZACIÓN
