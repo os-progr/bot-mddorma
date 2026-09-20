@@ -218,20 +218,7 @@ $mostrar_alerta_expirado = ($mensaje === 'session_expired');
 
   </main>
 
-  <!-- ================= GLOBAL BOTTOM FOOTER ================= -->
-  <footer class="w-full px-4 sm:px-8 py-3 flex flex-wrap items-center justify-between text-[11px] font-mono text-slate-500 border-t border-slate-900 bg-[#04060c]/80 backdrop-blur-sm">
-    <div class="flex items-center gap-2">
-      <span class="text-emerald-400 font-bold flex items-center gap-1">
-        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Zero Custodia de Fondos (API Read/Trade Only)
-      </span>
-      <span class="text-slate-700 hidden sm:inline">|</span>
-      <span class="hidden sm:inline">Win Rate Auditado: <strong class="text-slate-300">68.4%</strong></span>
-    </div>
 
-    <div>
-      <span>© 2024–2026 Quantum-AI Institutional Terminal • All Rights Reserved</span>
-    </div>
-  </footer>
 
   <!-- ================= LÓGICA DE CONTROL JS ================= -->
   <script>
