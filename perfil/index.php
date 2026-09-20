@@ -7,6 +7,10 @@
  */
 declare(strict_types=1);
 
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Pragma: no-cache');
+header('Expires: Thu, 19 Nov 1981 08:52:00 GMT');
+
 define('AUTH_LIB_ONLY', true);
 require_once dirname(__DIR__) . '/api/auth.php';
 
