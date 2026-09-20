@@ -2,8 +2,8 @@
 /**
  * bot.mddorma.com/vip/index.php — Módulo Dedicado: Membresía Quantum VIP
  * 
- * Página institucional de suscripción con diseño oficial y métodos de pago:
- * Binance Pay, Mercado Pago y Tarjeta Débito/Crédito.
+ * Página institucional de suscripción con diseño oficial y métodos de pago directos:
+ * Binance Pay ($5.00 USDT), Mercado Pago (S/ 19.00 PEN) y Tarjeta Débito/Crédito.
  */
 declare(strict_types=1);
 
@@ -27,13 +27,14 @@ if (!empty($_SESSION['id_usuario']) && !empty($pdo)) {
 $es_vip = !empty($acceso_usuario['es_vip']);
 $dias_restantes = $acceso_usuario['dias_restantes'] ?? 7;
 $is_logged_in = !empty($usuario_logueado);
+$mp_public_key = $_ENV['MP_PUBLIC_KEY'] ?? getenv('MP_PUBLIC_KEY') ?: 'APP_USR-6326a9c0-bfb1-4bfd-b8d1-a7a396b74f3d';
 ?>
 <!DOCTYPE html>
 <html lang="es" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Plan VIP ($19.00 USD) | Quantum AI Terminal</title>
+  <title>Plan VIP ($5.00 USD) | Quantum AI Terminal</title>
   <link rel="icon" type="image/png" href="/favicon.png">
 
   <!-- Tailwind CSS & Fuentes -->
@@ -61,6 +62,7 @@ $is_logged_in = !empty($usuario_logueado);
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://sdk.mercadopago.com/js/v2"></script>
 
   <style>
     body {
@@ -189,9 +191,9 @@ $is_logged_in = !empty($usuario_logueado);
           Plan VIP
         </h1>
 
-        <!-- Precio Prominente -->
+        <!-- Precio Prominente: $5.00 USD -->
         <div class="text-4xl sm:text-5xl font-black text-amber-500 font-sans tracking-tight mb-2">
-          $19.00 USD
+          $5.00 USD
         </div>
 
         <!-- Subtítulo -->
@@ -199,7 +201,7 @@ $is_logged_in = !empty($usuario_logueado);
           Acceso completo durante 30 días (USDT, Cripto o Tarjeta)
         </p>
 
-        <!-- Checklist de Beneficios (Exactos a la captura) -->
+        <!-- Checklist de Beneficios -->
         <div class="space-y-4 mb-8 text-xs sm:text-sm text-slate-300">
           
           <div class="flex items-center gap-3 text-left">
@@ -241,7 +243,7 @@ $is_logged_in = !empty($usuario_logueado);
           id="btnSelectPlan"
           class="w-full py-4 px-6 rounded-2xl bg-[#172033] hover:bg-[#202d47] border border-slate-700/80 hover:border-amber-500/60 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider transition-all duration-200 shadow-xl active:scale-95 cursor-pointer mb-4 flex items-center justify-center gap-2"
         >
-          <span>ELEGIR PLAN VIP ($19.00 USD)</span>
+          <span>ELEGIR PLAN VIP ($5.00 USD)</span>
           <span>➔</span>
         </button>
 
@@ -274,12 +276,17 @@ $is_logged_in = !empty($usuario_logueado);
         </button>
       </div>
 
+      <!-- Error message container -->
+      <div id="paymentErrorMsg" class="bg-rose-500/10 border border-rose-500/30 text-rose-300 p-3 rounded-xl text-xs flex items-center gap-1.5 hidden">
+        <span>⚠️</span>
+        <span id="paymentErrorText">Error en el pago.</span>
+      </div>
 
-      <!-- PASO 1: SELECCIONAR MÉTODO DE PAGO (DISEÑO EXACTO A LA IMAGEN) -->
+      <!-- PASO 1: SELECCIONAR MÉTODO DE PAGO (3 TARJETAS EXACTAS) -->
       <div id="stepSelectMethod" class="flex flex-col gap-3">
         <p class="text-xs text-slate-300 font-semibold mb-1">Selecciona cómo deseas pagar:</p>
 
-        <!-- Opción 1: Binance Pay -->
+        <!-- Opción 1: Binance Pay ($5.00) -->
         <div onclick="selectPaymentScreen('binance')" class="p-3.5 rounded-2xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/40 hover:border-amber-400 transition-all cursor-pointer flex items-center justify-between group">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-[#F0B90B] flex items-center justify-center shadow-md shadow-amber-500/20 group-hover:scale-105 transition-transform flex-shrink-0">
@@ -294,12 +301,12 @@ $is_logged_in = !empty($usuario_logueado);
             </div>
           </div>
           <div class="flex items-center gap-1 text-right">
-            <span class="font-black text-amber-300 text-xs">$19.00</span>
+            <span class="font-black text-amber-300 text-xs">$5.00</span>
             <span class="text-slate-400 group-hover:text-white group-hover:translate-x-0.5 transition-all text-sm">›</span>
           </div>
         </div>
 
-        <!-- Opción 2: Mercado Pago -->
+        <!-- Opción 2: Mercado Pago (S/ 19.00) -->
         <div onclick="selectPaymentScreen('mercadopago')" class="p-3.5 rounded-2xl bg-[#009ee3]/10 hover:bg-[#009ee3]/20 border border-[#009ee3]/40 hover:border-[#009ee3] transition-all cursor-pointer flex items-center justify-between group">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-[#009ee3] flex items-center justify-center shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform flex-shrink-0">
@@ -314,12 +321,12 @@ $is_logged_in = !empty($usuario_logueado);
             </div>
           </div>
           <div class="flex items-center gap-1 text-right">
-            <span class="font-black text-blue-300 text-xs">S/ 72.20</span>
+            <span class="font-black text-blue-300 text-xs">S/ 19.00</span>
             <span class="text-slate-400 group-hover:text-white group-hover:translate-x-0.5 transition-all text-sm">›</span>
           </div>
         </div>
 
-        <!-- Opción 3: Tarjeta Débito o Crédito -->
+        <!-- Opción 3: Tarjeta Débito o Crédito (S/ 19.00) -->
         <div onclick="selectPaymentScreen('card')" class="p-3.5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all cursor-pointer flex items-center justify-between group">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-md group-hover:scale-105 transition-transform flex-shrink-0">
@@ -331,7 +338,7 @@ $is_logged_in = !empty($usuario_logueado);
             </div>
           </div>
           <div class="flex items-center gap-1 text-right">
-            <span class="font-black text-amber-300 text-xs">S/ 72.20</span>
+            <span class="font-black text-amber-300 text-xs">S/ 19.00</span>
             <span class="text-slate-400 group-hover:text-white group-hover:translate-x-0.5 transition-all text-sm">›</span>
           </div>
         </div>
@@ -346,12 +353,12 @@ $is_logged_in = !empty($usuario_logueado);
           <span>Elegir otro método de pago</span>
         </button>
 
-        <!-- VISTA DETALLE: BINANCE PAY -->
+        <!-- VISTA DETALLE: BINANCE PAY ($5.00 USDT) -->
         <div id="screenBinance" class="hidden flex-col gap-3.5 border border-amber-500/40 rounded-2xl bg-amber-500/5 p-4 sm:p-5">
           <div class="flex items-center justify-between border-b border-amber-500/20 pb-2.5">
             <div class="flex items-center gap-2 text-amber-400 font-black text-xs sm:text-sm">
               <svg class="w-5 h-5 fill-amber-400" viewBox="0 0 24 24"><path d="M12 3.2L6.8 8.4l2.4 2.4L12 8l2.8 2.8 2.4-2.4L12 3.2zm-6.8 6.8L2 12l3.2 2 2.4-2.4-2.4-1.6zm13.6 0l-2.4 1.6 2.4 2.4L22 12l-3.2-2zM12 10.4l-1.6 1.6 1.6 1.6 1.6-1.6-1.6-1.6zm-2.8 4.4L6.8 17.2 12 22.4l5.2-5.2-2.4-2.4L12 17.6l-2.8-2.8z"/></svg>
-              <span>Pagar $19.00 USDT con Binance Pay</span>
+              <span>Pagar $5.00 USDT con Binance Pay</span>
             </div>
             <span class="bg-amber-400 text-black font-black text-[9px] px-2 py-0.5 rounded-full shadow">30 Días VIP</span>
           </div>
@@ -360,7 +367,7 @@ $is_logged_in = !empty($usuario_logueado);
           <div class="flex flex-col items-center gap-2.5">
             <div class="flex items-center gap-2 self-start text-xs font-bold text-slate-200">
               <span class="w-5 h-5 rounded-full bg-amber-400 text-black text-[11px] font-black flex items-center justify-center">1</span>
-              <span>Transfiere $19.00 USDT desde tu App de Binance:</span>
+              <span>Transfiere $5.00 USDT desde tu App de Binance:</span>
             </div>
 
             <div class="w-40 sm:w-44 h-auto rounded-2xl overflow-hidden border-2 border-amber-400/50 shadow-xl bg-black p-2 my-1">
@@ -403,7 +410,7 @@ $is_logged_in = !empty($usuario_logueado);
           </div>
         </div>
 
-        <!-- VISTA DETALLE: MERCADO PAGO -->
+        <!-- VISTA DETALLE: MERCADO PAGO OFICIAL (S/ 19.00 PEN) -->
         <div id="screenMercadoPago" class="hidden flex-col gap-3">
           <div class="p-4 rounded-2xl bg-[#009ee3]/10 border border-[#009ee3]/30 text-xs text-slate-300 flex flex-col gap-2">
             <div class="flex items-center gap-2 text-white font-extrabold">
@@ -412,25 +419,31 @@ $is_logged_in = !empty($usuario_logueado);
             </div>
             <p class="text-[11px] text-slate-300">Paga de forma rápida y segura en Soles peruanos con BCP, BBVA, Interbank, Tarjetas o PagoEfectivo.</p>
           </div>
-          <a href="https://t.me/BotFather" target="_blank" class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-[#009ee3] to-[#0080ff] hover:from-[#008cc9] hover:to-[#0070e0] text-white font-extrabold text-xs flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20 transition-all active:scale-[0.99] cursor-pointer">
+          <button onclick="payWithMercadoPago(event)" id="btnPayMp" class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-[#009ee3] to-[#0080ff] hover:from-[#008cc9] hover:to-[#0070e0] text-white font-extrabold text-xs flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20 transition-all active:scale-[0.99] cursor-pointer">
             <span>🔒</span>
-            <span>Continuar a Pasarela Oficial de Mercado Pago (S/ 72.20 PEN)</span>
-          </a>
+            <span>Continuar a Pasarela Oficial de Mercado Pago (S/ 19.00 PEN)</span>
+          </button>
         </div>
 
-        <!-- VISTA DETALLE: TARJETA DIRECTA -->
+        <!-- VISTA DETALLE: TARJETA DÉBITO O CRÉDITO DIRECTA (CARD BRICK) -->
         <div id="screenCard" class="hidden flex-col gap-3">
-          <div class="p-4 rounded-2xl bg-white/5 border border-white/10 text-xs text-slate-300 flex flex-col gap-2">
+          <div class="p-4 rounded-2xl bg-white/5 border border-white/10 text-xs text-slate-300 flex flex-col gap-1.5">
             <div class="flex items-center gap-2 text-white font-extrabold">
               <span>💳</span>
-              <span>Pago con Tarjeta Débito o Crédito</span>
+              <span>Pago Directo con Tarjeta Débito / Crédito</span>
             </div>
-            <p class="text-[11px] text-slate-300">Aceptamos Visa, Mastercard, American Express y Diners Club con acreditación instantánea.</p>
+            <p class="text-[11px] text-slate-400">Total a debitar: <strong>S/ 19.00 PEN ($5.00 USD)</strong>. Procesamiento 100% encriptado.</p>
           </div>
-          <a href="https://t.me/BotFather" target="_blank" class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-black text-xs flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 transition-all active:scale-[0.99] cursor-pointer">
-            <span>🔒</span>
-            <span>Pagar $19.00 USD con Tarjeta Segura ↗</span>
-          </a>
+
+          <!-- Contenedor Oficial del Card Brick de Mercado Pago -->
+          <div id="paymentCardBrick" class="w-full min-h-[240px]"></div>
+
+          <!-- Fallback directo si no carga el brick -->
+          <div id="cardFallbackBtn" class="hidden text-center pt-2">
+            <button onclick="payWithMercadoPago(event)" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 font-black text-xs">
+              Pagar con Tarjeta vía Pasarela Segura (S/ 19.00)
+            </button>
+          </div>
         </div>
 
       </div>
@@ -440,6 +453,20 @@ $is_logged_in = !empty($usuario_logueado);
 
   <!-- ================= SCRIPTS ================= -->
   <script>
+    const MP_PUBLIC_KEY = '<?= $mp_public_key ?>';
+    let mpInstance = null;
+    let bricksBuilder = null;
+    let cardBrickController = null;
+
+    try {
+      if (window.MercadoPago) {
+        mpInstance = new MercadoPago(MP_PUBLIC_KEY, { locale: 'es-PE' });
+        bricksBuilder = mpInstance.bricks();
+      }
+    } catch (e) {
+      console.warn("Mercado Pago SDK:", e);
+    }
+
     function openCheckoutModal() {
       document.getElementById('checkoutModal').classList.remove('hidden');
       goBackToMethodSelection();
@@ -447,9 +474,25 @@ $is_logged_in = !empty($usuario_logueado);
 
     function closeCheckoutModal() {
       document.getElementById('checkoutModal').classList.add('hidden');
+      hidePaymentError();
+    }
+
+    function showPaymentError(msg) {
+      const errBox = document.getElementById('paymentErrorMsg');
+      const errTxt = document.getElementById('paymentErrorText');
+      if (errBox && errTxt) {
+        errTxt.innerText = msg;
+        errBox.classList.remove('hidden');
+      }
+    }
+
+    function hidePaymentError() {
+      const errBox = document.getElementById('paymentErrorMsg');
+      if (errBox) errBox.classList.add('hidden');
     }
 
     function selectPaymentScreen(method) {
+      hidePaymentError();
       document.getElementById('stepSelectMethod').classList.add('hidden');
       const stepDetail = document.getElementById('stepPaymentDetail');
       stepDetail.classList.remove('hidden');
@@ -472,10 +515,12 @@ $is_logged_in = !empty($usuario_logueado);
       } else if (method === 'card') {
         scCard.classList.remove('hidden');
         scCard.classList.add('flex');
+        initCardBrick();
       }
     }
 
     function goBackToMethodSelection() {
+      hidePaymentError();
       const stepDetail = document.getElementById('stepPaymentDetail');
       stepDetail.classList.add('hidden');
       stepDetail.classList.remove('flex');
@@ -487,7 +532,7 @@ $is_logged_in = !empty($usuario_logueado);
       navigator.clipboard.writeText(payId).then(() => {
         Swal.fire({
           title: '¡Pay ID Copiado!',
-          text: 'ID ' + payId + ' copiado al portapapeles. Pégalo en tu app de Binance para transferir $19.00 USDT.',
+          text: 'ID ' + payId + ' copiado al portapapeles. Pégalo en tu app de Binance para transferir $5.00 USDT.',
           icon: 'success',
           background: '#0b0f19',
           color: '#fff',
@@ -557,6 +602,119 @@ $is_logged_in = !empty($usuario_logueado);
       } finally {
         btn.disabled = false;
         btn.innerHTML = '<span>⚡ Verificar y Activar</span>';
+      }
+    }
+
+    async function payWithMercadoPago(e) {
+      if (e) e.preventDefault();
+      const btn = document.getElementById('btnPayMp');
+      let oldHtml = btn ? btn.innerHTML : '';
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span>⏳ Conectando a Mercado Pago...</span>';
+      }
+
+      try {
+        const res = await fetch('/api/procesar_pago_mp.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ amount: 19.00 })
+        });
+        const data = await res.json();
+
+        if (data.success && data.init_point) {
+          window.location.href = data.init_point;
+        } else {
+          showPaymentError(data.message || 'No se pudo generar el enlace de pago de Mercado Pago.');
+          if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = oldHtml;
+          }
+        }
+      } catch (err) {
+        showPaymentError('Error de conexión con la pasarela de Mercado Pago.');
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = oldHtml;
+        }
+      }
+    }
+
+    async function initCardBrick() {
+      if (!bricksBuilder) {
+        document.getElementById('cardFallbackBtn').classList.remove('hidden');
+        return;
+      }
+      if (cardBrickController) {
+        cardBrickController.unmount();
+      }
+
+      const settings = {
+        initialization: {
+          amount: 19.00,
+          payer: {
+            email: '<?= htmlspecialchars($_SESSION['correo'] ?? '') ?>'
+          }
+        },
+        customization: {
+          visual: {
+            style: {
+              theme: 'dark',
+              customVariables: {
+                baseColor: '#f59e0b'
+              }
+            }
+          },
+          paymentMethods: {
+            maxInstallments: 1
+          }
+        },
+        callbacks: {
+          onReady: () => {},
+          onSubmit: (formData) => {
+            return new Promise((resolve, reject) => {
+              fetch('/api/procesar_pago_brick.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+              })
+              .then(res => res.json())
+              .then(data => {
+                if (data.success) {
+                  resolve();
+                  closeCheckoutModal();
+                  Swal.fire({
+                    title: '¡Membresía VIP Activada!',
+                    text: data.message,
+                    icon: 'success',
+                    background: '#0b0f19',
+                    color: '#fff',
+                    confirmButtonColor: '#10b981'
+                  }).then(() => {
+                    window.location.reload();
+                  });
+                } else {
+                  showPaymentError(data.error || 'Error al procesar la tarjeta.');
+                  reject();
+                }
+              })
+              .catch(() => {
+                showPaymentError('Error de red al procesar el cobro de la tarjeta.');
+                reject();
+              });
+            });
+          },
+          onError: (error) => {
+            console.error('Error Brick:', error);
+            document.getElementById('cardFallbackBtn').classList.remove('hidden');
+          }
+        }
+      };
+
+      try {
+        cardBrickController = await bricksBuilder.create('cardPayment', 'paymentCardBrick', settings);
+      } catch (e) {
+        document.getElementById('cardFallbackBtn').classList.remove('hidden');
       }
     }
   </script>

@@ -39,7 +39,7 @@ try {
     $stmt_vip->execute([$id_usuario]);
 
     // 3. Registrar en historial de pagos
-    $stmt_pago = $pdo->prepare("INSERT INTO pagos (id_usuario, payment_id, external_reference, status_pago, monto_pagado, moneda, fecha_pago) VALUES (?, ?, ?, 'approved', 19.00, 'USDT', NOW())");
+    $stmt_pago = $pdo->prepare("INSERT INTO pagos (id_usuario, payment_id, external_reference, status_pago, monto_pagado, moneda, fecha_pago) VALUES (?, ?, ?, 'approved', 5.00, 'USDT', NOW())");
     $payment_id_fake = 'BINANCE-' . substr(md5($tx_id . time()), 0, 16);
     $stmt_pago->execute([$id_usuario, $payment_id_fake, $ref_busqueda]);
 
