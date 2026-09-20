@@ -184,6 +184,167 @@ if ($action === 'me') {
 }
 
 // ==========================================
+// ACCIÓN: GOOGLE / GOOGLE_LOGIN (OAuth con Base de Datos)
+// ==========================================
+if ($action === 'google' || $action === 'google_login') {
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        http_response_code(405);
+        echo json_encode(['success' => false, 'message' => 'Método no permitido.']);
+        exit;
+    }
+
+    $input = json_decode(file_get_contents('php://input'), true) ?: $_POST;
+    $id_token = $input['credential'] ?? ($input['id_token'] ?? '');
+
+    if (empty($id_token)) {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'message' => 'Token de credencial de Google no recibido.']);
+        exit;
+    }
+
+    // 1. Validar el token con el endpoint oficial de Google Tokeninfo
+    $url = "https://oauth2.googleapis.com/tokeninfo?id_token=" . urlencode($id_token);
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 8);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+    $response = curl_exec($ch);
+    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    if ($http_code !== 200 || empty($response)) {
+        http_response_code(401);
+        echo json_encode(['success' => false, 'message' => 'Token de Google inválido o expirado. Intenta de nuevo.']);
+        exit;
+    }
+
+    $payload = json_decode($response, true);
+    if (!is_array($payload)) {
+        http_response_code(401);
+        echo json_encode(['success' => false, 'message' => 'Respuesta de Google inválida.']);
+        exit;
+    }
+
+    // 2. Validar emisor (iss)
+    $valid_issuers = ['accounts.google.com', 'https://accounts.google.com'];
+    $issuer = $payload['iss'] ?? '';
+    if (!in_array($issuer, $valid_issuers, true)) {
+        http_response_code(401);
+        echo json_encode(['success' => false, 'message' => 'Emisor de token de Google no reconocido.']);
+        exit;
+    }
+
+    $google_email = strtolower(trim($payload['email'] ?? ''));
+    if (empty($google_email) || !filter_var($google_email, FILTER_VALIDATE_EMAIL)) {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'message' => 'Correo de Google inválido.']);
+        exit;
+    }
+
+    $google_name = trim($payload['name'] ?? '');
+    if (empty($google_name) || strpos($google_name, '@') !== false) {
+        $parts = explode('@', $google_email);
+        $google_name = ucfirst($parts[0]);
+    }
+    $google_picture = $payload['picture'] ?? null;
+
+    try {
+        // 3. Buscar si el usuario ya existe en la base de datos MySQL (tabla: usuarios)
+        $stmt = $pdo->prepare("SELECT id_usuario, nombre, correo, rol, es_premium, foto_perfil, fecha_registro FROM usuarios WHERE correo = ? LIMIT 1");
+        $stmt->execute([$google_email]);
+        $user = $stmt->fetch();
+
+        if ($user) {
+            // Usuario ya registrado -> Actualizar foto si no tiene
+            if (!empty($google_picture) && empty($user['foto_perfil'])) {
+                $pdo->prepare("UPDATE usuarios SET foto_perfil = ? WHERE id_usuario = ?")->execute([$google_picture, $user['id_usuario']]);
+                $user['foto_perfil'] = $google_picture;
+            }
+
+            session_regenerate_id(true);
+            $_SESSION['id_usuario'] = (int)$user['id_usuario'];
+            $_SESSION['nombre'] = $user['nombre'];
+            $_SESSION['correo'] = $user['correo'];
+            $_SESSION['rol'] = $user['rol'];
+            $_SESSION['es_premium'] = (int)$user['es_premium'];
+
+            $acceso_info = calcular_acceso_usuario($user);
+            $user_payload = array_merge([
+                'id' => (int)$user['id_usuario'],
+                'nombre' => $user['nombre'],
+                'correo' => $user['correo'],
+                'rol' => $user['rol'],
+                'es_premium' => (int)$user['es_premium'],
+                'fecha_registro' => $user['fecha_registro'] ?? date('Y-m-d H:i:s')
+            ], $acceso_info);
+
+            echo json_encode([
+                'success' => true,
+                'message' => 'Autenticación con Google exitosa. ¡Bienvenido!',
+                'user' => $user_payload,
+                'acceso' => $acceso_info
+            ], JSON_UNESCAPED_UNICODE);
+            exit;
+        } else {
+            // Usuario nuevo -> Crear cuenta en MySQL usuarios
+            $random_pass = bin2hex(random_bytes(16));
+            $hash = password_hash($random_pass, PASSWORD_BCRYPT);
+            $codigo_referido = substr(str_shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"), 0, 8);
+            $now_str = date('Y-m-d H:i:s');
+            $user_ip = get_real_client_ip();
+
+            try {
+                $insert = $pdo->prepare("INSERT INTO usuarios (nombre, correo, password_hash, rol, codigo_referido, es_premium, foto_perfil, fecha_registro, ip_registro) VALUES (?, ?, ?, 'usuario', ?, 0, ?, ?, ?)");
+                $insert->execute([$google_name, $google_email, $hash, $codigo_referido, $google_picture, $now_str, $user_ip]);
+            } catch (Throwable $t) {
+                $insert = $pdo->prepare("INSERT INTO usuarios (nombre, correo, password_hash, rol, es_premium, fecha_registro) VALUES (?, ?, ?, 'usuario', 0, ?)");
+                $insert->execute([$google_name, $google_email, $hash, $now_str]);
+            }
+
+            $new_id = (int)$pdo->lastInsertId();
+
+            session_regenerate_id(true);
+            $_SESSION['id_usuario'] = $new_id;
+            $_SESSION['nombre'] = $google_name;
+            $_SESSION['correo'] = $google_email;
+            $_SESSION['rol'] = 'usuario';
+            $_SESSION['es_premium'] = 0;
+
+            $new_user_data = [
+                'id_usuario' => $new_id,
+                'nombre' => $google_name,
+                'correo' => $google_email,
+                'rol' => 'usuario',
+                'es_premium' => 0,
+                'fecha_registro' => $now_str
+            ];
+            $acceso_info = calcular_acceso_usuario($new_user_data);
+            $user_payload = array_merge([
+                'id' => $new_id,
+                'nombre' => $google_name,
+                'correo' => $google_email,
+                'rol' => 'usuario',
+                'es_premium' => 0,
+                'fecha_registro' => $now_str
+            ], $acceso_info);
+
+            echo json_encode([
+                'success' => true,
+                'message' => 'Cuenta creada y conectada con Google con éxito.',
+                'user' => $user_payload,
+                'acceso' => $acceso_info
+            ], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+    } catch (Throwable $e) {
+        error_log("Error en Google Auth DB: " . $e->getMessage());
+        echo json_encode(['success' => false, 'message' => 'Error al conectar con la base de datos.']);
+        exit;
+    }
+}
+
+// ==========================================
 // ACCIÓN: LOGIN (Iniciar sesión + Anti-Fuerza Bruta)
 // ==========================================
 if ($action === 'login') {
@@ -195,7 +356,7 @@ if ($action === 'login') {
 
     $input = json_decode(file_get_contents('php://input'), true) ?: $_POST;
     $correo = trim(strtolower($input['correo'] ?? ''));
-    $contrasena = (string)($input['contrasena'] ?? '');
+    $contrasena = (string)($input['contrasena'] ?? ($input['password'] ?? ''));
 
     if (empty($correo) || !filter_var($correo, FILTER_VALIDATE_EMAIL)) {
         echo json_encode(['success' => false, 'message' => 'Por favor, ingresa un correo electrónico válido.']);
@@ -297,7 +458,7 @@ if ($action === 'register') {
     $input = json_decode(file_get_contents('php://input'), true) ?: $_POST;
     $nombre = trim($input['nombre'] ?? '');
     $correo = trim(strtolower($input['correo'] ?? ''));
-    $contrasena = (string)($input['contrasena'] ?? '');
+    $contrasena = (string)($input['contrasena'] ?? ($input['password'] ?? ''));
 
     if (empty($nombre) || strlen($nombre) < 2) {
         echo json_encode(['success' => false, 'message' => 'Ingresa tu nombre o apodo (mínimo 2 caracteres).']);
