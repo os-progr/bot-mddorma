@@ -430,7 +430,7 @@ $dias_restantes = $acceso_usuario['dias_restantes'] ?? 7;
           </p>
         </div>
 
-        <!-- 2. Tarjeta VIP $5 USD / mes -->
+        <!-- 2. Tarjeta VIP $19 USD / mes -->
         <div class="glass-card rounded-2xl p-5 border border-amber-500/30 glow-gold space-y-4 relative overflow-hidden">
           <div class="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
 
@@ -443,7 +443,7 @@ $dias_restantes = $acceso_usuario['dias_restantes'] ?? 7;
               <p class="text-xs text-slate-400 mt-0.5">Alertas automáticas 24/7 sin retraso en tu bot privado.</p>
             </div>
             <div class="text-right">
-              <span class="text-amber-400 font-black text-2xl font-mono">$5</span>
+              <span class="text-amber-400 font-black text-2xl font-mono">$19</span>
               <span class="text-slate-400 text-xs block font-sans">USD / mes</span>
             </div>
           </div>
@@ -467,7 +467,7 @@ $dias_restantes = $acceso_usuario['dias_restantes'] ?? 7;
           <!-- Enlace Directo a Carpeta Dedicada /vip/ -->
           <div class="pt-2">
             <a href="/vip/" class="w-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-black py-3 rounded-xl text-xs transition shadow-lg shadow-amber-400/20 flex items-center justify-center gap-2">
-              <span>👑</span> <span>Abrir Pasarela VIP & Planes ($5 USD) ↗</span>
+              <span>👑</span> <span>Abrir Pasarela VIP & Planes ($19 USD) ↗</span>
             </a>
           </div>
 

@@ -441,7 +441,7 @@ $inicial_nombre = mb_strtoupper(mb_substr($user['nombre'] ?: 'O', 0, 1));
                 <div class="flex items-center gap-2">
                   <span class="text-amber-400 text-base">👑</span>
                   <h3 class="text-white font-extrabold text-sm">Desbloquea el Enclave VIP</h3>
-                  <span class="text-[10px] font-mono font-black text-amber-300 bg-amber-500/20 px-2 py-0.5 rounded-lg">$5 USD/mes</span>
+                  <span class="text-[10px] font-mono font-black text-amber-300 bg-amber-500/20 px-2 py-0.5 rounded-lg">$19 USD/mes</span>
                 </div>
                 <p class="text-xs text-slate-400 leading-relaxed">
                   Señales confluentes 24/7 sin límite de días con conexión FIX 4.4 de baja latencia.

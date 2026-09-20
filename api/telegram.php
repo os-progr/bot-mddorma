@@ -38,7 +38,7 @@ try {
         http_response_code(403);
         echo json_encode([
             'success' => false,
-            'message' => 'Tu prueba gratuita de 7 días ha finalizado. Activa tu membresía VIP ($5 USD) para conectar tu bot de Telegram.',
+            'message' => 'Tu prueba gratuita de 7 días ha finalizado. Activa tu membresía VIP ($19 USD) para conectar tu bot de Telegram.',
             'requiere_vip' => true
         ], JSON_UNESCAPED_UNICODE);
         exit;

@@ -32,7 +32,7 @@ $dias_restantes = $acceso_usuario['dias_restantes'] ?? 7;
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Membresía Quantum VIP ($5 USD/mes) | Quantum AI Terminal</title>
+  <title>Plan VIP ($19.00 USD) | Quantum AI Terminal</title>
   <link rel="icon" type="image/png" href="/favicon.png">
 
   <!-- Tailwind CSS & Fuentes -->
@@ -70,12 +70,12 @@ $dias_restantes = $acceso_usuario['dias_restantes'] ?? 7;
       flex-direction: column;
     }
     .glass-card {
-      background: rgba(11, 15, 25, 0.75);
+      background: rgba(11, 15, 25, 0.85);
       backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
     .gold-glow {
-      box-shadow: 0 0 35px -5px rgba(245, 158, 11, 0.3);
+      box-shadow: 0 0 45px -5px rgba(245, 158, 11, 0.25);
     }
     .grid-bg {
       background-size: 32px 32px;
@@ -88,13 +88,13 @@ $dias_restantes = $acceso_usuario['dias_restantes'] ?? 7;
     }
     @keyframes pulseDot {
       0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.3; transform: scale(0.85); }
+      50% { opacity: 0.35; transform: scale(0.85); }
     }
   </style>
 </head>
-<body class="grid-bg">
+<body class="grid-bg selection:bg-amber-500 selection:text-black">
 
-  <!-- ================= BARRA SUPERIOR ================= -->
+  <!-- ================= BARRA SUPERIOR INSTITUCIONAL ================= -->
   <header class="sticky top-0 z-40 bg-[#05070d]/90 backdrop-blur-md border-b border-slate-800/80 px-4 lg:px-8 py-3">
     <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
       
@@ -105,9 +105,9 @@ $dias_restantes = $acceso_usuario['dias_restantes'] ?? 7;
           <div class="flex items-center gap-1.5 leading-none">
             <span class="text-white font-black tracking-wider text-base">QUANTUM</span>
             <span class="text-amber-400 font-black text-base">AI</span>
-            <span class="text-[9px] font-mono font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30 px-1.5 py-0.5 rounded">MEMBRESÍA VIP</span>
+            <span class="text-[9px] font-mono font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30 px-1.5 py-0.5 rounded">PLANES VIP</span>
           </div>
-          <p class="text-[10px] text-slate-400 font-mono tracking-wide mt-0.5">PLANES & ACTIVACIÓN</p>
+          <p class="text-[10px] text-slate-400 font-mono tracking-wide mt-0.5">MEMBRESÍA & ACTIVACIÓN</p>
         </div>
       </a>
 
@@ -164,267 +164,193 @@ $dias_restantes = $acceso_usuario['dias_restantes'] ?? 7;
     </div>
   </nav>
 
-  <!-- ================= CONTENIDO: MEMBRESÍA QUANTUM VIP ================= -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-8 space-y-8">
+  <!-- ================= CONTENIDO PRINCIPAL: PLAN VIP EXACTO ================= -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-10 space-y-8">
 
-    <!-- Hero Central de Precios -->
-    <div class="text-center max-w-3xl mx-auto space-y-3">
-      <div class="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold px-3.5 py-1 rounded-full">
-        <span>👑</span> ACCESO TOTAL Y DESPACHO INSTANTÁNEO 24/7
+    <!-- Estado y Notificaciones Superiores -->
+    <?php if ($es_vip): ?>
+      <div class="max-w-xl mx-auto p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-center font-mono text-xs text-emerald-300">
+        <span class="w-2 h-2 inline-block rounded-full bg-emerald-400 animate-pulse mr-2"></span>
+        ¡Tu Membresía VIP está actualmente <strong>ACTIVA</strong>! Tienes acceso 24/7 sin restricciones.
       </div>
-      <h1 class="text-2xl sm:text-4xl font-black text-white tracking-tight">
-        Membresía <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500">Quantum VIP Trader</span>
-      </h1>
-      <p class="text-xs sm:text-sm text-slate-400 max-w-xl mx-auto">
-        Conecta el poder del servidor institucional directo a tu teléfono celular. Señales algorítmicas, filtro de monedas personalizable y cero retraso.
-      </p>
+    <?php elseif ($usuario_logueado): ?>
+      <div class="max-w-xl mx-auto p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-center font-mono text-xs text-amber-300 flex items-center justify-center gap-2">
+        <span>🎁</span>
+        <span>Periodo de prueba gratuito: <strong><?= (int)$dias_restantes ?> días restantes</strong>. Elige tu plan para mantener tus alertas.</span>
+      </div>
+    <?php endif; ?>
 
-      <!-- Estado actual del usuario -->
-      <?php if ($es_vip): ?>
-        <div class="inline-flex items-center gap-2 bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 text-xs font-bold px-4 py-2 rounded-2xl mt-2 font-mono">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          ¡Tu Membresía VIP está actualmente ACTIVA! Tienes acceso ilimitado a todas las herramientas.
+    <!-- ================= TARJETA DE PLAN VIP EXACTA ================= -->
+    <div class="max-w-md sm:max-w-lg mx-auto">
+      <div class="bg-[#0b0f19] border border-slate-800/90 rounded-3xl p-6 sm:p-9 shadow-[0_0_50px_rgba(0,0,0,0.7)] relative overflow-hidden text-center gold-glow">
+        
+        <!-- Insignia Superior (Pill) -->
+        <div class="inline-flex items-center gap-2 bg-[#121826] border border-amber-500/30 text-amber-400 text-[11px] font-mono font-bold px-4 py-1.5 rounded-full uppercase tracking-wider mb-5 shadow-sm">
+          ACCESO VIP QUANTUM-AI (1 MES)
         </div>
-      <?php elseif ($usuario_logueado): ?>
-        <div class="inline-flex items-center gap-2 bg-amber-500/15 border border-amber-500/40 text-amber-300 text-xs font-bold px-4 py-2 rounded-2xl mt-2 font-mono">
-          <span>🎁</span> Periodo de prueba gratuito: <?= (int)$dias_restantes ?> días restantes. Activa tu pase VIP para asegurar alertas continuas.
+
+        <!-- Título -->
+        <h1 class="text-3xl sm:text-4xl font-black text-white tracking-tight mb-2">
+          Plan VIP
+        </h1>
+
+        <!-- Precio Prominente -->
+        <div class="text-4xl sm:text-5xl font-black text-amber-500 font-sans tracking-tight mb-2">
+          $19.00 USD
         </div>
-      <?php else: ?>
-        <div class="inline-flex items-center gap-2 bg-sky-500/15 border border-sky-500/40 text-sky-300 text-xs font-bold px-4 py-2 rounded-2xl mt-2">
-          <span>ℹ️</span> ¿Aún no tienes cuenta? <a href="/login.php" class="underline font-black text-white ml-1">Regístrate en 30 segundos</a> para vincular tu membresía.
+
+        <!-- Subtítulo -->
+        <p class="text-xs sm:text-sm text-slate-400 mb-8 font-medium">
+          Acceso completo durante 30 días (USDT, Cripto o Tarjeta)
+        </p>
+
+        <!-- Checklist de Beneficios (Exactos a la captura) -->
+        <div class="space-y-4 mb-8 text-xs sm:text-sm text-slate-300">
+          
+          <div class="flex items-center gap-3 text-left">
+            <span class="w-5 h-5 rounded-full bg-amber-500 flex items-center justify-center text-slate-950 font-black text-xs shrink-0 shadow-sm shadow-amber-500/30">✓</span>
+            <span class="leading-snug">Señales y Radar Cuántico <strong class="text-white font-bold">24/7 sin límites</strong></span>
+          </div>
+
+          <div class="flex items-center gap-3 text-left">
+            <span class="w-5 h-5 rounded-full bg-amber-500 flex items-center justify-center text-slate-950 font-black text-xs shrink-0 shadow-sm shadow-amber-500/30">✓</span>
+            <span class="leading-snug">Calculadora Antiquemado integrada <strong class="text-white font-bold">(Protección estricta)</strong></span>
+          </div>
+
+          <div class="flex items-center gap-3 text-left">
+            <span class="w-5 h-5 rounded-full bg-amber-500 flex items-center justify-center text-slate-950 font-black text-xs shrink-0 shadow-sm shadow-amber-500/30">✓</span>
+            <span class="leading-snug">Terminal TradingView Pro con <strong class="text-white font-bold">gráficos en tiempo real</strong></span>
+          </div>
+
+          <div class="flex items-center gap-3 text-left">
+            <span class="w-5 h-5 rounded-full bg-amber-500 flex items-center justify-center text-slate-950 font-black text-xs shrink-0 shadow-sm shadow-amber-500/30">✓</span>
+            <span class="leading-snug">Alertas instantáneas al canal de Telegram VIP <strong class="text-white font-bold">(&lt;100ms)</strong></span>
+          </div>
+
+          <div class="flex items-center gap-3 text-left">
+            <span class="w-5 h-5 rounded-full bg-amber-500 flex items-center justify-center text-slate-950 font-black text-xs shrink-0 shadow-sm shadow-amber-500/30">✓</span>
+            <span class="leading-snug">Historial <strong class="text-white font-bold">100% auditado y verificable</strong></span>
+          </div>
+
+          <div class="flex items-center gap-3 text-left">
+            <span class="w-5 h-5 rounded-full bg-amber-500 flex items-center justify-center text-slate-950 font-black text-xs shrink-0 shadow-sm shadow-amber-500/30">✓</span>
+            <span class="leading-snug">Soporte técnico prioritario <strong class="text-white font-bold">1 a 1</strong></span>
+          </div>
+
         </div>
-      <?php endif; ?>
+
+        <!-- Botón de Selección -->
+        <button 
+          type="button" 
+          onclick="openPaymentGateway()" 
+          id="btnSelectPlan"
+          class="w-full py-4 px-6 rounded-2xl bg-[#172033] hover:bg-[#202d47] border border-slate-700/80 hover:border-amber-500/60 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider transition-all duration-200 shadow-xl active:scale-95 cursor-pointer mb-4"
+        >
+          ELEGIR PLAN VIP ($19.00 USD)
+        </button>
+
+        <!-- Garantías Inferiores -->
+        <div class="flex items-center justify-center gap-1.5 text-xs text-emerald-400 font-semibold mb-1">
+          <span class="w-4 h-4 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] font-black">✓</span>
+          <span>Activación instantánea</span>
+        </div>
+        <p class="text-[11px] text-slate-500 font-medium">
+          Pasarelas: USDT, BTC, Tarjeta • Cancela cuando quieras
+        </p>
+
+      </div>
     </div>
 
-    <!-- Grid de Oferta y Pasarela de Pago -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    <!-- ================= PASARELA DE PAGO INSTANTÁNEA (19 USDT) ================= -->
+    <div id="paymentSection" class="max-w-md sm:max-w-lg mx-auto scroll-mt-24 transition-all duration-300">
+      <div class="bg-[#0b0f19] border border-amber-500/40 rounded-3xl p-6 sm:p-7 space-y-5 shadow-2xl relative overflow-hidden">
+        <div class="absolute -top-10 -right-10 w-40 h-40 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-      <!-- ================= COLUMNA IZQUIERDA: COMPARATIVA Y BENEFICIOS (7 cols) ================= -->
-      <div class="lg:col-span-7 space-y-6">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+          <div>
+            <span class="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-widest">PASARELA OFICIAL</span>
+            <h3 class="text-base font-black text-white">Depósito Cripto: 19 USDT</h3>
+          </div>
+          <span class="text-xs font-mono font-bold text-slate-400 bg-slate-800/50 px-2.5 py-1 rounded-lg">30 Días VIP</span>
+        </div>
 
-        <!-- Tarjeta de Beneficios -->
-        <div class="glass-card rounded-3xl p-6 sm:p-8 border border-slate-800 space-y-6">
-          <div class="border-b border-slate-800 pb-4">
-            <h2 class="text-white font-extrabold text-lg flex items-center gap-2">
-              <span>💎</span> Todo lo que incluye tu Membresía VIP
-            </h2>
-            <p class="text-xs text-slate-400 mt-1">
-              Diseñado para traders particulares que buscan la ventaja analítica de un fondo cuantitativo institucional.
-            </p>
+        <!-- Selector de Red -->
+        <div class="space-y-1.5">
+          <label class="block text-xs font-bold text-slate-300">Selecciona tu Red de Transferencia (19 USDT):</label>
+          <div class="grid grid-cols-2 gap-2 text-xs font-mono">
+            <button type="button" onclick="setPaymentNetwork('BEP20')" id="payNet-BEP20" class="pay-net-btn p-3 rounded-xl border border-amber-500 bg-amber-500/15 text-white font-bold transition text-left cursor-pointer">
+              <span class="block">BNB Chain (BEP-20)</span>
+              <span class="text-[10px] text-slate-400 block font-sans">Comisión red: ~$0.05</span>
+            </button>
+            <button type="button" onclick="setPaymentNetwork('TRC20')" id="payNet-TRC20" class="pay-net-btn p-3 rounded-xl border border-slate-800 bg-[#060912] text-slate-400 font-bold transition text-left hover:border-slate-700 cursor-pointer">
+              <span class="block">Tron (TRC-20)</span>
+              <span class="text-[10px] text-slate-400 block font-sans">Comisión red: ~$1.00</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- QR & Dirección Billetera -->
+        <div class="bg-[#050811] border border-slate-800 rounded-2xl p-4 flex flex-col items-center space-y-3 text-center">
+          <span class="text-xs font-bold text-slate-300">Escanea o copia para transferir exactamente 19 USDT</span>
+
+          <!-- QR SVG Institucional -->
+          <div class="w-36 h-36 bg-white p-2.5 rounded-2xl shadow-xl flex items-center justify-center">
+            <svg viewBox="0 0 100 100" class="w-full h-full">
+              <rect width="100" height="100" fill="white"/>
+              <rect x="5" y="5" width="25" height="25" fill="#0b0f19"/>
+              <rect x="8" y="8" width="19" height="19" fill="white"/>
+              <rect x="11" y="11" width="13" height="13" fill="#f59e0b"/>
+              <rect x="70" y="5" width="25" height="25" fill="#0b0f19"/>
+              <rect x="73" y="8" width="19" height="19" fill="white"/>
+              <rect x="76" y="11" width="13" height="13" fill="#f59e0b"/>
+              <rect x="5" y="70" width="25" height="25" fill="#0b0f19"/>
+              <rect x="8" y="73" width="19" height="19" fill="white"/>
+              <rect x="11" y="76" width="13" height="13" fill="#f59e0b"/>
+              <rect x="35" y="10" width="8" height="8" fill="#0b0f19"/>
+              <rect x="48" y="10" width="8" height="8" fill="#10b981"/>
+              <rect x="35" y="35" width="30" height="30" fill="#0b0f19"/>
+              <rect x="42" y="42" width="16" height="16" fill="#f59e0b"/>
+              <rect x="70" y="70" width="20" height="20" fill="#0b0f19"/>
+            </svg>
           </div>
 
-          <!-- Lista de Beneficios Detallados -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-            
-            <div class="p-4 rounded-2xl bg-[#060912] border border-slate-800 space-y-2">
-              <div class="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-base">
-                📱
-              </div>
-              <strong class="text-white block font-bold text-sm">Bot de Telegram Personal</strong>
-              <p class="text-slate-400 leading-relaxed text-[11px]">
-                Recibe cada oportunidad en tu propio chat privado en menos de 180ms desde que el servidor la detecta.
-              </p>
-            </div>
-
-            <div class="p-4 rounded-2xl bg-[#060912] border border-slate-800 space-y-2">
-              <div class="w-8 h-8 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-base">
-                🎯
-              </div>
-              <strong class="text-white block font-bold text-sm">Filtro de Criptomonedas</strong>
-              <p class="text-slate-400 leading-relaxed text-[11px]">
-                Elige recibir solo Bitcoin, solo Solana, solo Ethereum o todas las monedas de alta confluencia.
-              </p>
-            </div>
-
-            <div class="p-4 rounded-2xl bg-[#060912] border border-slate-800 space-y-2">
-              <div class="w-8 h-8 rounded-xl bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-400 text-base">
-                🛡️
-              </div>
-              <strong class="text-white block font-bold text-sm">Protección Anti-Liquidación</strong>
-              <p class="text-slate-400 leading-relaxed text-[11px]">
-                Acceso completo e ilimitado a la calculadora de tamaño de lote con riesgo fijo del 1% por trade.
-              </p>
-            </div>
-
-            <div class="p-4 rounded-2xl bg-[#060912] border border-slate-800 space-y-2">
-              <div class="w-8 h-8 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 text-base">
-                📊
-              </div>
-              <strong class="text-white block font-bold text-sm">Gráficos & Clima Macro</strong>
-              <p class="text-slate-400 leading-relaxed text-[11px]">
-                Monitor del S&P 500, índice DXY y gráficos TradingView en vivo sin anuncios ni interrupciones.
-              </p>
-            </div>
-
-          </div>
-
-          <!-- Comparativa Plan Gratuito vs VIP -->
-          <div class="bg-[#050811] rounded-2xl border border-slate-800 p-4 space-y-3">
-            <span class="text-xs font-bold text-slate-300 uppercase tracking-wider block">Tabla Comparativa:</span>
-            
-            <div class="space-y-2 text-xs">
-              <div class="flex items-center justify-between py-1.5 border-b border-slate-800/80">
-                <span class="text-slate-400">Alertas en tu Telegram</span>
-                <div class="flex items-center gap-6">
-                  <span class="text-slate-500">Solo 7 Días</span>
-                  <span class="text-amber-400 font-black">ILIMITADO 24/7 ✓</span>
-                </div>
-              </div>
-
-              <div class="flex items-center justify-between py-1.5 border-b border-slate-800/80">
-                <span class="text-slate-400">Latencia de Notificación</span>
-                <div class="flex items-center gap-6">
-                  <span class="text-slate-500">Estándar</span>
-                  <span class="text-emerald-400 font-bold">&lt; 180 ms (Prioritario) ✓</span>
-                </div>
-              </div>
-
-              <div class="flex items-center justify-between py-1.5 border-b border-slate-800/80">
-                <span class="text-slate-400">Filtro de Criptomoneda</span>
-                <div class="flex items-center gap-6">
-                  <span class="text-slate-500">Básico</span>
-                  <span class="text-amber-400 font-bold">100% Personalizable ✓</span>
-                </div>
-              </div>
-
-              <div class="flex items-center justify-between py-1.5">
-                <span class="text-slate-400">Soporte Técnico de Traders</span>
-                <div class="flex items-center gap-6">
-                  <span class="text-slate-500">Comunidad</span>
-                  <span class="text-amber-400 font-bold">Atención Directa 24/7 ✓</span>
-                </div>
-              </div>
+          <!-- Dirección Billetera -->
+          <div class="w-full">
+            <span class="text-[10px] text-slate-400 block mb-1">Dirección de Depósito Oficial:</span>
+            <div class="flex items-center gap-1 bg-black/90 p-2 rounded-xl border border-slate-800">
+              <span id="cryptoWalletText" class="text-[11px] font-mono text-slate-300 break-all select-all flex-1 text-left px-1">
+                0x71C839a8204B6D84f04dD97e1c8d19f05Eb7F510
+              </span>
+              <button type="button" onclick="copyCryptoAddress()" class="bg-[#12192a] hover:bg-[#1e2a44] text-amber-300 border border-amber-500/40 text-xs px-2.5 py-1.5 rounded-lg transition shrink-0 cursor-pointer">
+                Copiar
+              </button>
             </div>
           </div>
+        </div>
 
+        <!-- Validación de TxID -->
+        <div class="space-y-2">
+          <label class="block text-xs font-bold text-slate-300">Pega aquí el Hash / TxID de tu transferencia:</label>
+          <div class="flex items-center gap-2">
+            <input id="inputTxId" type="text" placeholder="Ej: 0x4f3a9b1c2d3e..." class="flex-1 bg-[#060912] border border-slate-700 focus:border-amber-400 rounded-xl px-3 py-2.5 text-white font-mono text-xs outline-none transition shadow-inner">
+            <button type="button" onclick="validateCryptoTxId()" id="btnValidateTx" class="bg-gradient-to-r from-emerald-400 to-emerald-500 hover:from-emerald-300 hover:to-emerald-400 text-slate-950 font-black px-4 py-2.5 rounded-xl text-xs transition cursor-pointer shrink-0 shadow-md shadow-emerald-500/20">
+              Validar Pago
+            </button>
+          </div>
+          <div id="txAlertBox" class="hidden text-xs p-3 rounded-xl mt-2 font-mono border"></div>
+        </div>
+
+        <!-- Soporte Alternativo & Tarjeta -->
+        <div class="pt-2 border-t border-slate-800/80 text-center">
+          <p class="text-[11px] text-slate-400">
+            ¿Deseas pagar con Tarjeta de Crédito/Débito o Binance Pay? <a href="https://t.me/BotFather" target="_blank" class="text-amber-400 hover:underline font-bold">Contacta a Soporte en Telegram ↗</a>
+          </p>
         </div>
 
       </div>
-
-      <!-- ================= COLUMNA DERECHA: TARJETA DE PAGO Y CHECKOUT (5 cols) ================= -->
-      <div class="lg:col-span-5 space-y-6">
-
-        <!-- Tarjeta Principal de Pago -->
-        <div class="glass-card rounded-3xl p-6 sm:p-7 border border-amber-500/40 gold-glow space-y-5 relative overflow-hidden">
-          <div class="absolute -top-10 -right-10 w-40 h-40 bg-amber-500/15 rounded-full blur-3xl pointer-events-none"></div>
-
-          <!-- Cabecera de Precio -->
-          <div class="flex items-baseline justify-between border-b border-slate-800 pb-4">
-            <div>
-              <span class="text-[11px] font-mono uppercase tracking-widest text-amber-400 font-bold block">PLAN MENSUAL</span>
-              <h3 class="text-2xl font-black text-white mt-0.5">Pase Quantum VIP</h3>
-            </div>
-            <div class="text-right">
-              <div class="flex items-baseline gap-1">
-                <span class="text-3xl font-black text-amber-400 font-mono">$5</span>
-                <span class="text-xs text-slate-400 font-sans">USD</span>
-              </div>
-              <span class="text-[10px] text-slate-500 block">Facturación mensual / Cancela cuando quieras</span>
-            </div>
-          </div>
-
-          <!-- Selector de Método de Pago -->
-          <div class="space-y-2">
-            <label class="block text-xs font-bold text-slate-300">Selecciona tu Red Cripto (5 USDT):</label>
-            <div class="grid grid-cols-2 gap-2 text-xs font-mono">
-              <button type="button" onclick="setPaymentNetwork('BEP20')" id="payNet-BEP20" class="pay-net-btn p-3 rounded-xl border border-amber-500 bg-amber-500/15 text-white font-bold transition text-left">
-                <span class="block">BNB Chain (BEP-20)</span>
-                <span class="text-[10px] text-slate-400 block font-sans">Comisión red: ~$0.05</span>
-              </button>
-              <button type="button" onclick="setPaymentNetwork('TRC20')" id="payNet-TRC20" class="pay-net-btn p-3 rounded-xl border border-slate-800 bg-[#060912] text-slate-400 font-bold transition text-left hover:border-slate-700">
-                <span class="block">Tron (TRC-20)</span>
-                <span class="text-[10px] text-slate-400 block font-sans">Comisión red: ~$1.00</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Código QR y Dirección de Billetera -->
-          <div class="bg-[#050811] border border-slate-800 rounded-2xl p-4 flex flex-col items-center space-y-3 text-center">
-            <span class="text-xs font-bold text-slate-300">Escanea para transferir exactamente 5 USDT</span>
-
-            <!-- SVG Código QR Institucional -->
-            <div class="w-36 h-36 bg-white p-2.5 rounded-2xl shadow-xl flex items-center justify-center">
-              <svg viewBox="0 0 100 100" class="w-full h-full">
-                <rect width="100" height="100" fill="white"/>
-                <rect x="5" y="5" width="25" height="25" fill="#0b0f19"/>
-                <rect x="8" y="8" width="19" height="19" fill="white"/>
-                <rect x="11" y="11" width="13" height="13" fill="#f59e0b"/>
-                <rect x="70" y="5" width="25" height="25" fill="#0b0f19"/>
-                <rect x="73" y="8" width="19" height="19" fill="white"/>
-                <rect x="76" y="11" width="13" height="13" fill="#f59e0b"/>
-                <rect x="5" y="70" width="25" height="25" fill="#0b0f19"/>
-                <rect x="8" y="73" width="19" height="19" fill="white"/>
-                <rect x="11" y="76" width="13" height="13" fill="#f59e0b"/>
-                <rect x="35" y="10" width="8" height="8" fill="#0b0f19"/>
-                <rect x="48" y="10" width="8" height="8" fill="#10b981"/>
-                <rect x="35" y="35" width="30" height="30" fill="#0b0f19"/>
-                <rect x="42" y="42" width="16" height="16" fill="#f59e0b"/>
-                <rect x="70" y="70" width="20" height="20" fill="#0b0f19"/>
-              </svg>
-            </div>
-
-            <!-- Billetera para Copiar -->
-            <div class="w-full">
-              <span class="text-[10px] text-slate-400 block mb-1">Dirección de Depósito:</span>
-              <div class="flex items-center gap-1 bg-black/90 p-2 rounded-xl border border-slate-800">
-                <span id="cryptoWalletText" class="text-[11px] font-mono text-slate-300 break-all select-all flex-1 text-left px-1">
-                  0x71C839a8204B6D84f04dD97e1c8d19f05Eb7F510
-                </span>
-                <button type="button" onclick="copyCryptoAddress()" class="bg-[#12192a] hover:bg-[#1e2a44] text-amber-300 border border-amber-500/40 text-xs px-2.5 py-1.5 rounded-lg transition shrink-0 cursor-pointer">
-                  Copiar
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Formulario de Validación de Comprobante (TxID / Hash) -->
-          <div class="space-y-2">
-            <label class="block text-xs font-bold text-slate-300">Pega aquí el Hash / TxID de tu transferencia:</label>
-            <div class="flex items-center gap-2">
-              <input id="inputTxId" type="text" placeholder="Ej: 0x4f3a9b1c2d3e..." class="flex-1 bg-[#060912] border border-slate-700 focus:border-amber-400 rounded-xl px-3 py-2.5 text-white font-mono text-xs outline-none transition shadow-inner">
-              <button type="button" onclick="validateCryptoTxId()" id="btnValidateTx" class="bg-gradient-to-r from-emerald-400 to-emerald-500 hover:from-emerald-300 hover:to-emerald-400 text-slate-950 font-black px-4 py-2.5 rounded-xl text-xs transition cursor-pointer shrink-0 shadow-md shadow-emerald-500/20">
-                Validar Pago
-              </button>
-            </div>
-            <div id="txAlertBox" class="hidden text-xs p-3 rounded-xl mt-2 font-mono border"></div>
-          </div>
-
-          <!-- Enlace alternativo de contacto -->
-          <div class="pt-2 border-t border-slate-800/80 text-center">
-            <p class="text-[11px] text-slate-400">
-              ¿Prefieres activar por otro medio o necesitas soporte? <a href="https://t.me/BotFather" target="_blank" class="text-amber-400 hover:underline font-bold">Contacta al Administrador en Telegram</a>
-            </p>
-          </div>
-
-        </div>
-
-      </div>
-
     </div>
 
   </main>
-
-  <!-- ================= FOOTER ================= -->
-  <footer class="bg-[#05070d] border-t border-slate-800/80 px-4 lg:px-8 py-4 text-xs text-slate-400 mt-auto">
-    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
-      <div class="flex items-center gap-2">
-        <img src="/assets/logo.png" alt="Quantum AI" class="w-5 h-5 object-contain">
-        <span class="text-white font-bold">Quantum AI Terminal</span>
-        <span>• Membresía y Acceso Institucional</span>
-      </div>
-      <div class="flex items-center gap-4 text-slate-500 text-[11px]">
-        <a href="/senales/" class="hover:text-slate-300 transition">1. Señales</a>
-        <span>•</span>
-        <a href="/grafico/" class="hover:text-slate-300 transition">2. Gráfico</a>
-        <span>•</span>
-        <a href="/calculadora/" class="hover:text-slate-300 transition">3. Calculadora</a>
-        <span>•</span>
-        <a href="/telegram/" class="hover:text-slate-300 transition">4. Bot Telegram</a>
-        <span>•</span>
-        <a href="/vip/" class="text-amber-400 hover:underline">5. Membresía VIP</a>
-      </div>
-    </div>
-  </footer>
 
   <!-- ================= TOAST FLOTANTE ================= -->
   <div id="toast" class="fixed bottom-5 right-5 z-50 bg-[#0d1322] border-2 border-amber-500 text-white px-4 py-3 rounded-xl shadow-2xl text-xs font-sans font-bold hidden items-center gap-2 transition-all">
@@ -439,6 +365,12 @@ $dias_restantes = $acceso_usuario['dias_restantes'] ?? 7;
       BEP20: '0x71C839a8204B6D84f04dD97e1c8d19f05Eb7F510',
       TRC20: 'TXy478A29dKms8910LmnoPqRsTuVwXyZ10'
     };
+
+    function openPaymentGateway() {
+      const section = document.getElementById('paymentSection');
+      section.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      showToast('⚡ Completa tu transferencia de 19 USDT abajo');
+    }
 
     function setPaymentNetwork(net) {
       currentPaymentNet = net;
@@ -483,7 +415,7 @@ $dias_restantes = $acceso_usuario['dias_restantes'] ?? 7;
         const res = await fetch('/api/auth.php?action=validate_tx', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ tx_hash: tx, network: currentPaymentNet })
+          body: JSON.stringify({ tx_hash: tx, network: currentPaymentNet, amount: 19 })
         });
         const data = await res.json();
 
