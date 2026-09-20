@@ -77,26 +77,7 @@ $mostrar_alerta_expirado = ($mensaje === 'session_expired');
   </style>
   <link rel="icon" type="image/png" href="/assets/logo.png">
 </head>
-<body class="font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-amber-500 selection:text-black">
-
-  <!-- ================= TOP BAR MINIMALISTA ================= -->
-  <header class="w-full px-4 sm:px-8 py-3 flex items-center justify-between text-[11px] font-mono border-b border-slate-900 bg-[#04060c]/80 backdrop-blur-sm z-10">
-    <div class="flex items-center gap-3 text-slate-400">
-      <span class="text-emerald-400 font-bold flex items-center gap-1.5">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 badge-pulse"></span> FIX 4.4 DMA (4.2ms)
-      </span>
-      <span class="text-slate-700 hidden sm:inline">|</span>
-      <span class="hidden sm:inline">LD4 Equinix London</span>
-      <span class="text-slate-700 hidden md:inline">|</span>
-      <span class="hidden md:inline text-amber-300/80">Binance Futures WebSocket: 99.99%</span>
-    </div>
-
-    <div>
-      <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 font-bold text-[10px]">
-        <span>🛡️</span> MODO VIP ACTIVO
-      </span>
-    </div>
-  </header>
+<body class="font-sans antialiased min-h-screen flex flex-col justify-center selection:bg-amber-500 selection:text-black">
 
   <!-- ================= CUERPO CENTRAL DE LOGIN ================= -->
   <main class="flex-1 flex flex-col items-center justify-center p-4 my-6">
