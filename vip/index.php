@@ -274,17 +274,6 @@ $is_logged_in = !empty($usuario_logueado);
         </button>
       </div>
 
-      <!-- Resumen del Plan -->
-      <div class="p-4 bg-[#080d1a] rounded-2xl border border-slate-800/80 flex items-center justify-between">
-        <div>
-          <h4 class="font-extrabold text-white text-xs">Plan VIP Quantum-AI (30 Días)</h4>
-          <p class="text-[10px] text-slate-400 mt-0.5">Acceso Premium 24/7 sin límites • 30 Días</p>
-        </div>
-        <div class="text-right">
-          <div class="font-black text-amber-400 text-sm">$19.00 USDT</div>
-          <div class="text-[10px] text-slate-400">S/ 72.20 PEN</div>
-        </div>
-      </div>
 
       <!-- PASO 1: SELECCIONAR MÉTODO DE PAGO (DISEÑO EXACTO A LA IMAGEN) -->
       <div id="stepSelectMethod" class="flex flex-col gap-3">
