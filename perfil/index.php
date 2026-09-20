@@ -290,9 +290,9 @@ $inicial_nombre = mb_strtoupper(mb_substr($nombre_actual, 0, 1));
             </a>
           <?php endif; ?>
 
-          <a href="/telegram/" class="inline-flex items-center gap-2 bg-[#0e1726] hover:bg-[#142138] text-sky-400 border border-sky-500/30 font-bold text-xs px-4 py-2.5 rounded-xl transition">
-            <span>📱</span>
-            <span>Bot de Telegram</span>
+          <a href="/" class="inline-flex items-center gap-2 bg-[#0e1726] hover:bg-[#142138] text-amber-400 hover:text-amber-300 border border-amber-500/30 font-bold text-xs px-4 py-2.5 rounded-xl transition">
+            <span>⚡</span>
+            <span>Terminal Cuántico</span>
           </a>
         </div>
 
@@ -426,33 +426,30 @@ $inicial_nombre = mb_strtoupper(mb_substr($nombre_actual, 0, 1));
           </form>
         </div>
 
-        <!-- Tarjeta: Conexión con Telegram -->
-        <div class="glass-panel rounded-2xl p-5 sm:p-6 border border-slate-800 space-y-4">
+        <!-- Tarjeta: Zona de Cierre de Sesión -->
+        <div class="glass-panel rounded-2xl p-5 sm:p-6 border border-slate-800/90 space-y-4">
           <div class="flex items-center justify-between border-b border-slate-800/80 pb-3">
             <div>
               <h2 class="text-white font-extrabold text-sm sm:text-base flex items-center gap-2">
-                <span>📱</span> Canal de Notificaciones Telegram
+                <span>🚪</span> Sesión del Dispositivo
               </h2>
-              <p class="text-xs text-slate-400 mt-0.5">Recibe señales en vivo de Binance Futuros directamente en tu chat.</p>
+              <p class="text-xs text-slate-400 mt-0.5">Administra la permanencia de tu cuenta en este navegador.</p>
             </div>
           </div>
 
-          <p class="text-xs text-slate-300 leading-relaxed">
-            Puedes configurar tu propio bot con <strong class="text-amber-400 font-mono">@BotFather</strong> y tu Chat ID para recibir alertas automáticas cuando el motor algorítmico detecte oportunidades con alta confluencia (≥70%).
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Tu sesión cuenta con una cookie segura aislada con <code class="text-amber-400 font-mono">HttpOnly</code> y cifrado interno. Al cerrar sesión, tus credenciales locales son purgadas inmediatamente.
           </p>
 
-          <div class="flex items-center justify-between bg-[#080d19] border border-slate-800/90 rounded-xl p-3.5">
-            <div class="flex items-center gap-3">
-              <div class="w-8 h-8 rounded-lg bg-sky-500/15 border border-sky-500/30 flex items-center justify-center text-sky-400">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
-              </div>
-              <div>
-                <span class="text-white font-bold text-xs block">Configurador de Bot</span>
-                <span class="text-[11px] text-slate-400">Paso a paso con token y filtro de monedas</span>
-              </div>
-            </div>
-            <a href="/telegram/" class="bg-sky-500 hover:bg-sky-400 text-slate-950 font-black text-xs px-3.5 py-1.5 rounded-lg transition">
-              Abrir
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1">
+            <span class="text-[11px] text-slate-500 font-mono">IP: <?= htmlspecialchars($_SERVER['REMOTE_ADDR'] ?? '127.0.0.1') ?></span>
+            
+            <a 
+              href="/api/auth.php?action=logout&redirect_login=1" 
+              class="w-full sm:w-auto text-center inline-flex items-center justify-center gap-2 bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 hover:text-rose-200 border border-rose-500/30 font-bold text-xs px-4 py-2 rounded-xl transition duration-150"
+            >
+              <span>🚪</span>
+              <span>Cerrar Sesión Segura</span>
             </a>
           </div>
         </div>
@@ -552,34 +549,6 @@ $inicial_nombre = mb_strtoupper(mb_substr($nombre_actual, 0, 1));
               </button>
             </div>
           </form>
-        </div>
-
-        <!-- Tarjeta: Zona de Cierre de Sesión -->
-        <div class="glass-panel rounded-2xl p-5 sm:p-6 border border-slate-800/90 space-y-4">
-          <div class="flex items-center justify-between border-b border-slate-800/80 pb-3">
-            <div>
-              <h2 class="text-white font-extrabold text-sm sm:text-base flex items-center gap-2">
-                <span>🚪</span> Sesión del Dispositivo
-              </h2>
-              <p class="text-xs text-slate-400 mt-0.5">Administra la permanencia de tu cuenta en este navegador.</p>
-            </div>
-          </div>
-
-          <p class="text-xs text-slate-400 leading-relaxed">
-            Tu sesión cuenta con una cookie segura aislada con <code class="text-amber-400 font-mono">HttpOnly</code> y cifrado interno. Al cerrar sesión, tus credenciales locales son purgadas inmediatamente.
-          </p>
-
-          <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1">
-            <span class="text-[11px] text-slate-500 font-mono">IP: <?= htmlspecialchars($_SERVER['REMOTE_ADDR'] ?? '127.0.0.1') ?></span>
-            
-            <a 
-              href="/api/auth.php?action=logout&redirect_login=1" 
-              class="w-full sm:w-auto text-center inline-flex items-center justify-center gap-2 bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 hover:text-rose-200 border border-rose-500/30 font-bold text-xs px-4 py-2 rounded-xl transition duration-150"
-            >
-              <span>🚪</span>
-              <span>Cerrar Sesión Segura</span>
-            </a>
-          </div>
         </div>
 
       </div>
