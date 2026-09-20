@@ -166,15 +166,6 @@ $mostrar_alerta_expirado = ($mensaje === 'session_expired');
 
       </form>
 
-      <!-- Telegram OTP Fast Enclave -->
-      <div class="mt-4 pt-3 border-t border-slate-800/80 text-center text-[11px] font-mono text-slate-400 flex items-center justify-center gap-1.5">
-        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-        <span>Fast Enclave:</span>
-        <a href="https://t.me/BotFather" target="_blank" class="text-amber-400 hover:text-amber-300 flex items-center gap-1 font-bold">
-          <span>▷</span> Telegram VIP OTP
-        </a>
-      </div>
-
     </div>
 
     <!-- Enlace Alternar Login / Registro -->
@@ -183,16 +174,9 @@ $mostrar_alerta_expirado = ($mensaje === 'session_expired');
       <button onclick="toggleAuthMode()" id="toggleBtn" class="text-amber-400 hover:text-amber-300 font-bold ml-1 transition cursor-pointer">
         Regístrate aquí (7 Días Gratis VIP)
       </button>
-      <div class="text-[10px] font-mono text-slate-600 mt-1.5">
-        Cifrado SHA-256 DMA Enclave • Protocolo FIX 4.4 • LD4 Equinix
-      </div>
-      <div class="mt-4 flex items-center justify-center gap-4 text-xs font-semibold">
+      <div class="mt-4 flex items-center justify-center text-xs font-semibold">
         <a href="/" class="text-slate-400 hover:text-white transition flex items-center gap-1">
           <span>⚡</span> Volver al Radar Cuántico
-        </a>
-        <span class="text-slate-700">|</span>
-        <a href="/telegram/" class="text-amber-400 hover:text-amber-300 transition flex items-center gap-1">
-          <span>📱</span> Mi Bot de Telegram & VIP
         </a>
       </div>
     </div>
