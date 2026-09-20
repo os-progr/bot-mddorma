@@ -426,34 +426,6 @@ $inicial_nombre = mb_strtoupper(mb_substr($nombre_actual, 0, 1));
           </form>
         </div>
 
-        <!-- Tarjeta: Zona de Cierre de Sesión -->
-        <div class="glass-panel rounded-2xl p-5 sm:p-6 border border-slate-800/90 space-y-4">
-          <div class="flex items-center justify-between border-b border-slate-800/80 pb-3">
-            <div>
-              <h2 class="text-white font-extrabold text-sm sm:text-base flex items-center gap-2">
-                <span>🚪</span> Sesión del Dispositivo
-              </h2>
-              <p class="text-xs text-slate-400 mt-0.5">Administra la permanencia de tu cuenta en este navegador.</p>
-            </div>
-          </div>
-
-          <p class="text-xs text-slate-400 leading-relaxed">
-            Tu sesión cuenta con una cookie segura aislada con <code class="text-amber-400 font-mono">HttpOnly</code> y cifrado interno. Al cerrar sesión, tus credenciales locales son purgadas inmediatamente.
-          </p>
-
-          <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1">
-            <span class="text-[11px] text-slate-500 font-mono">IP: <?= htmlspecialchars($_SERVER['REMOTE_ADDR'] ?? '127.0.0.1') ?></span>
-            
-            <a 
-              href="/api/auth.php?action=logout&redirect_login=1" 
-              class="w-full sm:w-auto text-center inline-flex items-center justify-center gap-2 bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 hover:text-rose-200 border border-rose-500/30 font-bold text-xs px-4 py-2 rounded-xl transition duration-150"
-            >
-              <span>🚪</span>
-              <span>Cerrar Sesión Segura</span>
-            </a>
-          </div>
-        </div>
-
       </div>
 
       <!-- ================= COLUMNA DERECHA: SEGURIDAD & CONTRASEÑA (6 COLS) ================= -->
