@@ -455,40 +455,21 @@ $inicial_nombre = mb_strtoupper(mb_substr($user['nombre'] ?: 'O', 0, 1));
           </form>
         </div>
 
-        <!-- Tarjeta 2: Seguridad & Contraseña -->
+        <!-- Tarjeta 2: Seguridad & Contraseña (KAIROS AI Sentinel) -->
         <div class="glass-panel rounded-3xl p-6 border border-slate-800 space-y-5">
           <div class="flex items-center justify-between border-b border-slate-800/80 pb-3.5">
             <div>
               <h2 class="text-white font-extrabold text-sm sm:text-base flex items-center gap-2">
                 <span>🔒</span> Seguridad & Contraseña
               </h2>
-              <p class="text-xs text-slate-400 mt-0.5">Protege tu acceso al enclave con cifrado BCRYPT de alta entropía.</p>
+              <p class="text-xs text-slate-400 mt-0.5">Autorizado por KAIROS AI Sentinel mediante código seguro al correo.</p>
             </div>
-            <span class="text-[10px] font-mono text-amber-400 bg-amber-500/10 border border-amber-500/30 px-2.5 py-0.5 rounded-full">BCRYPT 12</span>
+            <span class="text-[10px] font-mono font-bold text-amber-400 bg-amber-500/10 border border-amber-500/30 px-2.5 py-0.5 rounded-full">KAIROS AI OTP</span>
           </div>
 
           <form id="formChangePassword" onsubmit="handleChangePassword(event)" class="space-y-4">
             
-            <!-- Contraseña Actual -->
-            <div>
-              <label for="inputCurrentPass" class="block text-xs font-semibold text-slate-300 mb-1.5">
-                Contraseña Actual
-              </label>
-              <div class="relative">
-                <input 
-                  type="password" 
-                  id="inputCurrentPass" 
-                  name="current_password" 
-                  class="w-full bg-[#080d19] border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-white font-mono text-xs focus:outline-none focus:border-amber-400 transition pr-10"
-                  placeholder="Tu contraseña actual (déjalo vacío si ingresaste con Google)"
-                >
-                <button type="button" onclick="togglePassVisibility('inputCurrentPass')" class="absolute right-3.5 top-2.5 text-slate-400 hover:text-white text-xs">
-                  👁️
-                </button>
-              </div>
-            </div>
-
-            <!-- Grid: Nueva y Confirmación lado a lado en pantallas medianas -->
+            <!-- Grid: Nueva y Confirmación lado a lado -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
               <!-- Nueva Clave -->
               <div>
@@ -533,6 +514,42 @@ $inicial_nombre = mb_strtoupper(mb_substr($user['nombre'] ?: 'O', 0, 1));
               </div>
             </div>
 
+            <!-- Paso de Verificación KAIROS AI -->
+            <div class="bg-[#070b14] border border-slate-800/90 rounded-2xl p-4 space-y-3">
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="text-xs font-bold text-white flex items-center gap-1.5">
+                    <span>⚡</span> Código de Seguridad KAIROS
+                  </span>
+                  <p class="text-[11px] text-slate-400 mt-0.5">
+                    Se enviará a: <strong class="text-amber-400 font-mono"><?= $correo_actual ?></strong>
+                  </p>
+                </div>
+                <button 
+                  type="button" 
+                  id="btnSendCode" 
+                  onclick="handleSendVerificationCode()"
+                  class="inline-flex items-center gap-1.5 bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/40 text-xs font-bold px-3 py-1.5 rounded-xl transition duration-150 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <span>📨</span>
+                  <span id="btnSendCodeText">Enviar Código</span>
+                </button>
+              </div>
+
+              <div>
+                <input 
+                  type="text" 
+                  id="inputOtpCode" 
+                  name="verification_code" 
+                  maxlength="6" 
+                  inputmode="numeric" 
+                  pattern="[0-9]{6}" 
+                  class="w-full bg-[#0b101e] border border-slate-700/80 rounded-xl px-4 py-2.5 text-center font-mono font-black text-amber-400 text-lg tracking-[8px] placeholder:tracking-normal placeholder:font-normal placeholder:text-slate-600 placeholder:text-xs focus:outline-none focus:border-amber-400 transition"
+                  placeholder="Introduce los 6 dígitos del correo"
+                >
+              </div>
+            </div>
+
             <!-- Alerta Formulario Contraseña -->
             <div id="passwordAlertBox" class="hidden text-xs p-3 rounded-xl font-mono"></div>
 
@@ -541,10 +558,10 @@ $inicial_nombre = mb_strtoupper(mb_substr($user['nombre'] ?: 'O', 0, 1));
               <button 
                 type="submit" 
                 id="btnChangePass"
-                class="inline-flex items-center gap-2 bg-[#18233a] hover:bg-[#202e4d] text-white hover:text-amber-300 border border-slate-700 font-bold text-xs px-5 py-2.5 rounded-xl transition duration-150 active:scale-95"
+                class="inline-flex items-center gap-2 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-black text-xs px-5 py-2.5 rounded-xl transition duration-150 shadow-md shadow-amber-500/20 active:scale-95"
               >
                 <span>🔑</span>
-                <span>Actualizar Contraseña</span>
+                <span>Confirmar y Cambiar Contraseña</span>
               </button>
             </div>
 
@@ -652,14 +669,96 @@ $inicial_nombre = mb_strtoupper(mb_substr($user['nombre'] ?: 'O', 0, 1));
       }
     }
 
-    // Actualizar Contraseña
+    // Temporizador para reenvío de código KAIROS
+    let codeCountdownTimer = null;
+    function startCodeCountdown(seconds = 60) {
+      const btn = document.getElementById('btnSendCode');
+      const text = document.getElementById('btnSendCodeText');
+      if (!btn || !text) return;
+      btn.disabled = true;
+      let remaining = seconds;
+      text.textContent = `Reenviar (${remaining}s)`;
+
+      if (codeCountdownTimer) clearInterval(codeCountdownTimer);
+      codeCountdownTimer = setInterval(() => {
+        remaining--;
+        if (remaining <= 0) {
+          clearInterval(codeCountdownTimer);
+          btn.disabled = false;
+          text.textContent = 'Reenviar Código';
+        } else {
+          text.textContent = `Reenviar (${remaining}s)`;
+        }
+      }, 1000);
+    }
+
+    // Solicitar Código de Verificación OTP vía KAIROS AI
+    async function handleSendVerificationCode() {
+      const btn = document.getElementById('btnSendCode');
+      const text = document.getElementById('btnSendCodeText');
+      const box = document.getElementById('passwordAlertBox');
+      const newPass = document.getElementById('inputNewPass').value;
+      const confirmPass = document.getElementById('inputConfirmPass').value;
+
+      if (!newPass || newPass.length < 6) {
+        box.className = 'text-xs p-3 rounded-xl font-mono bg-rose-500/10 text-rose-300 border border-rose-500/30 block';
+        box.textContent = '⚠️ Primero escribe tu nueva contraseña (mínimo 6 caracteres).';
+        document.getElementById('inputNewPass').focus();
+        return;
+      }
+
+      if (newPass !== confirmPass) {
+        box.className = 'text-xs p-3 rounded-xl font-mono bg-rose-500/10 text-rose-300 border border-rose-500/30 block';
+        box.textContent = '⚠️ Las contraseñas no coinciden. Verifícalas antes de solicitar el código.';
+        document.getElementById('inputConfirmPass').focus();
+        return;
+      }
+
+      btn.disabled = true;
+      text.textContent = 'Enviando...';
+      box.className = 'text-xs p-3 rounded-xl font-mono bg-amber-500/10 text-amber-300 border border-amber-500/30 block';
+      box.textContent = '⏳ KAIROS AI está despachando tu código de seguridad...';
+
+      try {
+        const res = await fetch('/api/auth.php?action=send_password_code', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' }
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          box.className = 'text-xs p-3 rounded-xl font-mono bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 block';
+          box.textContent = '✅ ' + data.message;
+          showToast('Código enviado a tu correo', true);
+          startCodeCountdown(data.wait_seconds || 60);
+          document.getElementById('inputOtpCode').focus();
+        } else {
+          box.className = 'text-xs p-3 rounded-xl font-mono bg-rose-500/10 text-rose-300 border border-rose-500/30 block';
+          box.textContent = '❌ ' + (data.message || 'Error al enviar código');
+          showToast(data.message || 'Error al enviar código', false);
+          if (data.wait_seconds) {
+            startCodeCountdown(data.wait_seconds);
+          } else {
+            btn.disabled = false;
+            text.textContent = 'Enviar Código';
+          }
+        }
+      } catch (err) {
+        box.className = 'text-xs p-3 rounded-xl font-mono bg-rose-500/10 text-rose-300 border border-rose-500/30 block';
+        box.textContent = '❌ Error de comunicación con el servidor al despachar el código.';
+        btn.disabled = false;
+        text.textContent = 'Enviar Código';
+      }
+    }
+
+    // Actualizar Contraseña con Código OTP
     async function handleChangePassword(e) {
       e.preventDefault();
       const btn = document.getElementById('btnChangePass');
       const box = document.getElementById('passwordAlertBox');
-      const currentPass = document.getElementById('inputCurrentPass').value;
       const newPass = document.getElementById('inputNewPass').value;
       const confirmPass = document.getElementById('inputConfirmPass').value;
+      const otpCode = document.getElementById('inputOtpCode').value.trim();
 
       if (!newPass || newPass.length < 6) {
         box.className = 'text-xs p-3 rounded-xl font-mono bg-rose-500/10 text-rose-300 border border-rose-500/30 block';
@@ -673,17 +772,24 @@ $inicial_nombre = mb_strtoupper(mb_substr($user['nombre'] ?: 'O', 0, 1));
         return;
       }
 
+      if (!otpCode || !/^[0-9]{6}$/.test(otpCode)) {
+        box.className = 'text-xs p-3 rounded-xl font-mono bg-rose-500/10 text-rose-300 border border-rose-500/30 block';
+        box.textContent = '⚠️ Por favor pulsa "Enviar Código" e ingresa los 6 dígitos recibidos en tu correo.';
+        document.getElementById('inputOtpCode').focus();
+        return;
+      }
+
       btn.disabled = true;
-      btn.innerHTML = '<span class="animate-spin mr-1">⏳</span> Procesando...';
+      btn.innerHTML = '<span class="animate-spin mr-1">⏳</span> Validando con KAIROS AI...';
 
       try {
-        const res = await fetch('/api/auth.php?action=change_password', {
+        const res = await fetch('/api/auth.php?action=verify_and_change_password', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            current_password: currentPass,
             new_password: newPass,
-            confirm_password: confirmPass
+            confirm_password: confirmPass,
+            verification_code: otpCode
           })
         });
         const data = await res.json();
@@ -691,21 +797,24 @@ $inicial_nombre = mb_strtoupper(mb_substr($user['nombre'] ?: 'O', 0, 1));
         if (data.success) {
           box.className = 'text-xs p-3 rounded-xl font-mono bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 block';
           box.textContent = '✅ ' + data.message;
-          document.getElementById('inputCurrentPass').value = '';
           document.getElementById('inputNewPass').value = '';
           document.getElementById('inputConfirmPass').value = '';
-          showToast('Contraseña actualizada con éxito', true);
+          document.getElementById('inputOtpCode').value = '';
+          if (codeCountdownTimer) clearInterval(codeCountdownTimer);
+          document.getElementById('btnSendCode').disabled = false;
+          document.getElementById('btnSendCodeText').textContent = 'Enviar Código';
+          showToast('¡Contraseña actualizada con éxito!', true);
         } else {
           box.className = 'text-xs p-3 rounded-xl font-mono bg-rose-500/10 text-rose-300 border border-rose-500/30 block';
           box.textContent = '❌ ' + (data.message || 'Error al cambiar contraseña');
-          showToast(data.message || 'Error al cambiar contraseña', false);
+          showToast(data.message || 'Error al verificar código', false);
         }
       } catch (err) {
         box.className = 'text-xs p-3 rounded-xl font-mono bg-rose-500/10 text-rose-300 border border-rose-500/30 block';
         box.textContent = '❌ Error de comunicación con el servidor.';
       } finally {
         btn.disabled = false;
-        btn.innerHTML = '<span>🔑</span> <span>Actualizar Contraseña</span>';
+        btn.innerHTML = '<span>🔑</span> <span>Confirmar y Cambiar Contraseña</span>';
       }
     }
   </script>

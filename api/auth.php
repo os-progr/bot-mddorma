@@ -653,9 +653,288 @@ if ($action === 'update_profile') {
 }
 
 // ==========================================
-// ACCIÓN: CHANGE_PASSWORD (Cambiar Contraseña)
+// KAIROS AI: MIGRACIÓN Y MOTOR DE CORREO OTP
 // ==========================================
-if ($action === 'change_password') {
+
+function asegurar_tabla_codigos_verificacion(PDO $pdo): void {
+    static $verificado = false;
+    if ($verificado) return;
+    try {
+        $pdo->exec("CREATE TABLE IF NOT EXISTS codigos_verificacion (
+            id_codigo INT AUTO_INCREMENT PRIMARY KEY,
+            id_usuario INT NOT NULL,
+            correo VARCHAR(255) NOT NULL,
+            codigo_hash VARCHAR(255) NOT NULL,
+            tipo VARCHAR(50) NOT NULL DEFAULT 'cambio_password',
+            intentos TINYINT NOT NULL DEFAULT 0,
+            usado TINYINT(1) NOT NULL DEFAULT 0,
+            expira_en DATETIME NOT NULL,
+            creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            INDEX idx_usr_code (id_usuario, tipo, expira_en, usado)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+        $verificado = true;
+    } catch (\Throwable $e) {
+        error_log("[KAIROS AI] Error creando tabla codigos_verificacion: " . $e->getMessage());
+    }
+}
+
+function censurar_correo(string $email): string {
+    $partes = explode('@', $email);
+    if (count($partes) !== 2) return 'tu correo';
+    $usuario = $partes[0];
+    $dominio = $partes[1];
+    $visible = substr($usuario, 0, 2);
+    return $visible . str_repeat('*', max(3, strlen($usuario) - 2)) . '@' . $dominio;
+}
+
+function enviar_correo_kairos(string $destinatario, string $nombre_destinatario, string $asunto, string $codigo_otp): array {
+    $nombre_safe = htmlspecialchars($nombre_destinatario ?: 'Operador');
+    
+    $cuerpo_html = '<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>' . htmlspecialchars($asunto) . '</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #05070d; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, Helvetica, Arial, sans-serif; color: #cbd5e1;">
+  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed; background-color: #05070d; padding: 40px 15px;">
+    <tr>
+      <td align="center">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 520px; background: #0b0f19; border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 24px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.85);">
+          
+          <!-- Header Brand -->
+          <tr>
+            <td style="padding: 32px 30px 22px 30px; text-align: center; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: linear-gradient(180deg, rgba(245, 158, 11, 0.12) 0%, transparent 100%);">
+              <table border="0" cellpadding="0" cellspacing="0" align="center">
+                <tr>
+                  <td align="center" style="font-size: 22px; font-weight: 900; letter-spacing: 2px; color: #ffffff;">
+                    QUANTUM<span style="color: #f59e0b;">.AI</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center" style="font-size: 11px; font-family: monospace; font-weight: 800; color: #f59e0b; letter-spacing: 2px; padding-top: 6px;">
+                    ⚡ KAIROS AI · SECURITY SENTINEL
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Main Content -->
+          <tr>
+            <td style="padding: 35px 30px 25px 30px;">
+              <h2 style="margin: 0 0 12px 0; font-size: 18px; font-weight: 800; color: #ffffff; text-align: center;">
+                Autorización de Seguridad
+              </h2>
+              <p style="margin: 0 0 22px 0; font-size: 13px; line-height: 1.6; color: #94a3b8; text-align: center;">
+                Hola, <strong style="color: #f1f5f9;">' . $nombre_safe . '</strong>. Has solicitado cambiar tu contraseña de acceso en el terminal de trading. Utiliza este código de verificación de 6 dígitos:
+              </p>
+
+              <!-- OTP Box -->
+              <div style="text-align: center; margin: 25px 0;">
+                <div style="display: inline-block; background: #070b14; border: 2px dashed #f59e0b; border-radius: 18px; padding: 18px 36px; box-shadow: 0 0 30px rgba(245, 158, 11, 0.15);">
+                  <span style="font-family: \'JetBrains Mono\', Consolas, monospace; font-size: 36px; font-weight: 900; letter-spacing: 8px; color: #fbbf24;">
+                    ' . $codigo_otp . '
+                  </span>
+                </div>
+              </div>
+
+              <!-- Warning Box -->
+              <div style="background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.25); border-radius: 14px; padding: 14px 18px; margin: 25px 0 10px 0;">
+                <p style="margin: 0; font-size: 12px; color: #fcd34d; line-height: 1.5; text-align: center;">
+                  ⏱️ <strong>Vencimiento:</strong> Este código expira en <strong>10 minutos</strong> y sólo puede usarse una única vez.
+                </p>
+              </div>
+
+              <p style="margin: 22px 0 0 0; font-size: 11px; color: #64748b; line-height: 1.5; text-align: center;">
+                Si tú no realizaste esta solicitud, ignora este correo. Tu cuenta permanece protegida y nadie tiene acceso a ella.
+              </p>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="padding: 22px 30px; background-color: #070b14; border-top: 1px solid rgba(255, 255, 255, 0.06); text-align: center;">
+              <p style="margin: 0; font-size: 10px; font-family: monospace; color: #475569; line-height: 1.6;">
+                Enclave Algorítmico Quantum AI · Desarrollado por KAIROS AI Engine<br>
+                © ' . date('Y') . ' MDDorma Institutional. Todos los derechos reservados.
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>';
+
+    $cuerpo_texto = "QUANTUM.AI | KAIROS AI SECURITY SENTINEL\n\n"
+                  . "Hola, {$nombre_safe}.\n\n"
+                  . "Tu código de 6 dígitos para autorizar el cambio de contraseña es:\n\n"
+                  . ">> {$codigo_otp} <<\n\n"
+                  . "Vence en 10 minutos. Si no fuiste tú, ignora este correo.\n\n"
+                  . "KAIROS AI Engine · bot.mddorma.com";
+
+    // 1. Intentar PHPMailer SMTP
+    $phpmailer_paths = [
+        dirname(__DIR__) . '/PHPMailer/src/PHPMailer.php',
+        dirname(__DIR__, 2) . '/PHPMailer/src/PHPMailer.php',
+        $_SERVER['DOCUMENT_ROOT'] . '/PHPMailer/src/PHPMailer.php',
+        '/home/qtenqbhl/public_html/PHPMailer/src/PHPMailer.php'
+    ];
+
+    $phpmailer_loaded = false;
+    foreach ($phpmailer_paths as $pmp) {
+        if (file_exists($pmp)) {
+            $base_dir = dirname($pmp);
+            require_once $base_dir . '/Exception.php';
+            require_once $base_dir . '/PHPMailer.php';
+            require_once $base_dir . '/SMTP.php';
+            $phpmailer_loaded = true;
+            break;
+        }
+    }
+
+    if ($phpmailer_loaded && class_exists('PHPMailer\PHPMailer\PHPMailer')) {
+        try {
+            $mail = new \PHPMailer\PHPMailer\PHPMailer(true);
+            $mail->isSMTP();
+            $mail->Host       = $_ENV['SMTP_HOST'] ?? (getenv('SMTP_HOST') ?: 'smtp.gmail.com');
+            $mail->SMTPAuth   = true;
+            $mail->Username   = $_ENV['SMTP_USER'] ?? (getenv('SMTP_USER') ?: 'mddormasoporte@gmail.com');
+            $mail->Password   = $_ENV['SMTP_PASS'] ?? (getenv('SMTP_PASS') ?: 'dvmmtzhwrnukaimp');
+            $mail->SMTPSecure = \PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS;
+            $mail->Port       = (int)($_ENV['SMTP_PORT'] ?? (getenv('SMTP_PORT') ?: 465));
+            $mail->CharSet    = 'UTF-8';
+            $mail->Timeout    = 6;
+
+            $mail->setFrom($mail->Username, 'KAIROS AI · Quantum Sentinel');
+            $mail->addAddress($destinatario, $nombre_destinatario);
+            $mail->addReplyTo('soporte@mddorma.com', 'Soporte MDDorma');
+
+            $mail->isHTML(true);
+            $mail->Subject = $asunto;
+            $mail->Body    = $cuerpo_html;
+            $mail->AltBody = $cuerpo_texto;
+
+            $mail->send();
+            return ['success' => true, 'metodo' => 'smtp_phpmailer'];
+        } catch (\Throwable $e) {
+            error_log("[KAIROS AI] Error PHPMailer SMTP: " . $e->getMessage());
+        }
+    }
+
+    // 2. Fallback Transparente a mail() nativo de cPanel
+    $headers  = "MIME-Version: 1.0\r\n";
+    $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+    $headers .= "From: KAIROS AI Sentinel <seguridad@mddorma.com>\r\n";
+    $headers .= "Reply-To: soporte@mddorma.com\r\n";
+    $headers .= "X-Mailer: KAIROS-AI-Security/1.0\r\n";
+
+    $sent = @mail($destinatario, $asunto, $cuerpo_html, $headers);
+    if ($sent) {
+        return ['success' => true, 'metodo' => 'native_mail'];
+    }
+
+    return ['success' => false, 'error' => 'No se pudo entregar el correo en este momento.'];
+}
+
+// ==========================================
+// ACCIÓN: SEND_PASSWORD_CODE (Enviar Código OTP con KAIROS AI)
+// ==========================================
+if ($action === 'send_password_code') {
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        http_response_code(405);
+        echo json_encode(['success' => false, 'message' => 'Método no permitido.']);
+        exit;
+    }
+
+    if (empty($_SESSION['id_usuario']) || empty($pdo)) {
+        http_response_code(401);
+        echo json_encode(['success' => false, 'message' => 'Sesión requerida.']);
+        exit;
+    }
+
+    asegurar_tabla_codigos_verificacion($pdo);
+
+    $id_usuario = (int)$_SESSION['id_usuario'];
+
+    try {
+        $stmt = $pdo->prepare("SELECT id_usuario, nombre, correo FROM usuarios WHERE id_usuario = ? LIMIT 1");
+        $stmt->execute([$id_usuario]);
+        $user = $stmt->fetch();
+
+        if (!$user || empty($user['correo'])) {
+            echo json_encode(['success' => false, 'message' => 'Usuario sin correo configurado.']);
+            exit;
+        }
+
+        // Rate Limit: 60 segundos entre envíos
+        $stmtCheck = $pdo->prepare("SELECT creado_en FROM codigos_verificacion WHERE id_usuario = ? AND tipo = 'cambio_password' ORDER BY id_codigo DESC LIMIT 1");
+        $stmtCheck->execute([$id_usuario]);
+        $ultimo = $stmtCheck->fetch();
+
+        if ($ultimo && !empty($ultimo['creado_en'])) {
+            $segundos = time() - strtotime($ultimo['creado_en']);
+            if ($segundos < 60) {
+                $espera = 60 - $segundos;
+                echo json_encode([
+                    'success' => false,
+                    'message' => "Por favor espera {$espera} segundos antes de solicitar otro código.",
+                    'wait_seconds' => $espera
+                ]);
+                exit;
+            }
+        }
+
+        // Invalidar códigos anteriores no usados
+        $pdo->prepare("UPDATE codigos_verificacion SET usado = 1 WHERE id_usuario = ? AND tipo = 'cambio_password' AND usado = 0")
+            ->execute([$id_usuario]);
+
+        // Generar código criptográfico de 6 dígitos
+        $codigo_otp = str_pad((string)random_int(100000, 999999), 6, '0', STR_PAD_LEFT);
+        $codigo_hash = password_hash($codigo_otp, PASSWORD_BCRYPT);
+        $expira_en = date('Y-m-d H:i:s', time() + 600); // 10 minutos
+
+        $insert = $pdo->prepare("INSERT INTO codigos_verificacion (id_usuario, correo, codigo_hash, tipo, expira_en) VALUES (?, ?, ?, 'cambio_password', ?)");
+        $insert->execute([$id_usuario, $user['correo'], $codigo_hash, $expira_en]);
+
+        // Enviar por KAIROS AI
+        $envio = enviar_correo_kairos(
+            $user['correo'],
+            $user['nombre'] ?: 'Operador',
+            "🔒 Código de Verificación: {$codigo_otp} | KAIROS AI",
+            $codigo_otp
+        );
+
+        $correo_censurado = censurar_correo($user['correo']);
+
+        if ($envio['success']) {
+            echo json_encode([
+                'success' => true,
+                'message' => "Código enviado a {$correo_censurado} por KAIROS AI. Vence en 10 minutos.",
+                'correo_censurado' => $correo_censurado,
+                'wait_seconds' => 60
+            ], JSON_UNESCAPED_UNICODE);
+        } else {
+            echo json_encode([
+                'success' => false,
+                'message' => "No se pudo enviar el correo de verificación. Intenta nuevamente."
+            ]);
+        }
+        exit;
+    } catch (\Throwable $e) {
+        error_log("[KAIROS AI] Error en send_password_code: " . $e->getMessage());
+        echo json_encode(['success' => false, 'message' => 'Error interno al procesar el código de seguridad.']);
+        exit;
+    }
+}
+
+// ==========================================
+// ACCIÓN: VERIFY_AND_CHANGE_PASSWORD / CHANGE_PASSWORD
+// ==========================================
+if ($action === 'verify_and_change_password' || $action === 'change_password') {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         http_response_code(405);
         echo json_encode(['success' => false, 'message' => 'Método no permitido.']);
@@ -668,10 +947,14 @@ if ($action === 'change_password') {
         exit;
     }
 
+    asegurar_tabla_codigos_verificacion($pdo);
+
+    $id_usuario = (int)$_SESSION['id_usuario'];
     $input = json_decode(file_get_contents('php://input'), true) ?: $_POST;
-    $current_pass = (string)($input['current_password'] ?? '');
+
     $new_pass = (string)($input['new_password'] ?? '');
     $confirm_pass = (string)($input['confirm_password'] ?? '');
+    $codigo_otp = trim((string)($input['verification_code'] ?? ($input['codigo'] ?? '')));
 
     if (strlen($new_pass) < 6) {
         echo json_encode(['success' => false, 'message' => 'La nueva contraseña debe tener al menos 6 caracteres.']);
@@ -683,41 +966,51 @@ if ($action === 'change_password') {
         exit;
     }
 
+    if (empty($codigo_otp) || !preg_match('/^[0-9]{6}$/', $codigo_otp)) {
+        echo json_encode(['success' => false, 'message' => 'Por favor introduce el código de verificación de 6 dígitos enviado a tu correo.']);
+        exit;
+    }
+
     try {
-        $stmt = $pdo->prepare("SELECT password_hash FROM usuarios WHERE id_usuario = ? LIMIT 1");
-        $stmt->execute([(int)$_SESSION['id_usuario']]);
+        // Buscar código activo no usado y no expirado
+        $stmt = $pdo->prepare("SELECT id_codigo, codigo_hash, intentos, expira_en FROM codigos_verificacion WHERE id_usuario = ? AND tipo = 'cambio_password' AND usado = 0 AND expira_en > NOW() ORDER BY id_codigo DESC LIMIT 1");
+        $stmt->execute([$id_usuario]);
         $row = $stmt->fetch();
 
         if (!$row) {
-            echo json_encode(['success' => false, 'message' => 'Usuario no encontrado.']);
+            echo json_encode(['success' => false, 'message' => 'El código de verificación ha expirado o no es válido. Por favor solicita uno nuevo.']);
             exit;
         }
 
-        $existing_hash = $row['password_hash'] ?? '';
-
-        // Si ya tiene una contraseña configurada, verificar la actual
-        if (!empty($existing_hash)) {
-            if (empty($current_pass)) {
-                echo json_encode(['success' => false, 'message' => 'Por favor ingresa tu contraseña actual.']);
-                exit;
-            }
-            if (!password_verify($current_pass, $existing_hash)) {
-                echo json_encode(['success' => false, 'message' => 'La contraseña actual no es correcta.']);
-                exit;
-            }
+        if ((int)$row['intentos'] >= 5) {
+            $pdo->prepare("UPDATE codigos_verificacion SET usado = 1 WHERE id_codigo = ?")->execute([$row['id_codigo']]);
+            echo json_encode(['success' => false, 'message' => 'Demasiados intentos fallidos para este código. Solicita uno nuevo por seguridad.']);
+            exit;
         }
+
+        // Validar el código OTP
+        if (!password_verify($codigo_otp, $row['codigo_hash'])) {
+            $pdo->prepare("UPDATE codigos_verificacion SET intentos = intentos + 1 WHERE id_codigo = ?")->execute([$row['id_codigo']]);
+            $restantes = 4 - (int)$row['intentos'];
+            echo json_encode(['success' => false, 'message' => "Código incorrecto. Intentos restantes: {$restantes}."]);
+            exit;
+        }
+
+        // Código VÁLIDO: Marcar como usado y actualizar contraseña
+        $pdo->prepare("UPDATE codigos_verificacion SET usado = 1 WHERE id_codigo = ?")->execute([$row['id_codigo']]);
 
         $new_hash = password_hash($new_pass, PASSWORD_BCRYPT);
         $update = $pdo->prepare("UPDATE usuarios SET password_hash = ? WHERE id_usuario = ?");
-        $update->execute([$new_hash, (int)$_SESSION['id_usuario']]);
+        $update->execute([$new_hash, $id_usuario]);
 
         echo json_encode([
             'success' => true,
-            'message' => '¡Tu contraseña ha sido actualizada con éxito!'
+            'message' => '¡Contraseña actualizada exitosamente con autorización de KAIROS AI!'
         ], JSON_UNESCAPED_UNICODE);
         exit;
-    } catch (Throwable $e) {
-        echo json_encode(['success' => false, 'message' => 'Error al actualizar la contraseña en la base de datos.']);
+    } catch (\Throwable $e) {
+        error_log("[KAIROS AI] Error en verify_and_change_password: " . $e->getMessage());
+        echo json_encode(['success' => false, 'message' => 'Error en la base de datos al actualizar la contraseña.']);
         exit;
     }
 }
