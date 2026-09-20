@@ -223,174 +223,134 @@ $inicial_nombre = mb_strtoupper(mb_substr($user['nombre'] ?: 'O', 0, 1));
     </div>
   </div>
 
-  <!-- ================= CONTENEDOR PRINCIPAL: ARQUITECTURA DE 2 COLUMNAS ================= -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-7">
+  <!-- ================= CONTENEDOR PRINCIPAL INSTITUCIONAL ================= -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-6 space-y-6">
 
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-7 items-start">
+    <!-- ================= 1. BANNER HORIZONTAL DE IDENTIDAD & ESPECIFICACIONES ================= -->
+    <section class="glass-panel rounded-3xl p-5 lg:p-6 border border-slate-800 glow-amber relative overflow-hidden">
+      <div class="absolute -right-16 -top-16 w-60 h-60 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-      <!-- ================= COLUMNA IZQUIERDA: TARJETA DEL TRADER & INFRAESTRUCTURA (5 cols) ================= -->
-      <aside class="lg:col-span-5 space-y-5">
-
-        <!-- Tarjeta Principal del Operador -->
-        <div class="glass-panel rounded-3xl p-6 relative overflow-hidden border border-slate-800 glow-amber space-y-5">
-          <div class="absolute -right-12 -top-12 w-48 h-48 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
-          <!-- Cabecera de Identidad: Avatar Limpio + Datos -->
-          <div class="flex items-center gap-4">
-            <!-- Avatar Seguro -->
-            <div class="relative shrink-0">
-              <?php if ($foto_valida && $foto_perfil): ?>
-                <img 
-                  src="<?= $foto_perfil ?>" 
-                  alt="<?= $nombre_actual ?>" 
-                  onerror="this.style.display='none'; document.getElementById('avatarFallback').style.display='flex';"
-                  class="w-16 h-16 rounded-2xl object-cover border-2 border-amber-500/50 shadow-[0_0_20px_rgba(245,158,11,0.25)]"
-                >
-                <div id="avatarFallback" class="hidden w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-600 via-amber-500 to-amber-300 text-slate-950 font-black text-2xl items-center justify-center border-2 border-amber-400/60 shadow-[0_0_25px_rgba(245,158,11,0.3)]">
-                  <?= $inicial_nombre ?>
-                </div>
-              <?php else: ?>
-                <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-600 via-amber-500 to-amber-300 text-slate-950 font-black text-2xl flex items-center justify-center border-2 border-amber-400/60 shadow-[0_0_25px_rgba(245,158,11,0.3)]">
-                  <?= $inicial_nombre ?>
-                </div>
-              <?php endif; ?>
-              
-              <div class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full <?= $es_vip ? 'bg-amber-400' : 'bg-emerald-400' ?> border-2 border-[#0b0f19] flex items-center justify-center text-[9px]" title="Cuenta Activa">
-                <?= $es_vip ? '👑' : '⚡' ?>
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5 relative z-10">
+        
+        <!-- Identidad del Operador (Avatar + Nombre + Estado) -->
+        <div class="flex items-center gap-4 min-w-0">
+          <!-- Avatar Seguro con Monograma -->
+          <div class="relative shrink-0">
+            <?php if ($foto_valida && $foto_perfil): ?>
+              <img 
+                src="<?= $foto_perfil ?>" 
+                alt="<?= $nombre_actual ?>" 
+                onerror="this.style.display='none'; document.getElementById('avatarFallback').style.display='flex';"
+                class="w-16 h-16 rounded-2xl object-cover border-2 border-amber-500/50 shadow-[0_0_20px_rgba(245,158,11,0.25)]"
+              >
+              <div id="avatarFallback" class="hidden w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-600 via-amber-500 to-amber-300 text-slate-950 font-black text-2xl items-center justify-center border-2 border-amber-400/60 shadow-[0_0_25px_rgba(245,158,11,0.3)]">
+                <?= $inicial_nombre ?>
               </div>
-            </div>
-
-            <!-- Nombre y Badge -->
-            <div class="min-w-0 flex-1 space-y-1">
-              <div class="flex items-center gap-2">
-                <h1 class="text-xl font-black text-white truncate" id="displayProfileName">
-                  <?= $nombre_actual ?>
-                </h1>
-                <span class="text-amber-400 text-xs" title="Operador Registrado">✓</span>
+            <?php else: ?>
+              <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-600 via-amber-500 to-amber-300 text-slate-950 font-black text-2xl flex items-center justify-center border-2 border-amber-400/60 shadow-[0_0_25px_rgba(245,158,11,0.3)]">
+                <?= $inicial_nombre ?>
               </div>
-              <p class="text-xs text-slate-400 font-mono truncate"><?= $correo_actual ?></p>
-              
-              <div class="pt-0.5">
-                <?php if ($es_vip): ?>
-                  <span class="inline-flex items-center gap-1.5 bg-amber-500/15 border border-amber-500/40 text-amber-300 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full">
-                    <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
-                    👑 MEMBRESÍA VIP ACTIVA
-                  </span>
-                <?php elseif ($tipo_acceso === 'prueba_gratis'): ?>
-                  <span class="inline-flex items-center gap-1.5 bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                    ⚡ PRUEBA: <?= $dias_restantes ?> DÍAS RESTANTES
-                  </span>
-                <?php else: ?>
-                  <span class="inline-flex items-center gap-1.5 bg-rose-500/15 border border-rose-500/40 text-rose-300 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full">
-                    <span class="w-1.5 h-1.5 rounded-full bg-rose-400"></span>
-                    ⚠️ PRUEBA FINALIZADA
-                  </span>
-                <?php endif; ?>
-              </div>
+            <?php endif; ?>
+            
+            <div class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full <?= $es_vip ? 'bg-amber-400' : 'bg-emerald-400' ?> border-2 border-[#0b0f19] flex items-center justify-center text-[9px]" title="Cuenta Activa">
+              <?= $es_vip ? '👑' : '⚡' ?>
             </div>
           </div>
 
-          <!-- Separador -->
-          <div class="h-px bg-slate-800/80"></div>
-
-          <!-- Cuadrícula Integrada de Especificaciones de Cuenta -->
-          <div class="grid grid-cols-2 gap-2.5 text-xs font-mono">
-            <!-- UID Operador -->
-            <div class="bg-[#070b14] border border-slate-800/90 rounded-2xl p-3 flex flex-col justify-between">
-              <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">UID OPERADOR</span>
-              <div class="flex items-center justify-between mt-1">
-                <strong class="text-white font-black text-sm tracking-wide"><?= $trader_id ?></strong>
-                <button onclick="copyTraderUid('<?= $trader_id ?>')" class="text-slate-500 hover:text-amber-400 text-xs transition" title="Copiar UID">
-                  📋
-                </button>
-              </div>
-            </div>
-
-            <!-- Fecha de Registro -->
-            <div class="bg-[#070b14] border border-slate-800/90 rounded-2xl p-3 flex flex-col justify-between">
-              <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">REGISTRO</span>
-              <strong class="text-slate-300 text-xs mt-1 truncate" title="<?= $fecha_reg ?>"><?= $fecha_reg ?></strong>
-            </div>
-
-            <!-- Protocolo FIX DMA -->
-            <div class="bg-[#070b14] border border-slate-800/90 rounded-2xl p-3 flex flex-col justify-between">
-              <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">ENCLAVE DMA</span>
-              <div class="flex items-center gap-1.5 mt-1 text-sky-400 text-xs font-bold">
-                <span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span>
-                <span>FIX 4.4 LD4</span>
-              </div>
-            </div>
-
-            <!-- Sesión -->
-            <div class="bg-[#070b14] border border-slate-800/90 rounded-2xl p-3 flex flex-col justify-between">
-              <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">SESIÓN</span>
-              <div class="flex items-center gap-1.5 mt-1 text-emerald-400 text-xs font-bold">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                <span>30 DÍAS ACTIVA</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Tarjeta de Estado VIP & Acceso Rápido -->
-          <?php if (!$es_vip): ?>
-            <div class="bg-gradient-to-br from-amber-500/10 via-[#0d1528] to-amber-500/5 border border-amber-500/30 rounded-2xl p-4 space-y-3">
-              <div class="flex items-start justify-between gap-2">
-                <div>
-                  <span class="text-amber-400 font-bold text-xs flex items-center gap-1.5">
-                    <span>👑</span> Desbloquea Acceso Total
-                  </span>
-                  <p class="text-[11px] text-slate-400 mt-1 leading-relaxed">
-                    Accede a señales institucionales confluentes 24/7 sin límite de días.
-                  </p>
-                </div>
-                <span class="text-xs font-mono font-black text-amber-300 bg-amber-500/20 px-2 py-0.5 rounded-lg shrink-0">
-                  $5 USD/mes
+          <!-- Nombre, Correo y Badge -->
+          <div class="min-w-0 space-y-1">
+            <div class="flex items-center gap-2 flex-wrap">
+              <h1 class="text-xl font-black text-white truncate" id="displayProfileName">
+                <?= $nombre_actual ?>
+              </h1>
+              <span class="text-amber-400 text-xs" title="Operador Registrado">✓</span>
+              
+              <!-- Badge VIP / Prueba -->
+              <?php if ($es_vip): ?>
+                <span class="inline-flex items-center gap-1.5 bg-amber-500/15 border border-amber-500/40 text-amber-300 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full">
+                  <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+                  👑 VIP ACTIVO
                 </span>
-              </div>
-              <a href="/vip/" class="w-full text-center inline-flex items-center justify-center gap-2 bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-300 hover:to-amber-500 text-slate-950 font-black text-xs py-2.5 px-4 rounded-xl shadow-lg shadow-amber-500/20 transition duration-150 transform hover:scale-[1.01] active:scale-[0.98]">
-                <span>👑</span>
-                <span>Activar Membresía VIP</span>
-              </a>
+              <?php elseif ($tipo_acceso === 'prueba_gratis'): ?>
+                <span class="inline-flex items-center gap-1.5 bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                  ⚡ PRUEBA: <?= $dias_restantes ?> DÍAS
+                </span>
+              <?php else: ?>
+                <span class="inline-flex items-center gap-1.5 bg-rose-500/15 border border-rose-500/40 text-rose-300 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full">
+                  <span class="w-1.5 h-1.5 rounded-full bg-rose-400"></span>
+                  ⚠️ PRUEBA FINALIZADA
+                </span>
+              <?php endif; ?>
             </div>
-          <?php else: ?>
-            <div class="bg-emerald-500/10 border border-emerald-500/30 rounded-2xl p-3.5 flex items-center justify-between">
-              <div class="flex items-center gap-2.5">
-                <span class="text-lg">👑</span>
-                <div>
-                  <span class="text-emerald-300 font-bold text-xs block">Membresía VIP Activa</span>
-                  <span class="text-[11px] text-slate-400">Acceso ilimitado a todas las herramientas</span>
-                </div>
-              </div>
-              <a href="/vip/" class="text-xs font-bold text-amber-400 hover:text-amber-300 bg-[#070b14] border border-amber-500/30 px-3 py-1.5 rounded-lg transition">
-                Gestionar
-              </a>
-            </div>
-          <?php endif; ?>
 
-          <!-- Botón Directo al Radar -->
-          <div class="pt-1">
-            <a href="/" class="w-full inline-flex items-center justify-center gap-2 bg-[#090f1e] hover:bg-[#121c35] text-amber-400 hover:text-amber-300 border border-slate-800 hover:border-amber-500/40 text-xs font-bold py-2.5 px-4 rounded-xl transition duration-150">
-              <span>⚡</span>
-              <span>Abrir Radar & Terminal Cuántico</span>
-            </a>
+            <p class="text-xs text-slate-400 font-mono truncate"><?= $correo_actual ?></p>
           </div>
-
         </div>
 
-      </aside>
+        <!-- Barra de Especificaciones de Enclave (Chips Horizontales) -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-xs font-mono">
+          <!-- UID -->
+          <div class="bg-[#070b14] border border-slate-800 rounded-xl px-3 py-2 flex flex-col justify-center">
+            <span class="text-[9px] text-slate-500 font-bold uppercase tracking-wider">UID OPERADOR</span>
+            <div class="flex items-center gap-1.5 mt-0.5">
+              <strong class="text-white font-black text-xs"><?= $trader_id ?></strong>
+              <button onclick="copyTraderUid('<?= $trader_id ?>')" class="text-slate-500 hover:text-amber-400 text-xs transition" title="Copiar UID">
+                📋
+              </button>
+            </div>
+          </div>
 
-      <!-- ================= COLUMNA DERECHA: FORMULARIOS DE CONFIGURACIÓN (7 cols) ================= -->
-      <section class="lg:col-span-7 space-y-6">
+          <!-- Registro -->
+          <div class="bg-[#070b14] border border-slate-800 rounded-xl px-3 py-2 flex flex-col justify-center">
+            <span class="text-[9px] text-slate-500 font-bold uppercase tracking-wider">REGISTRO</span>
+            <strong class="text-slate-300 text-xs mt-0.5 truncate" title="<?= $fecha_reg ?>"><?= $fecha_reg ?></strong>
+          </div>
 
-        <!-- Tarjeta 1: Datos Personales -->
-        <div class="glass-panel rounded-3xl p-6 border border-slate-800 space-y-5">
+          <!-- Protocolo FIX -->
+          <div class="bg-[#070b14] border border-slate-800 rounded-xl px-3 py-2 flex flex-col justify-center">
+            <span class="text-[9px] text-slate-500 font-bold uppercase tracking-wider">ENCLAVE DMA</span>
+            <div class="flex items-center gap-1.5 mt-0.5 text-sky-400 text-xs font-bold">
+              <span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span>
+              <span>FIX 4.4 LD4</span>
+            </div>
+          </div>
+
+          <!-- Sesión -->
+          <div class="bg-[#070b14] border border-slate-800 rounded-xl px-3 py-2 flex flex-col justify-center">
+            <span class="text-[9px] text-slate-500 font-bold uppercase tracking-wider">SESIÓN</span>
+            <div class="flex items-center gap-1.5 mt-0.5 text-emerald-400 text-xs font-bold">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              <span>30 DÍAS ACTIVA</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botón Rápido Terminal -->
+        <div class="shrink-0 flex items-center gap-2">
+          <a href="/" class="inline-flex items-center gap-2 bg-[#090f1e] hover:bg-[#121c35] text-amber-400 hover:text-amber-300 border border-amber-500/30 hover:border-amber-400 text-xs font-bold py-2.5 px-4 rounded-xl transition duration-150 shadow-sm">
+            <span>⚡</span>
+            <span>Abrir Terminal</span>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= 2. PANELES SIMÉTRICOS: CONFIGURACIÓN & SEGURIDAD ================= -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+
+      <!-- ================= PANEL IZQUIERDO: DATOS DE CUENTA & MEMBRESÍA VIP (6 cols) ================= -->
+      <div class="lg:col-span-6 space-y-6 flex flex-col justify-between">
+        
+        <!-- Tarjeta: Datos del Operador -->
+        <div class="glass-panel rounded-3xl p-6 border border-slate-800 space-y-5 flex-1">
           <div class="flex items-center justify-between border-b border-slate-800/80 pb-3.5">
             <div>
               <h2 class="text-white font-extrabold text-sm sm:text-base flex items-center gap-2">
-                <span>👤</span> Datos del Operador
+                <span>👤</span> Identidad del Operador
               </h2>
-              <p class="text-xs text-slate-400 mt-0.5">Configura tu nombre e identidad visible en el terminal.</p>
+              <p class="text-xs text-slate-400 mt-0.5">Modifica tu alias visible y consulta tus credenciales maestras.</p>
             </div>
             <span class="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-0.5 rounded-full">Sincronizado</span>
           </div>
@@ -400,7 +360,7 @@ $inicial_nombre = mb_strtoupper(mb_substr($user['nombre'] ?: 'O', 0, 1));
             <!-- Input Nombre -->
             <div>
               <label for="inputNombre" class="block text-xs font-semibold text-slate-300 mb-1.5">
-                Nombre de Operador
+                Nombre o Alias de Trading
               </label>
               <div class="relative">
                 <input 
@@ -410,15 +370,15 @@ $inicial_nombre = mb_strtoupper(mb_substr($user['nombre'] ?: 'O', 0, 1));
                   value="<?= $nombre_actual ?>" 
                   required 
                   maxlength="80" 
-                  class="w-full bg-[#080d19] border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-white font-medium text-xs focus:outline-none focus:border-amber-400 transition"
-                  placeholder="Tu Nombre o Alias de Trading"
+                  class="w-full bg-[#080d19] border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-white font-medium text-xs focus:outline-none focus:border-amber-400 transition pr-10"
+                  placeholder="Tu Alias de Operador"
                 >
                 <span class="absolute right-3.5 top-2.5 text-slate-500 text-xs pointer-events-none">✏️</span>
               </div>
-              <p class="text-[11px] text-slate-500 mt-1">Visible en cabeceras y reportes de ejecución algorítmica.</p>
+              <p class="text-[11px] text-slate-500 mt-1">Se muestra en el radar y en el registro de operaciones.</p>
             </div>
 
-            <!-- Input Correo -->
+            <!-- Input Correo Maestro -->
             <div>
               <label class="block text-xs font-semibold text-slate-300 mb-1.5">
                 Correo Electrónico (Cuenta Maestra)
@@ -428,12 +388,12 @@ $inicial_nombre = mb_strtoupper(mb_substr($user['nombre'] ?: 'O', 0, 1));
                   type="email" 
                   value="<?= $correo_actual ?>" 
                   readonly 
-                  class="w-full bg-[#060a14] border border-slate-800 text-slate-400 rounded-xl px-3.5 py-2.5 font-mono text-xs cursor-not-allowed select-all"
+                  class="w-full bg-[#060a14] border border-slate-800 text-slate-400 rounded-xl px-3.5 py-2.5 font-mono text-xs cursor-not-allowed select-all pr-10"
                 >
                 <span class="absolute right-3.5 top-2.5 text-emerald-400 text-xs" title="Verificado">✓</span>
               </div>
               <p class="text-[11px] text-slate-500 mt-1 flex items-center gap-1">
-                <span>🔒</span> Vinculado a tu acceso institucional permanente.
+                <span>🔒</span> Vinculado de forma permanente a tu enclave.
               </p>
             </div>
 
@@ -448,161 +408,207 @@ $inicial_nombre = mb_strtoupper(mb_substr($user['nombre'] ?: 'O', 0, 1));
                 class="inline-flex items-center gap-2 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-black text-xs px-5 py-2.5 rounded-xl transition duration-150 shadow-md shadow-amber-500/20 active:scale-95"
               >
                 <span>💾</span>
-                <span>Guardar Datos</span>
+                <span>Guardar Cambios</span>
               </button>
             </div>
 
           </form>
         </div>
 
-        <!-- Tarjeta 2: Seguridad & Contraseña (KAIROS AI Sentinel) -->
-        <div class="glass-panel rounded-3xl p-6 border border-slate-800 space-y-5">
-          <div class="flex items-center justify-between border-b border-slate-800/80 pb-3.5">
-            <div>
-              <h2 class="text-white font-extrabold text-sm sm:text-base flex items-center gap-2">
-                <span>🔒</span> Seguridad & Contraseña
-              </h2>
-              <p class="text-xs text-slate-400 mt-0.5">Autorizado por KAIROS AI Sentinel mediante código seguro al correo.</p>
-            </div>
-            <span class="text-[10px] font-mono font-bold text-amber-400 bg-amber-500/10 border border-amber-500/30 px-2.5 py-0.5 rounded-full">KAIROS AI OTP</span>
-          </div>
-
-          <form id="formChangePassword" onsubmit="handleChangePassword(event)" class="space-y-4">
-            
-            <!-- Grid: Nueva y Confirmación lado a lado -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-              <!-- Nueva Clave -->
-              <div>
-                <label for="inputNewPass" class="block text-xs font-semibold text-slate-300 mb-1.5">
-                  Nueva Contraseña <span class="text-slate-500 font-normal">(≥ 8 car., A-Z, a-z, 0-9, #!?)</span>
-                </label>
-                <div class="relative">
-                  <input 
-                    type="password" 
-                    id="inputNewPass" 
-                    name="new_password" 
-                    required 
-                    minlength="8" 
-                    oninput="checkPasswordStrength()"
-                    class="w-full bg-[#080d19] border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-white font-mono text-xs focus:outline-none focus:border-amber-400 transition pr-10"
-                    placeholder="••••••••••••"
-                  >
-                  <button type="button" onclick="togglePassVisibility('inputNewPass')" class="absolute right-3.5 top-2.5 text-slate-400 hover:text-white text-xs">
-                    👁️
-                  </button>
+        <!-- Tarjeta: Estado de Membresía VIP -->
+        <div class="glass-panel rounded-3xl p-6 border border-slate-800 relative overflow-hidden">
+          <?php if ($es_vip): ?>
+            <div class="flex items-center justify-between gap-4">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-amber-500/15 border border-amber-500/40 flex items-center justify-center text-lg">
+                  👑
                 </div>
-              </div>
-
-              <!-- Confirmar Clave -->
-              <div>
-                <label for="inputConfirmPass" class="block text-xs font-semibold text-slate-300 mb-1.5">
-                  Confirmar Contraseña
-                </label>
-                <div class="relative">
-                  <input 
-                    type="password" 
-                    id="inputConfirmPass" 
-                    name="confirm_password" 
-                    required 
-                    minlength="8" 
-                    oninput="checkPasswordMatch()"
-                    class="w-full bg-[#080d19] border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-white font-mono text-xs focus:outline-none focus:border-amber-400 transition pr-10"
-                    placeholder="••••••••••••"
-                  >
-                  <button type="button" onclick="togglePassVisibility('inputConfirmPass')" class="absolute right-3.5 top-2.5 text-slate-400 hover:text-white text-xs">
-                    👁️
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Medidor de Robustez y Verificador de Requisitos en Vivo -->
-            <div class="bg-[#070b14] border border-slate-800/80 rounded-2xl p-3.5 space-y-2.5">
-              <div class="flex items-center justify-between text-xs">
-                <span class="text-slate-400 font-mono text-[11px]">Nivel de Seguridad:</span>
-                <span id="strengthLabel" class="font-mono text-[11px] font-bold text-slate-500">Sin evaluar</span>
-              </div>
-              
-              <!-- Barra de Progreso -->
-              <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
-                <div id="strengthBar" class="h-full w-0 bg-slate-600 transition-all duration-300 rounded-full"></div>
-              </div>
-
-              <!-- Checklist de Requisitos -->
-              <div class="grid grid-cols-2 sm:grid-cols-5 gap-1.5 text-[10px] font-mono pt-1">
-                <div id="reqLength" class="flex items-center gap-1 text-slate-500 bg-slate-900/60 px-2 py-1 rounded-lg border border-slate-800">
-                  <span class="icon">✕</span> <span>8+ car.</span>
-                </div>
-                <div id="reqUpper" class="flex items-center gap-1 text-slate-500 bg-slate-900/60 px-2 py-1 rounded-lg border border-slate-800">
-                  <span class="icon">✕</span> <span>Mayúscula</span>
-                </div>
-                <div id="reqLower" class="flex items-center gap-1 text-slate-500 bg-slate-900/60 px-2 py-1 rounded-lg border border-slate-800">
-                  <span class="icon">✕</span> <span>Minúscula</span>
-                </div>
-                <div id="reqNumber" class="flex items-center gap-1 text-slate-500 bg-slate-900/60 px-2 py-1 rounded-lg border border-slate-800">
-                  <span class="icon">✕</span> <span>Número</span>
-                </div>
-                <div id="reqSymbol" class="col-span-2 sm:col-span-1 flex items-center gap-1 text-slate-500 bg-slate-900/60 px-2 py-1 rounded-lg border border-slate-800">
-                  <span class="icon">✕</span> <span>Símbolo (#@!)</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Paso de Verificación KAIROS AI -->
-            <div class="bg-[#070b14] border border-slate-800/90 rounded-2xl p-4 space-y-3">
-              <div class="flex items-center justify-between">
                 <div>
-                  <span class="text-xs font-bold text-white flex items-center gap-1.5">
-                    <span>⚡</span> Código de Seguridad KAIROS
-                  </span>
-                  <p class="text-[11px] text-slate-400 mt-0.5">
-                    Se enviará a: <strong class="text-amber-400 font-mono"><?= $correo_actual ?></strong>
-                  </p>
+                  <h3 class="text-white font-extrabold text-sm flex items-center gap-2">
+                    Membresía VIP Institucional
+                    <span class="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-full">Activo</span>
+                  </h3>
+                  <p class="text-xs text-slate-400 mt-0.5">Acceso total e ilimitado a todas las confluencias algorítmicas 24/7.</p>
                 </div>
+              </div>
+              <a href="/vip/" class="text-xs font-bold text-amber-400 hover:text-amber-300 bg-[#070b14] border border-amber-500/30 px-4 py-2 rounded-xl transition shrink-0">
+                Gestionar
+              </a>
+            </div>
+          <?php else: ?>
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div class="space-y-1">
+                <div class="flex items-center gap-2">
+                  <span class="text-amber-400 text-base">👑</span>
+                  <h3 class="text-white font-extrabold text-sm">Desbloquea el Enclave VIP</h3>
+                  <span class="text-[10px] font-mono font-black text-amber-300 bg-amber-500/20 px-2 py-0.5 rounded-lg">$5 USD/mes</span>
+                </div>
+                <p class="text-xs text-slate-400 leading-relaxed">
+                  Señales confluentes 24/7 sin límite de días con conexión FIX 4.4 de baja latencia.
+                </p>
+              </div>
+              <a href="/vip/" class="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-300 hover:to-amber-500 text-slate-950 font-black text-xs py-2.5 px-5 rounded-xl shadow-lg shadow-amber-500/20 transition shrink-0">
+                <span>👑</span>
+                <span>Activar VIP</span>
+              </a>
+            </div>
+          <?php endif; ?>
+        </div>
+
+      </div>
+
+      <!-- ================= PANEL DERECHO: SEGURIDAD & CONTRASEÑA KAIROS AI (6 cols) ================= -->
+      <div class="lg:col-span-6">
+        <div class="glass-panel rounded-3xl p-6 border border-slate-800 space-y-5 h-full flex flex-col justify-between">
+          
+          <div>
+            <div class="flex items-center justify-between border-b border-slate-800/80 pb-3.5">
+              <div>
+                <h2 class="text-white font-extrabold text-sm sm:text-base flex items-center gap-2">
+                  <span>🔒</span> Seguridad & Contraseña
+                </h2>
+                <p class="text-xs text-slate-400 mt-0.5">Autorizado por KAIROS AI Sentinel mediante código seguro al correo.</p>
+              </div>
+              <span class="text-[10px] font-mono font-bold text-amber-400 bg-amber-500/10 border border-amber-500/30 px-2.5 py-0.5 rounded-full">KAIROS AI OTP</span>
+            </div>
+
+            <form id="formChangePassword" onsubmit="handleChangePassword(event)" class="space-y-4 pt-4">
+              
+              <!-- Grid: Nueva y Confirmación lado a lado -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                <!-- Nueva Clave -->
+                <div>
+                  <label for="inputNewPass" class="block text-xs font-semibold text-slate-300 mb-1.5">
+                    Nueva Contraseña <span class="text-slate-500 font-normal">(≥ 8 car.)</span>
+                  </label>
+                  <div class="relative">
+                    <input 
+                      type="password" 
+                      id="inputNewPass" 
+                      name="new_password" 
+                      required 
+                      minlength="8" 
+                      oninput="checkPasswordStrength()"
+                      class="w-full bg-[#080d19] border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-white font-mono text-xs focus:outline-none focus:border-amber-400 transition pr-10"
+                      placeholder="••••••••••••"
+                    >
+                    <button type="button" onclick="togglePassVisibility('inputNewPass')" class="absolute right-3.5 top-2.5 text-slate-400 hover:text-white text-xs">
+                      👁️
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Confirmar Clave -->
+                <div>
+                  <label for="inputConfirmPass" class="block text-xs font-semibold text-slate-300 mb-1.5">
+                    Confirmar Contraseña
+                  </label>
+                  <div class="relative">
+                    <input 
+                      type="password" 
+                      id="inputConfirmPass" 
+                      name="confirm_password" 
+                      required 
+                      minlength="8" 
+                      oninput="checkPasswordMatch()"
+                      class="w-full bg-[#080d19] border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-white font-mono text-xs focus:outline-none focus:border-amber-400 transition pr-10"
+                      placeholder="••••••••••••"
+                    >
+                    <button type="button" onclick="togglePassVisibility('inputConfirmPass')" class="absolute right-3.5 top-2.5 text-slate-400 hover:text-white text-xs">
+                      👁️
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Medidor de Robustez y Verificador de Requisitos en Vivo -->
+              <div class="bg-[#070b14] border border-slate-800/80 rounded-2xl p-3.5 space-y-2.5">
+                <div class="flex items-center justify-between text-xs">
+                  <span class="text-slate-400 font-mono text-[11px]">Nivel de Seguridad:</span>
+                  <span id="strengthLabel" class="font-mono text-[11px] font-bold text-slate-500">Sin evaluar</span>
+                </div>
+                
+                <!-- Barra de Progreso -->
+                <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                  <div id="strengthBar" class="h-full w-0 bg-slate-600 transition-all duration-300 rounded-full"></div>
+                </div>
+
+                <!-- Checklist de Requisitos -->
+                <div class="grid grid-cols-2 sm:grid-cols-5 gap-1.5 text-[10px] font-mono pt-1">
+                  <div id="reqLength" class="flex items-center gap-1 text-slate-500 bg-slate-900/60 px-2 py-1 rounded-lg border border-slate-800">
+                    <span class="icon">✕</span> <span>8+ car.</span>
+                  </div>
+                  <div id="reqUpper" class="flex items-center gap-1 text-slate-500 bg-slate-900/60 px-2 py-1 rounded-lg border border-slate-800">
+                    <span class="icon">✕</span> <span>Mayúscula</span>
+                  </div>
+                  <div id="reqLower" class="flex items-center gap-1 text-slate-500 bg-slate-900/60 px-2 py-1 rounded-lg border border-slate-800">
+                    <span class="icon">✕</span> <span>Minúscula</span>
+                  </div>
+                  <div id="reqNumber" class="flex items-center gap-1 text-slate-500 bg-slate-900/60 px-2 py-1 rounded-lg border border-slate-800">
+                    <span class="icon">✕</span> <span>Número</span>
+                  </div>
+                  <div id="reqSymbol" class="col-span-2 sm:col-span-1 flex items-center gap-1 text-slate-500 bg-slate-900/60 px-2 py-1 rounded-lg border border-slate-800">
+                    <span class="icon">✕</span> <span>Símbolo (#@!)</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Paso de Verificación KAIROS AI -->
+              <div class="bg-[#070b14] border border-slate-800/90 rounded-2xl p-3.5 space-y-2.5">
+                <div class="flex items-center justify-between flex-wrap gap-2">
+                  <div>
+                    <span class="text-xs font-bold text-white flex items-center gap-1.5">
+                      <span>⚡</span> Código de Seguridad KAIROS
+                    </span>
+                    <p class="text-[11px] text-slate-400 mt-0.5">
+                      Se enviará a: <strong class="text-amber-400 font-mono"><?= $correo_actual ?></strong>
+                    </p>
+                  </div>
+                  <button 
+                    type="button" 
+                    id="btnSendCode" 
+                    onclick="handleSendVerificationCode()"
+                    class="inline-flex items-center gap-1.5 bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/40 text-xs font-bold px-3 py-1.5 rounded-xl transition duration-150 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <span>📨</span>
+                    <span id="btnSendCodeText">Enviar Código</span>
+                  </button>
+                </div>
+
+                <div>
+                  <input 
+                    type="text" 
+                    id="inputOtpCode" 
+                    name="verification_code" 
+                    maxlength="6" 
+                    inputmode="numeric" 
+                    pattern="[0-9]{6}" 
+                    class="w-full bg-[#0b101e] border border-slate-700/80 rounded-xl px-4 py-2 text-center font-mono font-black text-amber-400 text-lg tracking-[8px] placeholder:tracking-normal placeholder:font-normal placeholder:text-slate-600 placeholder:text-xs focus:outline-none focus:border-amber-400 transition"
+                    placeholder="Introduce los 6 dígitos del correo"
+                  >
+                </div>
+              </div>
+
+              <!-- Alerta Formulario Contraseña -->
+              <div id="passwordAlertBox" class="hidden text-xs p-3 rounded-xl font-mono"></div>
+
+              <!-- Botón Actualizar Clave -->
+              <div class="flex justify-end pt-1">
                 <button 
-                  type="button" 
-                  id="btnSendCode" 
-                  onclick="handleSendVerificationCode()"
-                  class="inline-flex items-center gap-1.5 bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/40 text-xs font-bold px-3 py-1.5 rounded-xl transition duration-150 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                  type="submit" 
+                  id="btnChangePass"
+                  class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-black text-xs px-6 py-2.5 rounded-xl transition duration-150 shadow-md shadow-amber-500/20 active:scale-95"
                 >
-                  <span>📨</span>
-                  <span id="btnSendCodeText">Enviar Código</span>
+                  <span>🔑</span>
+                  <span>Confirmar y Cambiar Contraseña</span>
                 </button>
               </div>
 
-              <div>
-                <input 
-                  type="text" 
-                  id="inputOtpCode" 
-                  name="verification_code" 
-                  maxlength="6" 
-                  inputmode="numeric" 
-                  pattern="[0-9]{6}" 
-                  class="w-full bg-[#0b101e] border border-slate-700/80 rounded-xl px-4 py-2.5 text-center font-mono font-black text-amber-400 text-lg tracking-[8px] placeholder:tracking-normal placeholder:font-normal placeholder:text-slate-600 placeholder:text-xs focus:outline-none focus:border-amber-400 transition"
-                  placeholder="Introduce los 6 dígitos del correo"
-                >
-              </div>
-            </div>
+            </form>
+          </div>
 
-            <!-- Alerta Formulario Contraseña -->
-            <div id="passwordAlertBox" class="hidden text-xs p-3 rounded-xl font-mono"></div>
-
-            <!-- Botón Actualizar Clave -->
-            <div class="flex justify-end pt-1">
-              <button 
-                type="submit" 
-                id="btnChangePass"
-                class="inline-flex items-center gap-2 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-black text-xs px-5 py-2.5 rounded-xl transition duration-150 shadow-md shadow-amber-500/20 active:scale-95"
-              >
-                <span>🔑</span>
-                <span>Confirmar y Cambiar Contraseña</span>
-              </button>
-            </div>
-
-          </form>
         </div>
-
-      </section>
+      </div>
 
     </div>
 
