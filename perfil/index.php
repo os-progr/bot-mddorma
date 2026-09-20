@@ -30,7 +30,6 @@ try {
 }
 
 if (!$user) {
-    // Sesión huérfana
     session_destroy();
     header("Location: /login.php?mensaje=session_expired");
     exit;
@@ -45,8 +44,18 @@ $fecha_reg_raw = $user['fecha_registro'] ?? date('Y-m-d H:i:s');
 $fecha_reg = date('d/m/Y, H:i', strtotime($fecha_reg_raw));
 $nombre_actual = htmlspecialchars($user['nombre'] ?: 'Operador Cuántico');
 $correo_actual = htmlspecialchars($user['correo'] ?: '');
-$foto_perfil = !empty($user['foto_perfil']) ? htmlspecialchars($user['foto_perfil']) : null;
-$inicial_nombre = mb_strtoupper(mb_substr($nombre_actual, 0, 1));
+
+// Validar foto de perfil para evitar iconos rotos
+$foto_valida = false;
+$foto_perfil = null;
+if (!empty($user['foto_perfil'])) {
+    $fp = trim((string)$user['foto_perfil']);
+    if (filter_var($fp, FILTER_VALIDATE_URL)) {
+        $foto_valida = true;
+        $foto_perfil = htmlspecialchars($fp);
+    }
+}
+$inicial_nombre = mb_strtoupper(mb_substr($user['nombre'] ?: 'O', 0, 1));
 ?>
 <!DOCTYPE html>
 <html lang="es" class="dark">
@@ -105,10 +114,10 @@ $inicial_nombre = mb_strtoupper(mb_substr($nombre_actual, 0, 1));
       color: #cbd5e1;
       font-size: 13px;
       background-image: 
-        radial-gradient(circle at 50% 10%, rgba(245, 158, 11, 0.04) 0%, transparent 40%),
+        radial-gradient(circle at 20% 15%, rgba(245, 158, 11, 0.04) 0%, transparent 40%),
         radial-gradient(circle at 80% 60%, rgba(14, 165, 233, 0.03) 0%, transparent 50%),
-        linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+        linear-gradient(to right, rgba(255, 255, 255, 0.012) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.012) 1px, transparent 1px);
       background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px;
       min-height: 100vh;
       display: flex;
@@ -116,13 +125,13 @@ $inicial_nombre = mb_strtoupper(mb_substr($nombre_actual, 0, 1));
     }
 
     .glass-panel {
-      background: rgba(11, 15, 25, 0.82);
+      background: rgba(11, 15, 25, 0.85);
       backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.07);
     }
 
     .glow-amber {
-      box-shadow: 0 0 25px -4px rgba(245, 158, 11, 0.25);
+      box-shadow: 0 0 35px -5px rgba(245, 158, 11, 0.18);
     }
 
     .badge-pulse {
@@ -151,7 +160,7 @@ $inicial_nombre = mb_strtoupper(mb_substr($nombre_actual, 0, 1));
   <header class="sticky top-0 z-40 bg-[#05070d]/90 backdrop-blur-md border-b border-slate-800/80 px-4 lg:px-8 py-3">
     <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
       
-      <!-- Brand Logo con Logo Oficial -->
+      <!-- Brand Logo Oficial -->
       <a href="/" class="flex items-center gap-3 group">
         <img src="/assets/logo.png" alt="Quantum AI" class="w-9 h-9 object-contain drop-shadow-[0_0_12px_rgba(245,158,11,0.4)] group-hover:scale-105 transition duration-200">
         <div>
@@ -164,7 +173,7 @@ $inicial_nombre = mb_strtoupper(mb_substr($nombre_actual, 0, 1));
         </div>
       </a>
 
-      <!-- Navegación Central Modular -->
+      <!-- Navegación Modular Superior -->
       <nav class="hidden lg:flex items-center gap-1 bg-[#0b0f19] border border-slate-800 p-1 rounded-xl text-xs font-semibold">
         <a href="/?tab=senales" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition flex items-center gap-1.5">
           <span>⚡</span> Señales
@@ -188,13 +197,11 @@ $inicial_nombre = mb_strtoupper(mb_substr($nombre_actual, 0, 1));
 
       <!-- Estado en Vivo & Salir -->
       <div class="flex items-center gap-3">
-        <!-- Latencia Enclave -->
         <div class="hidden sm:flex items-center gap-1.5 text-[11px] font-mono text-emerald-400 font-semibold bg-[#0b0f19] px-2.5 py-1.5 rounded-xl border border-slate-800">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 badge-pulse"></span>
           <span>FIX 4.4: <strong class="text-white">ACTIVO</strong></span>
         </div>
 
-        <!-- Botón Salir -->
         <a href="/api/auth.php?action=logout&redirect_login=1" class="flex items-center gap-1.5 bg-[#141b2d] hover:bg-rose-950/40 text-slate-300 hover:text-rose-400 border border-slate-800 hover:border-rose-500/40 text-xs font-bold px-3 py-1.5 rounded-xl transition duration-150">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
           <span class="hidden sm:inline">Cerrar Sesión</span>
@@ -216,164 +223,181 @@ $inicial_nombre = mb_strtoupper(mb_substr($nombre_actual, 0, 1));
     </div>
   </div>
 
-  <!-- ================= CONTENIDO PRINCIPAL ================= -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-6 space-y-6">
+  <!-- ================= CONTENEDOR PRINCIPAL: ARQUITECTURA DE 2 COLUMNAS ================= -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-7">
 
-    <!-- ================= 1. BANNER DE PERFIL DEL TRADER ================= -->
-    <div class="glass-panel rounded-2xl p-5 sm:p-7 relative overflow-hidden border border-slate-800 glow-amber">
-      <div class="absolute -right-12 -top-12 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
-      <div class="absolute -left-12 -bottom-12 w-64 h-64 bg-sky-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-7 items-start">
 
-      <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-        
-        <!-- Info Izquierda: Avatar + Datos -->
-        <div class="flex items-center gap-4 sm:gap-5">
-          <!-- Avatar -->
-          <div class="relative shrink-0">
-            <?php if ($foto_perfil): ?>
-              <img src="<?= $foto_perfil ?>" alt="<?= $nombre_actual ?>" class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover border-2 border-amber-500/50 shadow-[0_0_20px_rgba(245,158,11,0.25)]">
-            <?php else: ?>
-              <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-tr from-amber-600 via-amber-500 to-amber-300 text-slate-950 font-black text-2xl sm:text-3xl flex items-center justify-center border-2 border-amber-400/60 shadow-[0_0_25px_rgba(245,158,11,0.3)]">
-                <?= $inicial_nombre ?>
-              </div>
-            <?php endif; ?>
-            <div class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full <?= $es_vip ? 'bg-amber-400' : 'bg-emerald-400' ?> border-2 border-[#0b0f19] flex items-center justify-center text-[9px]" title="Cuenta Activa">
-              <?= $es_vip ? '👑' : '⚡' ?>
-            </div>
-          </div>
+      <!-- ================= COLUMNA IZQUIERDA: TARJETA DEL TRADER & INFRAESTRUCTURA (5 cols) ================= -->
+      <aside class="lg:col-span-5 space-y-5">
 
-          <!-- Textos Principales -->
-          <div class="space-y-1">
-            <div class="flex flex-wrap items-center gap-2">
-              <h1 class="text-xl sm:text-2xl font-black text-white tracking-tight" id="displayProfileName">
-                <?= $nombre_actual ?>
-              </h1>
-              
-              <!-- Badge de Membresía -->
-              <?php if ($es_vip): ?>
-                <span class="inline-flex items-center gap-1.5 bg-amber-500/15 border border-amber-500/40 text-amber-300 text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-full">
-                  <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
-                  👑 VIP ACTIVO
-                </span>
-              <?php elseif ($tipo_acceso === 'prueba_gratis'): ?>
-                <span class="inline-flex items-center gap-1.5 bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-full">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                  ⚡ PRUEBA: <?= $dias_restantes ?>d RESTANTES
-                </span>
+        <!-- Tarjeta Principal del Operador -->
+        <div class="glass-panel rounded-3xl p-6 relative overflow-hidden border border-slate-800 glow-amber space-y-5">
+          <div class="absolute -right-12 -top-12 w-48 h-48 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+          <!-- Cabecera de Identidad: Avatar Limpio + Datos -->
+          <div class="flex items-center gap-4">
+            <!-- Avatar Seguro -->
+            <div class="relative shrink-0">
+              <?php if ($foto_valida && $foto_perfil): ?>
+                <img 
+                  src="<?= $foto_perfil ?>" 
+                  alt="<?= $nombre_actual ?>" 
+                  onerror="this.style.display='none'; document.getElementById('avatarFallback').style.display='flex';"
+                  class="w-16 h-16 rounded-2xl object-cover border-2 border-amber-500/50 shadow-[0_0_20px_rgba(245,158,11,0.25)]"
+                >
+                <div id="avatarFallback" class="hidden w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-600 via-amber-500 to-amber-300 text-slate-950 font-black text-2xl items-center justify-center border-2 border-amber-400/60 shadow-[0_0_25px_rgba(245,158,11,0.3)]">
+                  <?= $inicial_nombre ?>
+                </div>
               <?php else: ?>
-                <span class="inline-flex items-center gap-1.5 bg-rose-500/15 border border-rose-500/40 text-rose-300 text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-full">
-                  <span class="w-1.5 h-1.5 rounded-full bg-rose-400"></span>
-                  ⚠️ PRUEBA FINALIZADA
-                </span>
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-600 via-amber-500 to-amber-300 text-slate-950 font-black text-2xl flex items-center justify-center border-2 border-amber-400/60 shadow-[0_0_25px_rgba(245,158,11,0.3)]">
+                  <?= $inicial_nombre ?>
+                </div>
               <?php endif; ?>
+              
+              <div class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full <?= $es_vip ? 'bg-amber-400' : 'bg-emerald-400' ?> border-2 border-[#0b0f19] flex items-center justify-center text-[9px]" title="Cuenta Activa">
+                <?= $es_vip ? '👑' : '⚡' ?>
+              </div>
             </div>
 
-            <p class="text-xs text-slate-400 font-mono flex items-center gap-2">
-              <span><?= $correo_actual ?></span>
-              <span class="text-slate-600">•</span>
-              <span class="text-amber-400/90 font-bold"><?= $trader_id ?></span>
-            </p>
-            
-            <p class="text-[11px] text-slate-500">
-              Registrado el: <strong class="text-slate-300 font-mono"><?= $fecha_reg ?></strong>
-            </p>
+            <!-- Nombre y Badge -->
+            <div class="min-w-0 flex-1 space-y-1">
+              <div class="flex items-center gap-2">
+                <h1 class="text-xl font-black text-white truncate" id="displayProfileName">
+                  <?= $nombre_actual ?>
+                </h1>
+                <span class="text-amber-400 text-xs" title="Operador Registrado">✓</span>
+              </div>
+              <p class="text-xs text-slate-400 font-mono truncate"><?= $correo_actual ?></p>
+              
+              <div class="pt-0.5">
+                <?php if ($es_vip): ?>
+                  <span class="inline-flex items-center gap-1.5 bg-amber-500/15 border border-amber-500/40 text-amber-300 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full">
+                    <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+                    👑 MEMBRESÍA VIP ACTIVA
+                  </span>
+                <?php elseif ($tipo_acceso === 'prueba_gratis'): ?>
+                  <span class="inline-flex items-center gap-1.5 bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                    ⚡ PRUEBA: <?= $dias_restantes ?> DÍAS RESTANTES
+                  </span>
+                <?php else: ?>
+                  <span class="inline-flex items-center gap-1.5 bg-rose-500/15 border border-rose-500/40 text-rose-300 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full">
+                    <span class="w-1.5 h-1.5 rounded-full bg-rose-400"></span>
+                    ⚠️ PRUEBA FINALIZADA
+                  </span>
+                <?php endif; ?>
+              </div>
+            </div>
           </div>
-        </div>
 
-        <!-- Acciones Rápidas Derecha -->
-        <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+          <!-- Separador -->
+          <div class="h-px bg-slate-800/80"></div>
+
+          <!-- Cuadrícula Integrada de Especificaciones de Cuenta -->
+          <div class="grid grid-cols-2 gap-2.5 text-xs font-mono">
+            <!-- UID Operador -->
+            <div class="bg-[#070b14] border border-slate-800/90 rounded-2xl p-3 flex flex-col justify-between">
+              <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">UID OPERADOR</span>
+              <div class="flex items-center justify-between mt-1">
+                <strong class="text-white font-black text-sm tracking-wide"><?= $trader_id ?></strong>
+                <button onclick="copyTraderUid('<?= $trader_id ?>')" class="text-slate-500 hover:text-amber-400 text-xs transition" title="Copiar UID">
+                  📋
+                </button>
+              </div>
+            </div>
+
+            <!-- Fecha de Registro -->
+            <div class="bg-[#070b14] border border-slate-800/90 rounded-2xl p-3 flex flex-col justify-between">
+              <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">REGISTRO</span>
+              <strong class="text-slate-300 text-xs mt-1 truncate" title="<?= $fecha_reg ?>"><?= $fecha_reg ?></strong>
+            </div>
+
+            <!-- Protocolo FIX DMA -->
+            <div class="bg-[#070b14] border border-slate-800/90 rounded-2xl p-3 flex flex-col justify-between">
+              <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">ENCLAVE DMA</span>
+              <div class="flex items-center gap-1.5 mt-1 text-sky-400 text-xs font-bold">
+                <span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span>
+                <span>FIX 4.4 LD4</span>
+              </div>
+            </div>
+
+            <!-- Sesión -->
+            <div class="bg-[#070b14] border border-slate-800/90 rounded-2xl p-3 flex flex-col justify-between">
+              <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">SESIÓN</span>
+              <div class="flex items-center gap-1.5 mt-1 text-emerald-400 text-xs font-bold">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                <span>30 DÍAS ACTIVA</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta de Estado VIP & Acceso Rápido -->
           <?php if (!$es_vip): ?>
-            <a href="/vip/" class="inline-flex items-center gap-2 bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-300 hover:to-amber-500 text-slate-950 font-black text-xs px-4 py-2.5 rounded-xl shadow-lg shadow-amber-500/20 transition duration-150 transform hover:scale-[1.02] active:scale-[0.98]">
-              <span>👑</span>
-              <span>Activar Membresía VIP ($5/mes)</span>
-            </a>
+            <div class="bg-gradient-to-br from-amber-500/10 via-[#0d1528] to-amber-500/5 border border-amber-500/30 rounded-2xl p-4 space-y-3">
+              <div class="flex items-start justify-between gap-2">
+                <div>
+                  <span class="text-amber-400 font-bold text-xs flex items-center gap-1.5">
+                    <span>👑</span> Desbloquea Acceso Total
+                  </span>
+                  <p class="text-[11px] text-slate-400 mt-1 leading-relaxed">
+                    Accede a señales institucionales confluentes 24/7 sin límite de días.
+                  </p>
+                </div>
+                <span class="text-xs font-mono font-black text-amber-300 bg-amber-500/20 px-2 py-0.5 rounded-lg shrink-0">
+                  $5 USD/mes
+                </span>
+              </div>
+              <a href="/vip/" class="w-full text-center inline-flex items-center justify-center gap-2 bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-300 hover:to-amber-500 text-slate-950 font-black text-xs py-2.5 px-4 rounded-xl shadow-lg shadow-amber-500/20 transition duration-150 transform hover:scale-[1.01] active:scale-[0.98]">
+                <span>👑</span>
+                <span>Activar Membresía VIP</span>
+              </a>
+            </div>
           <?php else: ?>
-            <a href="/vip/" class="inline-flex items-center gap-2 bg-[#0d1528] hover:bg-[#121c35] text-amber-400 border border-amber-500/40 font-bold text-xs px-4 py-2.5 rounded-xl transition">
-              <span>👑</span>
-              <span>Gestionar Plan VIP</span>
-            </a>
+            <div class="bg-emerald-500/10 border border-emerald-500/30 rounded-2xl p-3.5 flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <span class="text-lg">👑</span>
+                <div>
+                  <span class="text-emerald-300 font-bold text-xs block">Membresía VIP Activa</span>
+                  <span class="text-[11px] text-slate-400">Acceso ilimitado a todas las herramientas</span>
+                </div>
+              </div>
+              <a href="/vip/" class="text-xs font-bold text-amber-400 hover:text-amber-300 bg-[#070b14] border border-amber-500/30 px-3 py-1.5 rounded-lg transition">
+                Gestionar
+              </a>
+            </div>
           <?php endif; ?>
 
-          <a href="/" class="inline-flex items-center gap-2 bg-[#0e1726] hover:bg-[#142138] text-amber-400 hover:text-amber-300 border border-amber-500/30 font-bold text-xs px-4 py-2.5 rounded-xl transition">
-            <span>⚡</span>
-            <span>Terminal Cuántico</span>
-          </a>
+          <!-- Botón Directo al Radar -->
+          <div class="pt-1">
+            <a href="/" class="w-full inline-flex items-center justify-center gap-2 bg-[#090f1e] hover:bg-[#121c35] text-amber-400 hover:text-amber-300 border border-slate-800 hover:border-amber-500/40 text-xs font-bold py-2.5 px-4 rounded-xl transition duration-150">
+              <span>⚡</span>
+              <span>Abrir Radar & Terminal Cuántico</span>
+            </a>
+          </div>
+
         </div>
 
-      </div>
-    </div>
+      </aside>
 
-    <!-- ================= 2. GRID DE MÉTRICAS DE LA CUENTA ================= -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
-      
-      <!-- Card: ID de Trader -->
-      <div class="glass-panel p-4 rounded-2xl border border-slate-800/90 flex flex-col justify-between">
-        <span class="text-[10px] text-slate-500 uppercase font-mono font-bold tracking-wider">ID DE OPERADOR</span>
-        <div class="mt-2">
-          <span class="text-white font-mono font-black text-lg tracking-wider"><?= $trader_id ?></span>
-          <p class="text-[10px] text-slate-400 mt-0.5">Identificador de cuenta seguro</p>
-        </div>
-      </div>
+      <!-- ================= COLUMNA DERECHA: FORMULARIOS DE CONFIGURACIÓN (7 cols) ================= -->
+      <section class="lg:col-span-7 space-y-6">
 
-      <!-- Card: Estado de Acceso -->
-      <div class="glass-panel p-4 rounded-2xl border border-slate-800/90 flex flex-col justify-between">
-        <span class="text-[10px] text-slate-500 uppercase font-mono font-bold tracking-wider">NIVEL DE ACCESO</span>
-        <div class="mt-2">
-          <?php if ($es_vip): ?>
-            <span class="text-amber-400 font-mono font-black text-lg">VIP TIER III</span>
-            <p class="text-[10px] text-emerald-400 mt-0.5 flex items-center gap-1">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Acceso Total Ilimitado
-            </p>
-          <?php elseif ($tipo_acceso === 'prueba_gratis'): ?>
-            <span class="text-emerald-400 font-mono font-black text-lg"><?= $dias_restantes ?> Días</span>
-            <p class="text-[10px] text-slate-400 mt-0.5">Prueba institucional activa</p>
-          <?php else: ?>
-            <span class="text-rose-400 font-mono font-black text-lg">Expirado</span>
-            <p class="text-[10px] text-amber-400 mt-0.5">Requiere pase VIP para operar</p>
-          <?php endif; ?>
-        </div>
-      </div>
-
-      <!-- Card: Protocolo & Enclave -->
-      <div class="glass-panel p-4 rounded-2xl border border-slate-800/90 flex flex-col justify-between">
-        <span class="text-[10px] text-slate-500 uppercase font-mono font-bold tracking-wider">PROTOCOLO FIX DMA</span>
-        <div class="mt-2">
-          <span class="text-sky-400 font-mono font-black text-lg">FIX 4.4</span>
-          <p class="text-[10px] text-slate-400 mt-0.5">LD4 Equinix Prime (&lt; 4.2ms)</p>
-        </div>
-      </div>
-
-      <!-- Card: Sesión Persistente -->
-      <div class="glass-panel p-4 rounded-2xl border border-slate-800/90 flex flex-col justify-between">
-        <span class="text-[10px] text-slate-500 uppercase font-mono font-bold tracking-wider">SESIÓN AISLADA</span>
-        <div class="mt-2">
-          <span class="text-emerald-400 font-mono font-black text-lg">30 DÍAS</span>
-          <p class="text-[10px] text-slate-400 mt-0.5">QUANTUM_BOT_SESSID Activa</p>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- ================= 3. SECCIÓN DE CONFIGURACIÓN Y FORMULARIOS ================= -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-      <!-- ================= COLUMNA IZQUIERDA: DATOS PERSONALES (6 COLS) ================= -->
-      <div class="lg:col-span-6 space-y-6">
-
-        <!-- Tarjeta: Información de Cuenta -->
-        <div class="glass-panel rounded-2xl p-5 sm:p-6 border border-slate-800 space-y-5">
-          <div class="flex items-center justify-between border-b border-slate-800/80 pb-3">
+        <!-- Tarjeta 1: Datos Personales -->
+        <div class="glass-panel rounded-3xl p-6 border border-slate-800 space-y-5">
+          <div class="flex items-center justify-between border-b border-slate-800/80 pb-3.5">
             <div>
               <h2 class="text-white font-extrabold text-sm sm:text-base flex items-center gap-2">
-                <span>👤</span> Datos Personales
+                <span>👤</span> Datos del Operador
               </h2>
-              <p class="text-xs text-slate-400 mt-0.5">Actualiza tu nombre visible en el terminal.</p>
+              <p class="text-xs text-slate-400 mt-0.5">Configura tu nombre e identidad visible en el terminal.</p>
             </div>
-            <span class="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded">Sincronizado</span>
+            <span class="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-0.5 rounded-full">Sincronizado</span>
           </div>
 
           <form id="formUpdateProfile" onsubmit="handleUpdateProfile(event)" class="space-y-4">
-            <!-- Nombre Completo -->
+            
+            <!-- Input Nombre -->
             <div>
               <label for="inputNombre" class="block text-xs font-semibold text-slate-300 mb-1.5">
                 Nombre de Operador
@@ -389,15 +413,15 @@ $inicial_nombre = mb_strtoupper(mb_substr($nombre_actual, 0, 1));
                   class="w-full bg-[#080d19] border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-white font-medium text-xs focus:outline-none focus:border-amber-400 transition"
                   placeholder="Tu Nombre o Alias de Trading"
                 >
-                <span class="absolute right-3 top-2.5 text-slate-500 text-xs">✏️</span>
+                <span class="absolute right-3.5 top-2.5 text-slate-500 text-xs pointer-events-none">✏️</span>
               </div>
-              <p class="text-[11px] text-slate-500 mt-1">Este nombre se mostrará en las alertas y en la cabecera del terminal.</p>
+              <p class="text-[11px] text-slate-500 mt-1">Visible en cabeceras y reportes de ejecución algorítmica.</p>
             </div>
 
-            <!-- Correo Electrónico (Solo Lectura) -->
+            <!-- Input Correo -->
             <div>
               <label class="block text-xs font-semibold text-slate-300 mb-1.5">
-                Correo Electrónico (Cuenta de Acceso)
+                Correo Electrónico (Cuenta Maestra)
               </label>
               <div class="relative">
                 <input 
@@ -406,18 +430,18 @@ $inicial_nombre = mb_strtoupper(mb_substr($nombre_actual, 0, 1));
                   readonly 
                   class="w-full bg-[#060a14] border border-slate-800 text-slate-400 rounded-xl px-3.5 py-2.5 font-mono text-xs cursor-not-allowed select-all"
                 >
-                <span class="absolute right-3 top-2.5 text-emerald-400 text-xs" title="Verificado">✓</span>
+                <span class="absolute right-3.5 top-2.5 text-emerald-400 text-xs" title="Verificado">✓</span>
               </div>
               <p class="text-[11px] text-slate-500 mt-1 flex items-center gap-1">
-                <span>🔒</span> Vinculado a tu cuenta de Google o credenciales maestras.
+                <span>🔒</span> Vinculado a tu acceso institucional permanente.
               </p>
             </div>
 
-            <!-- Alerta de Respuesta Formulario -->
+            <!-- Alerta Formulario Perfil -->
             <div id="profileAlertBox" class="hidden text-xs p-3 rounded-xl font-mono"></div>
 
-            <!-- Botón Guardar Nombre -->
-            <div class="flex justify-end pt-2">
+            <!-- Botón Guardar -->
+            <div class="flex justify-end pt-1">
               <button 
                 type="submit" 
                 id="btnSaveProfile"
@@ -427,24 +451,20 @@ $inicial_nombre = mb_strtoupper(mb_substr($nombre_actual, 0, 1));
                 <span>Guardar Datos</span>
               </button>
             </div>
+
           </form>
         </div>
 
-      </div>
-
-      <!-- ================= COLUMNA DERECHA: SEGURIDAD & CONTRASEÑA (6 COLS) ================= -->
-      <div class="lg:col-span-6 space-y-6">
-
-        <!-- Tarjeta: Cambiar Contraseña -->
-        <div class="glass-panel rounded-2xl p-5 sm:p-6 border border-slate-800 space-y-5">
-          <div class="flex items-center justify-between border-b border-slate-800/80 pb-3">
+        <!-- Tarjeta 2: Seguridad & Contraseña -->
+        <div class="glass-panel rounded-3xl p-6 border border-slate-800 space-y-5">
+          <div class="flex items-center justify-between border-b border-slate-800/80 pb-3.5">
             <div>
               <h2 class="text-white font-extrabold text-sm sm:text-base flex items-center gap-2">
                 <span>🔒</span> Seguridad & Contraseña
               </h2>
-              <p class="text-xs text-slate-400 mt-0.5">Protege tu acceso al enclave con una clave robusta.</p>
+              <p class="text-xs text-slate-400 mt-0.5">Protege tu acceso al enclave con cifrado BCRYPT de alta entropía.</p>
             </div>
-            <span class="text-[10px] font-mono text-amber-400 bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 rounded">BCRYPT 12</span>
+            <span class="text-[10px] font-mono text-amber-400 bg-amber-500/10 border border-amber-500/30 px-2.5 py-0.5 rounded-full">BCRYPT 12</span>
           </div>
 
           <form id="formChangePassword" onsubmit="handleChangePassword(event)" class="space-y-4">
@@ -460,61 +480,64 @@ $inicial_nombre = mb_strtoupper(mb_substr($nombre_actual, 0, 1));
                   id="inputCurrentPass" 
                   name="current_password" 
                   class="w-full bg-[#080d19] border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-white font-mono text-xs focus:outline-none focus:border-amber-400 transition pr-10"
-                  placeholder="Tu contraseña actual (o déjalo si ingresaste con Google)"
+                  placeholder="Tu contraseña actual (déjalo vacío si ingresaste con Google)"
                 >
-                <button type="button" onclick="togglePassVisibility('inputCurrentPass')" class="absolute right-3 top-2.5 text-slate-400 hover:text-white text-xs">
+                <button type="button" onclick="togglePassVisibility('inputCurrentPass')" class="absolute right-3.5 top-2.5 text-slate-400 hover:text-white text-xs">
                   👁️
                 </button>
               </div>
             </div>
 
-            <!-- Nueva Contraseña -->
-            <div>
-              <label for="inputNewPass" class="block text-xs font-semibold text-slate-300 mb-1.5">
-                Nueva Contraseña <span class="text-slate-500 font-normal">(mínimo 6 caracteres)</span>
-              </label>
-              <div class="relative">
-                <input 
-                  type="password" 
-                  id="inputNewPass" 
-                  name="new_password" 
-                  required 
-                  minlength="6" 
-                  class="w-full bg-[#080d19] border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-white font-mono text-xs focus:outline-none focus:border-amber-400 transition pr-10"
-                  placeholder="••••••••••••"
-                >
-                <button type="button" onclick="togglePassVisibility('inputNewPass')" class="absolute right-3 top-2.5 text-slate-400 hover:text-white text-xs">
-                  👁️
-                </button>
+            <!-- Grid: Nueva y Confirmación lado a lado en pantallas medianas -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              <!-- Nueva Clave -->
+              <div>
+                <label for="inputNewPass" class="block text-xs font-semibold text-slate-300 mb-1.5">
+                  Nueva Contraseña <span class="text-slate-500 font-normal">(≥ 6 car.)</span>
+                </label>
+                <div class="relative">
+                  <input 
+                    type="password" 
+                    id="inputNewPass" 
+                    name="new_password" 
+                    required 
+                    minlength="6" 
+                    class="w-full bg-[#080d19] border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-white font-mono text-xs focus:outline-none focus:border-amber-400 transition pr-10"
+                    placeholder="••••••••••••"
+                  >
+                  <button type="button" onclick="togglePassVisibility('inputNewPass')" class="absolute right-3.5 top-2.5 text-slate-400 hover:text-white text-xs">
+                    👁️
+                  </button>
+                </div>
+              </div>
+
+              <!-- Confirmar Clave -->
+              <div>
+                <label for="inputConfirmPass" class="block text-xs font-semibold text-slate-300 mb-1.5">
+                  Confirmar Contraseña
+                </label>
+                <div class="relative">
+                  <input 
+                    type="password" 
+                    id="inputConfirmPass" 
+                    name="confirm_password" 
+                    required 
+                    minlength="6" 
+                    class="w-full bg-[#080d19] border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-white font-mono text-xs focus:outline-none focus:border-amber-400 transition pr-10"
+                    placeholder="••••••••••••"
+                  >
+                  <button type="button" onclick="togglePassVisibility('inputConfirmPass')" class="absolute right-3.5 top-2.5 text-slate-400 hover:text-white text-xs">
+                    👁️
+                  </button>
+                </div>
               </div>
             </div>
 
-            <!-- Confirmar Contraseña -->
-            <div>
-              <label for="inputConfirmPass" class="block text-xs font-semibold text-slate-300 mb-1.5">
-                Confirmar Nueva Contraseña
-              </label>
-              <div class="relative">
-                <input 
-                  type="password" 
-                  id="inputConfirmPass" 
-                  name="confirm_password" 
-                  required 
-                  minlength="6" 
-                  class="w-full bg-[#080d19] border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-white font-mono text-xs focus:outline-none focus:border-amber-400 transition pr-10"
-                  placeholder="••••••••••••"
-                >
-                <button type="button" onclick="togglePassVisibility('inputConfirmPass')" class="absolute right-3 top-2.5 text-slate-400 hover:text-white text-xs">
-                  👁️
-                </button>
-              </div>
-            </div>
-
-            <!-- Alerta de Respuesta Contraseña -->
+            <!-- Alerta Formulario Contraseña -->
             <div id="passwordAlertBox" class="hidden text-xs p-3 rounded-xl font-mono"></div>
 
             <!-- Botón Actualizar Clave -->
-            <div class="flex justify-end pt-2">
+            <div class="flex justify-end pt-1">
               <button 
                 type="submit" 
                 id="btnChangePass"
@@ -524,10 +547,11 @@ $inicial_nombre = mb_strtoupper(mb_substr($nombre_actual, 0, 1));
                 <span>Actualizar Contraseña</span>
               </button>
             </div>
+
           </form>
         </div>
 
-      </div>
+      </section>
 
     </div>
 
@@ -543,6 +567,15 @@ $inicial_nombre = mb_strtoupper(mb_substr($nombre_actual, 0, 1));
 
   <!-- ================= CONTROLADOR JAVASCRIPT ================= -->
   <script>
+    // Copiar UID al portapapeles
+    function copyTraderUid(uid) {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(uid).then(() => {
+          showToast(`UID copiado: ${uid}`, true);
+        });
+      }
+    }
+
     // Mostrar/ocultar contraseña
     function togglePassVisibility(inputId) {
       const input = document.getElementById(inputId);
