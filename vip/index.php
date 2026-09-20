@@ -240,14 +240,15 @@ $dias_restantes = $acceso_usuario['dias_restantes'] ?? 7;
         </div>
 
         <!-- Botón de Selección -->
-        <button 
-          type="button" 
-          onclick="openPaymentGateway()" 
+        <a 
+          href="https://t.me/BotFather" 
+          target="_blank" 
+          rel="noopener noreferrer"
           id="btnSelectPlan"
-          class="w-full py-4 px-6 rounded-2xl bg-[#172033] hover:bg-[#202d47] border border-slate-700/80 hover:border-amber-500/60 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider transition-all duration-200 shadow-xl active:scale-95 cursor-pointer mb-4"
+          class="w-full py-4 px-6 rounded-2xl bg-[#172033] hover:bg-[#202d47] border border-slate-700/80 hover:border-amber-500/60 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider transition-all duration-200 shadow-xl active:scale-95 cursor-pointer mb-4 flex items-center justify-center"
         >
           ELEGIR PLAN VIP ($19.00 USD)
-        </button>
+        </a>
 
         <!-- Garantías Inferiores -->
         <div class="flex items-center justify-center gap-1.5 text-xs text-emerald-400 font-semibold mb-1">
@@ -261,95 +262,6 @@ $dias_restantes = $acceso_usuario['dias_restantes'] ?? 7;
       </div>
     </div>
 
-    <!-- ================= PASARELA DE PAGO INSTANTÁNEA (19 USDT) ================= -->
-    <div id="paymentSection" class="max-w-md sm:max-w-lg mx-auto scroll-mt-24 transition-all duration-300">
-      <div class="bg-[#0b0f19] border border-amber-500/40 rounded-3xl p-6 sm:p-7 space-y-5 shadow-2xl relative overflow-hidden">
-        <div class="absolute -top-10 -right-10 w-40 h-40 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
-        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-          <div>
-            <span class="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-widest">PASARELA OFICIAL</span>
-            <h3 class="text-base font-black text-white">Depósito Cripto: 19 USDT</h3>
-          </div>
-          <span class="text-xs font-mono font-bold text-slate-400 bg-slate-800/50 px-2.5 py-1 rounded-lg">30 Días VIP</span>
-        </div>
-
-        <!-- Selector de Red -->
-        <div class="space-y-1.5">
-          <label class="block text-xs font-bold text-slate-300">Selecciona tu Red de Transferencia (19 USDT):</label>
-          <div class="grid grid-cols-2 gap-2 text-xs font-mono">
-            <button type="button" onclick="setPaymentNetwork('BEP20')" id="payNet-BEP20" class="pay-net-btn p-3 rounded-xl border border-amber-500 bg-amber-500/15 text-white font-bold transition text-left cursor-pointer">
-              <span class="block">BNB Chain (BEP-20)</span>
-              <span class="text-[10px] text-slate-400 block font-sans">Comisión red: ~$0.05</span>
-            </button>
-            <button type="button" onclick="setPaymentNetwork('TRC20')" id="payNet-TRC20" class="pay-net-btn p-3 rounded-xl border border-slate-800 bg-[#060912] text-slate-400 font-bold transition text-left hover:border-slate-700 cursor-pointer">
-              <span class="block">Tron (TRC-20)</span>
-              <span class="text-[10px] text-slate-400 block font-sans">Comisión red: ~$1.00</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- QR & Dirección Billetera -->
-        <div class="bg-[#050811] border border-slate-800 rounded-2xl p-4 flex flex-col items-center space-y-3 text-center">
-          <span class="text-xs font-bold text-slate-300">Escanea o copia para transferir exactamente 19 USDT</span>
-
-          <!-- QR SVG Institucional -->
-          <div class="w-36 h-36 bg-white p-2.5 rounded-2xl shadow-xl flex items-center justify-center">
-            <svg viewBox="0 0 100 100" class="w-full h-full">
-              <rect width="100" height="100" fill="white"/>
-              <rect x="5" y="5" width="25" height="25" fill="#0b0f19"/>
-              <rect x="8" y="8" width="19" height="19" fill="white"/>
-              <rect x="11" y="11" width="13" height="13" fill="#f59e0b"/>
-              <rect x="70" y="5" width="25" height="25" fill="#0b0f19"/>
-              <rect x="73" y="8" width="19" height="19" fill="white"/>
-              <rect x="76" y="11" width="13" height="13" fill="#f59e0b"/>
-              <rect x="5" y="70" width="25" height="25" fill="#0b0f19"/>
-              <rect x="8" y="73" width="19" height="19" fill="white"/>
-              <rect x="11" y="76" width="13" height="13" fill="#f59e0b"/>
-              <rect x="35" y="10" width="8" height="8" fill="#0b0f19"/>
-              <rect x="48" y="10" width="8" height="8" fill="#10b981"/>
-              <rect x="35" y="35" width="30" height="30" fill="#0b0f19"/>
-              <rect x="42" y="42" width="16" height="16" fill="#f59e0b"/>
-              <rect x="70" y="70" width="20" height="20" fill="#0b0f19"/>
-            </svg>
-          </div>
-
-          <!-- Dirección Billetera -->
-          <div class="w-full">
-            <span class="text-[10px] text-slate-400 block mb-1">Dirección de Depósito Oficial:</span>
-            <div class="flex items-center gap-1 bg-black/90 p-2 rounded-xl border border-slate-800">
-              <span id="cryptoWalletText" class="text-[11px] font-mono text-slate-300 break-all select-all flex-1 text-left px-1">
-                0x71C839a8204B6D84f04dD97e1c8d19f05Eb7F510
-              </span>
-              <button type="button" onclick="copyCryptoAddress()" class="bg-[#12192a] hover:bg-[#1e2a44] text-amber-300 border border-amber-500/40 text-xs px-2.5 py-1.5 rounded-lg transition shrink-0 cursor-pointer">
-                Copiar
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Validación de TxID -->
-        <div class="space-y-2">
-          <label class="block text-xs font-bold text-slate-300">Pega aquí el Hash / TxID de tu transferencia:</label>
-          <div class="flex items-center gap-2">
-            <input id="inputTxId" type="text" placeholder="Ej: 0x4f3a9b1c2d3e..." class="flex-1 bg-[#060912] border border-slate-700 focus:border-amber-400 rounded-xl px-3 py-2.5 text-white font-mono text-xs outline-none transition shadow-inner">
-            <button type="button" onclick="validateCryptoTxId()" id="btnValidateTx" class="bg-gradient-to-r from-emerald-400 to-emerald-500 hover:from-emerald-300 hover:to-emerald-400 text-slate-950 font-black px-4 py-2.5 rounded-xl text-xs transition cursor-pointer shrink-0 shadow-md shadow-emerald-500/20">
-              Validar Pago
-            </button>
-          </div>
-          <div id="txAlertBox" class="hidden text-xs p-3 rounded-xl mt-2 font-mono border"></div>
-        </div>
-
-        <!-- Soporte Alternativo & Tarjeta -->
-        <div class="pt-2 border-t border-slate-800/80 text-center">
-          <p class="text-[11px] text-slate-400">
-            ¿Deseas pagar con Tarjeta de Crédito/Débito o Binance Pay? <a href="https://t.me/BotFather" target="_blank" class="text-amber-400 hover:underline font-bold">Contacta a Soporte en Telegram ↗</a>
-          </p>
-        </div>
-
-      </div>
-    </div>
-
   </main>
 
   <!-- ================= TOAST FLOTANTE ================= -->
@@ -358,85 +270,7 @@ $dias_restantes = $acceso_usuario['dias_restantes'] ?? 7;
     <span id="toastMsg">Mensaje</span>
   </div>
 
-  <!-- ================= SCRIPTS ================= -->
   <script>
-    let currentPaymentNet = 'BEP20';
-    const WALLETS = {
-      BEP20: '0x71C839a8204B6D84f04dD97e1c8d19f05Eb7F510',
-      TRC20: 'TXy478A29dKms8910LmnoPqRsTuVwXyZ10'
-    };
-
-    function openPaymentGateway() {
-      const section = document.getElementById('paymentSection');
-      section.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      showToast('⚡ Completa tu transferencia de 19 USDT abajo');
-    }
-
-    function setPaymentNetwork(net) {
-      currentPaymentNet = net;
-      document.querySelectorAll('.pay-net-btn').forEach(btn => {
-        btn.classList.remove('border-amber-500', 'bg-amber-500/15', 'text-white');
-        btn.classList.add('border-slate-800', 'bg-[#060912]', 'text-slate-400');
-      });
-
-      const active = document.getElementById(`payNet-${net}`);
-      if (active) {
-        active.classList.remove('border-slate-800', 'bg-[#060912]', 'text-slate-400');
-        active.classList.add('border-amber-500', 'bg-amber-500/15', 'text-white');
-      }
-
-      document.getElementById('cryptoWalletText').textContent = WALLETS[net];
-    }
-
-    function copyCryptoAddress() {
-      const text = document.getElementById('cryptoWalletText').textContent.trim();
-      navigator.clipboard.writeText(text).then(() => {
-        showToast('📋 Billetera copiada al portapapeles');
-      }).catch(() => {
-        showToast('Billetera: ' + text);
-      });
-    }
-
-    async function validateCryptoTxId() {
-      const tx = document.getElementById('inputTxId').value.trim();
-      const btn = document.getElementById('btnValidateTx');
-      const box = document.getElementById('txAlertBox');
-
-      if (!tx || tx.length < 10) {
-        box.className = 'text-xs p-3 rounded-xl mt-2 font-mono bg-rose-500/10 text-rose-300 border border-rose-500/30 block';
-        box.textContent = '⚠️ Ingresa un Hash / TxID válido de la transferencia.';
-        return;
-      }
-
-      btn.disabled = true;
-      btn.innerHTML = '<span>⏳ Verificando en Blockchain...</span>';
-
-      try {
-        const res = await fetch('/api/auth.php?action=validate_tx', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ tx_hash: tx, network: currentPaymentNet, amount: 19 })
-        });
-        const data = await res.json();
-
-        if (data.success) {
-          box.className = 'text-xs p-3 rounded-xl mt-2 font-mono bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 block';
-          box.textContent = '✅ ' + data.message;
-          showToast('👑 ¡Membresía VIP Activada!');
-          setTimeout(() => location.reload(), 1500);
-        } else {
-          box.className = 'text-xs p-3 rounded-xl mt-2 font-mono bg-rose-500/10 text-rose-300 border border-rose-500/30 block';
-          box.textContent = '❌ ' + (data.message || 'Error al validar comprobante.');
-        }
-      } catch (err) {
-        box.className = 'text-xs p-3 rounded-xl mt-2 font-mono bg-amber-500/10 text-amber-300 border border-amber-500/30 block';
-        box.textContent = '⏳ Comprobante enviado. Nuestro sistema lo validará con el explorador de bloques.';
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = '<span>Validar Pago</span>';
-      }
-    }
-
     function showToast(msg) {
       const t = document.getElementById('toast');
       document.getElementById('toastMsg').textContent = msg;
