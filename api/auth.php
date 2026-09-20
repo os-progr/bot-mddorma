@@ -279,6 +279,12 @@ if ($action === 'google' || $action === 'google_login') {
                 'fecha_registro' => $user['fecha_registro'] ?? date('Y-m-d H:i:s')
             ], $acceso_info);
 
+            $return_to = trim((string)($input['return_to'] ?? ($_POST['return_to'] ?? '')));
+            if (!empty($return_to)) {
+                header("Location: " . $return_to);
+                exit;
+            }
+
             echo json_encode([
                 'success' => true,
                 'message' => 'Autenticación con Google exitosa. ¡Bienvenido!',
@@ -328,6 +334,12 @@ if ($action === 'google' || $action === 'google_login') {
                 'es_premium' => 0,
                 'fecha_registro' => $now_str
             ], $acceso_info);
+
+            $return_to = trim((string)($input['return_to'] ?? ($_POST['return_to'] ?? '')));
+            if (!empty($return_to)) {
+                header("Location: " . $return_to);
+                exit;
+            }
 
             echo json_encode([
                 'success' => true,

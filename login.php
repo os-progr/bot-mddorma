@@ -85,8 +85,6 @@ $mostrar_alerta_expirado = ($mensaje === 'session_expired');
     }
   </style>
   <link rel="icon" type="image/png" href="/assets/logo.png">
-  <!-- Google Identity Services SDK -->
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body class="font-sans antialiased min-h-screen flex flex-col justify-center selection:bg-amber-500 selection:text-black">
 
@@ -277,40 +275,47 @@ $mostrar_alerta_expirado = ($mensaje === 'session_expired');
       }
     }
 
-    // ── Google OAuth Integration ──
-    function initGoogleClient() {
-      if (typeof google !== 'undefined' && google.accounts && google.accounts.id) {
-        google.accounts.id.initialize({
-          client_id: '707169647548-nj4cokkr5css8cm2uuasq2oafmpffc5u.apps.googleusercontent.com',
-          callback: handleGoogleCredentialResponse,
-          auto_select: false,
-          cancel_on_tap_outside: true
-        });
-
-        const container = document.getElementById('googleBtnContainer');
-        if (container) {
-          const w = Math.max(220, Math.min(360, container.clientWidth || 320));
-          container.innerHTML = '';
-          google.accounts.id.renderButton(container, {
-            type: 'standard',
-            theme: 'filled_black',
-            size: 'large',
-            width: w,
-            text: 'continue_with',
-            shape: 'pill',
-            logo_alignment: 'left'
-          });
-        }
-      }
-    }
-
+    // ── Google OAuth Integration vía Origen Autorizado mddorma.com ──
     function triggerGoogleSignIn() {
-      if (typeof google !== 'undefined' && google.accounts && google.accounts.id) {
-        google.accounts.id.prompt();
-      } else {
-        alert('Cargando servicios de autenticación de Google, intenta en un momento...');
+      const alertBox = document.getElementById('alertBox');
+      const alertText = document.getElementById('alertText');
+      if (alertBox && alertText) {
+        alertBox.className = "flex items-start gap-2.5 p-3 rounded-xl bg-amber-950/40 border border-amber-500/40 text-amber-300 text-xs mb-4";
+        alertText.textContent = "Conectando con Google Identity Services...";
+        alertBox.classList.remove('hidden');
+      }
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const redirectUrl = urlParams.get('redirect') || '/perfil/';
+      const returnTarget = encodeURIComponent(window.location.origin + redirectUrl);
+      const bridgeUrl = 'https://mddorma.com/api/auth_google_bridge.php?return_to=' + returnTarget;
+
+      const w = 480;
+      const h = 580;
+      const left = Math.max(0, Math.round((window.screen.width - w) / 2));
+      const top = Math.max(0, Math.round((window.screen.height - h) / 2));
+
+      const popup = window.open(
+        bridgeUrl,
+        'QuantumGoogleAuthBridge',
+        `width=${w},height=${h},top=${top},left=${left},scrollbars=yes,resizable=yes`
+      );
+
+      if (!popup || popup.closed || typeof popup.closed === 'undefined') {
+        window.location.href = bridgeUrl;
       }
     }
+
+    // Escuchar respuesta del popup de Google en mddorma.com
+    window.addEventListener('message', function(event) {
+      if (!event.data || event.data.type !== 'QUANTUM_GOOGLE_AUTH_SUCCESS') return;
+      if (event.origin !== 'https://mddorma.com' && event.origin !== 'http://mddorma.com') return;
+
+      const credential = event.data.credential;
+      if (credential) {
+        handleGoogleCredentialResponse({ credential });
+      }
+    });
 
     async function handleGoogleCredentialResponse(response) {
       if (!response || !response.credential) return;
@@ -333,7 +338,7 @@ $mostrar_alerta_expirado = ($mensaje === 'session_expired');
 
         if (data && data.success) {
           const urlParams = new URLSearchParams(window.location.search);
-          const redirectUrl = urlParams.get('redirect') || '/';
+          const redirectUrl = urlParams.get('redirect') || '/perfil/';
           window.location.href = redirectUrl;
         } else {
           if (alertBox && alertText) {
@@ -350,10 +355,6 @@ $mostrar_alerta_expirado = ($mensaje === 'session_expired');
         }
       }
     }
-
-    window.addEventListener('load', function() {
-      setTimeout(initGoogleClient, 350);
-    });
 
     function submitAuthForm(e) {
       e.preventDefault();
