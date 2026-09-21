@@ -319,14 +319,11 @@ $ticket_activo = $primera_pos['ticket'] ?? '10585261453';
           </button>
         </div>
 
-        <!-- Leyenda Inferior Matemática Real -->
+        <!-- Leyenda Inferior -->
         <div class="absolute bottom-3 left-4 z-10 pointer-events-none">
-          <div class="flex items-center gap-2 text-emerald-400 text-xs font-mono font-bold mb-0.5">
+          <div class="flex items-center gap-2 text-emerald-400 text-xs font-mono font-bold">
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
             <span>INFERENCIA CONTINUA CON FLUJO MT5</span>
-          </div>
-          <div class="text-[11px] font-mono text-slate-400 tracking-wider">
-            Optimización PPO: <span class="text-cyan-400">L^{CLIP}(&theta;) = \hat{E}_t [ \min(r_t \hat{A}_t, \text{clip}(r_t, 1-\epsilon, 1+\epsilon)\hat{A}_t) ]</span>
           </div>
         </div>
       </div>
