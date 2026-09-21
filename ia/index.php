@@ -26,6 +26,7 @@ if (!empty($_SESSION['id_usuario']) && !empty($pdo)) {
     } catch (Throwable $e) {}
 }
 
+$is_master_admin = !empty($usuario_logueado['correo']) && function_exists('es_master_admin_autorizado') && es_master_admin_autorizado($usuario_logueado['correo']);
 $es_vip = !empty($acceso_usuario['es_vip']);
 $dias_restantes = $acceso_usuario['dias_restantes'] ?? 7;
 $is_logged_in = !empty($usuario_logueado);
@@ -192,12 +193,14 @@ $ticket_activo = $primera_pos['ticket'] ?? '10585261453';
     <!-- BARRA LATERAL IZQUIERDA (DOCK SLIM - STITCH) -->
     <aside class="w-14 bg-[#030611] border-r border-slate-900 flex flex-col items-center py-4 justify-between shrink-0 sticky top-14 h-[calc(100vh-3.5rem)] z-40 select-none">
       <div class="flex flex-col items-center gap-3 text-slate-400">
-        <a href="/" class="p-2.5 rounded-xl hover:text-white hover:bg-[#0b1224] transition cursor-pointer" title="Parámetros y Sliders">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+        <!-- Terminal Cuántico -->
+        <a href="/" class="p-2.5 rounded-xl hover:text-white hover:bg-[#0b1224] transition cursor-pointer" title="Terminal Cuántico">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
         </a>
-        <a href="/#sec-signals" class="p-2.5 rounded-xl hover:text-white hover:bg-[#0b1224] transition cursor-pointer" title="Libro de Órdenes & Señales">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-        </a>
+      </div>
+
+      <div class="flex flex-col items-center gap-3 text-slate-400">
+        <!-- Red Neuronal 3D (Activa) -->
         <a href="/ia/" class="p-2.5 rounded-xl text-amber-400 bg-amber-500/15 border border-amber-500/40 transition shadow-[0_0_15px_rgba(245,158,11,0.25)]" title="Red Neuronal 3D (Activa)">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <circle cx="6" cy="6" r="2" stroke-width="2"/>
@@ -208,17 +211,21 @@ $ticket_activo = $primera_pos['ticket'] ?? '10585261453';
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7.5 7.5l3 3m3 0l3-3m-9 9l3-3m3 0l3 3"/>
           </svg>
         </a>
-        <a href="/grafico/" class="p-2.5 rounded-xl hover:text-white hover:bg-[#0b1224] transition cursor-pointer" title="Gráfico & Velas">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+        <a href="/telegram/" class="p-2.5 rounded-xl hover:text-sky-400 hover:bg-[#0b1224] transition" title="Bot de Telegram">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
         </a>
-        <a href="/senales/" class="p-2.5 rounded-xl hover:text-white hover:bg-[#0b1224] transition cursor-pointer" title="Historial & Ledger">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <a href="/vip/" class="p-2.5 rounded-xl hover:text-amber-400 hover:bg-[#0b1224] transition" title="Planes VIP">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>
         </a>
-      </div>
-
-      <div class="flex flex-col items-center gap-3 text-slate-400">
-        <a href="/perfil/" class="p-2.5 rounded-xl hover:text-white hover:bg-[#0b1224] transition" title="Configuración">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        <?php if (!empty($is_master_admin)): ?>
+        <a href="/broma/" class="p-2.5 rounded-xl text-cyan-400 bg-cyan-500/15 border border-cyan-500/40 hover:bg-cyan-500/25 hover:text-cyan-300 transition" title="Enclave de Control Broma">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+          </svg>
+        </a>
+        <?php endif; ?>
+        <a href="/perfil/" class="p-2.5 rounded-xl hover:text-white hover:bg-[#0b1224] transition" title="Mi Perfil de Operador">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
         </a>
       </div>
     </aside>
