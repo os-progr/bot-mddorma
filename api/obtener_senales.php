@@ -90,6 +90,8 @@ if (empty($activas) && empty($historial)) {
     } catch (Throwable $e) {
         // Silencioso
     }
+}
+
 // Deduplicación estricta en PHP (garantía matemática de par único)
 $vistos = [];
 $activas_unicas = [];
