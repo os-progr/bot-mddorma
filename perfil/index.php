@@ -185,6 +185,17 @@ $inicial_nombre = mb_strtoupper(mb_substr($user['nombre'] ?: 'O', 0, 1));
 
     <!-- Bottom Dock Icons -->
     <div class="flex flex-col items-center gap-3 text-slate-400">
+      <!-- Red Neuronal & Estadísticas IA -->
+      <a href="/ia/" class="p-2.5 rounded-xl hover:text-purple-400 hover:bg-[#0f172a] transition" title="Red Neuronal & Métricas IA">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <circle cx="6" cy="6" r="2" stroke-width="2"/>
+          <circle cx="18" cy="6" r="2" stroke-width="2"/>
+          <circle cx="6" cy="18" r="2" stroke-width="2"/>
+          <circle cx="18" cy="18" r="2" stroke-width="2"/>
+          <circle cx="12" cy="12" r="2.5" stroke-width="2"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7.5 7.5l3 3m3 0l3-3m-9 9l3-3m3 0l3 3"/>
+        </svg>
+      </a>
       <a href="/telegram/" class="p-2.5 rounded-xl hover:text-sky-400 hover:bg-[#0f172a] transition" title="Bot de Telegram">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
       </a>
