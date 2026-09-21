@@ -138,6 +138,14 @@ $mp_public_key = $_ENV['MP_PUBLIC_KEY'] ?? getenv('MP_PUBLIC_KEY') ?: 'APP_USR-6
       <a href="/vip/" class="p-2.5 rounded-xl text-amber-400 bg-amber-500/15 border border-amber-500/30 transition" title="Planes VIP (Activo)">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>
       </a>
+      <?php if (!empty($usuario_logueado) && function_exists('es_master_admin_autorizado') && es_master_admin_autorizado($usuario_logueado['correo'] ?? '')): ?>
+      <!-- Enclave Privado Broma (Exclusivo para la Identidad Maestra Autorizada) -->
+      <a href="/broma/" class="p-2.5 rounded-xl text-cyan-400 bg-cyan-500/15 border border-cyan-500/40 hover:bg-cyan-500/25 hover:text-cyan-300 transition" title="Enclave de Control Broma">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+        </svg>
+      </a>
+      <?php endif; ?>
       <a href="/perfil/" class="p-2.5 rounded-xl hover:text-white hover:bg-[#0f172a] transition" title="Mi Perfil de Operador">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
       </a>
