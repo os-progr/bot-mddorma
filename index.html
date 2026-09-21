@@ -295,178 +295,163 @@
 
       </section>
 
-      <!-- ================= 4. DOS COLUMNAS: CALCULADORA & HISTORIAL ================= -->
+      <!-- ================= 4. DOS COLUMNAS: CALCULADORA DE RIESGO & HISTORIAL (COMPACTO) ================= -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
         
-        <!-- CALCULADORA PARA PROTEGER TU CUENTA (7 COLS) -->
-        <section id="sec-calculator" class="lg:col-span-7 bg-[#080d19] border border-slate-800/90 rounded-2xl p-4 sm:p-5 flex flex-col justify-between space-y-4">
-          <div class="space-y-4">
-            <div class="flex items-center gap-3">
-              <div class="w-9 h-9 rounded-xl bg-sky-500/15 border border-sky-500/30 flex items-center justify-center text-sky-400 text-lg shrink-0">
-                🛡️
-              </div>
-              <div>
-                <h3 class="text-white font-black text-base">Calculadora para Proteger tu Cuenta</h3>
-                <p class="text-xs text-slate-400 mt-0.5">
-                  Dile cuánto dinero tienes y te dirá exactamente cuánto comprar para <strong>no perder más de $0.50 USD</strong> si la operación sale mal.
-                </p>
-              </div>
-            </div>
-
-            <!-- 1. Saldo en cuenta -->
-            <div class="space-y-1.5">
-              <label class="block text-xs font-bold text-slate-300">1. ¿Cuánto dinero tienes en tu cuenta?</label>
-              <div class="grid grid-cols-4 gap-2">
-                <button onclick="setCalcCapital(10)" class="calc-cap-btn py-2 rounded-xl border border-slate-800 bg-[#050811] text-slate-300 font-bold hover:border-slate-700 transition cursor-pointer" data-cap="10">$10 USD</button>
-                <button onclick="setCalcCapital(20)" class="calc-cap-btn py-2 rounded-xl border border-slate-800 bg-[#050811] text-slate-300 font-bold hover:border-slate-700 transition cursor-pointer" data-cap="20">$20 USD</button>
-                <button onclick="setCalcCapital(35)" class="calc-cap-btn py-2 rounded-xl border border-slate-800 bg-[#050811] text-slate-300 font-bold hover:border-slate-700 transition cursor-pointer" data-cap="35">$35 USD</button>
-                <button onclick="setCalcCapital(50)" class="calc-cap-btn py-2 rounded-xl border border-amber-500 bg-amber-500 text-slate-950 font-black transition cursor-pointer shadow-sm" data-cap="50">$50 USD ⭐</button>
-              </div>
-            </div>
-
-            <!-- 2. Apalancamiento -->
-            <div class="space-y-1.5">
-              <div class="flex items-center justify-between text-xs font-bold text-slate-300">
-                <span>2. Apalancamiento en Binance:</span>
-                <span id="calcLevLabel" class="text-amber-400 font-mono font-bold">10x (Recomendado)</span>
-              </div>
-              <div class="grid grid-cols-3 gap-2">
-                <button onclick="setCalcLev(5)" class="calc-lev-btn py-1.5 rounded-xl border border-slate-800 bg-[#050811] text-slate-300 font-bold hover:border-slate-700 transition cursor-pointer" data-lev="5">5x (Conservador)</button>
-                <button onclick="setCalcLev(10)" class="calc-lev-btn py-1.5 rounded-xl border border-amber-500 bg-amber-500/20 text-amber-300 font-bold transition cursor-pointer" data-lev="10">10x (Recomendado)</button>
-                <button onclick="setCalcLev(20)" class="calc-lev-btn py-1.5 rounded-xl border border-slate-800 bg-[#050811] text-slate-300 font-bold hover:border-slate-700 transition cursor-pointer" data-lev="20">20x (Máximo)</button>
-              </div>
-            </div>
-
-            <!-- 3. Criptomoneda a operar -->
-            <div class="space-y-1.5">
-              <label class="block text-xs font-bold text-slate-300">3. ¿Qué criptomoneda vas a operar?</label>
-              <div class="grid grid-cols-3 gap-2">
-                <button onclick="selectCalcSignal('SOL/USDT', 138.40, 136.80, 142.20, 'LONG')" id="calcSigBtn-SOL" class="calc-sig-btn p-2.5 rounded-xl border border-amber-500 bg-amber-500/15 text-white font-bold transition text-left cursor-pointer">
-                  <span class="block text-xs">SOL/USDT</span>
-                  <span class="text-[10px] text-emerald-400 font-normal">Compra en $138.40</span>
-                </button>
-                <button onclick="selectCalcSignal('BTC/USDT', 64280, 63600, 65850, 'LONG')" id="calcSigBtn-BTC" class="calc-sig-btn p-2.5 rounded-xl border border-slate-800 bg-[#050811] text-slate-300 font-bold transition text-left hover:border-slate-700 cursor-pointer">
-                  <span class="block text-xs">BTC/USDT</span>
-                  <span class="text-[10px] text-emerald-400 font-normal">Compra en $64,280</span>
-                </button>
-                <button onclick="selectCalcSignal('ETH/USDT', 3485.50, 3525, 3390, 'SHORT')" id="calcSigBtn-ETH" class="calc-sig-btn p-2.5 rounded-xl border border-slate-800 bg-[#050811] text-slate-300 font-bold transition text-left hover:border-slate-700 cursor-pointer">
-                  <span class="block text-xs">ETH/USDT</span>
-                  <span class="text-[10px] text-rose-400 font-normal">Venta en $3,485</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- RESULTADO DIRECTO -->
-            <div class="bg-[#050811] border-2 border-amber-500/60 rounded-2xl p-4 space-y-2.5 gold-glow">
-              <span class="text-[11px] font-bold text-amber-400 uppercase tracking-wider block">👉 LO QUE DEBES PONER EN BINANCE:</span>
-              
-              <div class="text-base sm:text-lg font-black text-white" id="calcOutputMaster">
-                Abre exactamente: <span class="text-amber-400 font-mono">0.3125 SOL</span> <span class="text-slate-400 text-xs font-normal">($4.33 USD de margen)</span>
-              </div>
-
-              <div class="text-xs text-slate-300 leading-relaxed bg-[#0a0f1d] p-3 rounded-xl border border-slate-800 flex items-start gap-2" id="calcDescMaster">
-                <span class="text-emerald-400 text-sm">🛡️</span>
-                <span>Si la operación no sale bien y toca tu Stop Loss en <strong>$136.80</strong>, <strong>SOLO perderás $0.50 USD</strong>. Tu cuenta está 100% a salvo de liquidaciones indeseadas.</span>
-              </div>
-
-              <div class="grid grid-cols-2 gap-2 pt-1">
-                <button onclick="copyCalcParams()" class="bg-[#12192a] hover:bg-[#1c273e] text-slate-200 border border-slate-700 font-bold py-2.5 rounded-xl text-xs transition cursor-pointer flex items-center justify-center gap-1.5">
-                  <span>📋</span> <span>Copiar Cantidad</span>
-                </button>
-                <button onclick="applyToBinanceFutures()" class="bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-black py-2.5 rounded-xl text-xs transition shadow-md shadow-amber-500/20 cursor-pointer flex items-center justify-center gap-1.5">
-                  <span>⚡</span> <span>Ir a Binance</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- HISTORIAL DE RESULTADOS AUDITADO (5 COLS) -->
-        <section id="sec-history" class="lg:col-span-5 bg-[#080d19] border border-slate-800/90 rounded-2xl p-4 sm:p-5 flex flex-col justify-between space-y-4">
-          <div>
-            <div class="flex items-center gap-3">
-              <div class="w-9 h-9 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 text-lg shrink-0">
-                📜
-              </div>
-              <div>
-                <h3 class="text-white font-black text-base">Historial de Resultados</h3>
-                <p class="text-xs text-slate-400 mt-0.5">Transparencia total de las últimas operaciones concluidas.</p>
-              </div>
-            </div>
-
-            <!-- Métricas Claras de Rendimiento -->
-            <div class="grid grid-cols-2 gap-2 text-center my-3.5">
-              <div class="bg-[#050811] p-3 rounded-xl border border-slate-800">
-                <span class="text-[10px] text-slate-400 block font-bold uppercase font-mono">ACIERTO PROMEDIO</span>
-                <strong class="text-emerald-400 text-xl sm:text-2xl font-black block mt-0.5">68.4%</strong>
-              </div>
-              <div class="bg-[#050811] p-3 rounded-xl border border-slate-800">
-                <span class="text-[10px] text-slate-400 block font-bold uppercase font-mono">CUENTAS SALVADAS</span>
-                <strong class="text-amber-400 text-xl sm:text-2xl font-black block mt-0.5">1,420+</strong>
-              </div>
-            </div>
-
-            <!-- Lista de Conclusiones Auditadas -->
-            <div class="space-y-2 text-xs">
-              <span class="text-[10px] text-slate-500 font-mono font-bold tracking-wider block uppercase">ÚLTIMAS 4 CONCLUSIONES AUDITADAS:</span>
-
-              <div id="auditedHistoryList" class="space-y-2">
-                <div class="p-2.5 rounded-xl bg-[#050811] border border-slate-800/80 flex items-center justify-between">
-                  <div>
-                    <strong class="text-white font-bold block">ETH/USDT (LONG)</strong>
-                    <span class="text-[11px] text-slate-400">Entrada: $2645.10 → Salida: $2660.97 (TP)</span>
+        <!-- CALCULADORA DE RIESGO COMPACTA (7 COLS) -->
+        <section id="sec-calculator" class="lg:col-span-7 bg-[#080d19] border border-slate-800/90 rounded-2xl p-4 sm:p-5 flex flex-col justify-between space-y-3.5">
+            <div class="space-y-3">
+              <!-- Cabecera compacta -->
+              <div class="flex items-center justify-between pb-2 border-b border-slate-800/60">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-7 h-7 rounded-lg bg-sky-500/15 border border-sky-500/30 flex items-center justify-center text-sky-400 text-sm shrink-0">
+                    🛡️
                   </div>
-                  <span class="text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-1 rounded-lg text-[11px] font-mono">
-                    +$0.24 GANADA
-                  </span>
+                  <div>
+                    <h3 class="text-white font-bold text-sm leading-tight">Calculadora de Posición Segura</h3>
+                    <p class="text-[11px] text-slate-400">Protege tu cuenta: máximo <strong class="text-emerald-400">$0.50 USD</strong> de riesgo por operación.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 1. Capital en cuenta -->
+              <div class="space-y-1">
+                <span class="text-[11px] font-bold text-slate-300">1. Capital en tu cuenta:</span>
+                <div class="grid grid-cols-4 gap-2 text-xs">
+                  <button onclick="setCalcCapital(10)" class="calc-cap-btn py-1.5 rounded-lg border border-slate-800 bg-[#050811] text-slate-300 font-bold hover:border-slate-700 transition cursor-pointer text-center whitespace-nowrap" data-cap="10">$10 USD</button>
+                  <button onclick="setCalcCapital(20)" class="calc-cap-btn py-1.5 rounded-lg border border-slate-800 bg-[#050811] text-slate-300 font-bold hover:border-slate-700 transition cursor-pointer text-center whitespace-nowrap" data-cap="20">$20 USD</button>
+                  <button onclick="setCalcCapital(35)" class="calc-cap-btn py-1.5 rounded-lg border border-slate-800 bg-[#050811] text-slate-300 font-bold hover:border-slate-700 transition cursor-pointer text-center whitespace-nowrap" data-cap="35">$35 USD</button>
+                  <button onclick="setCalcCapital(50)" class="calc-cap-btn py-1.5 rounded-lg border border-amber-500 bg-amber-500 text-slate-950 font-black transition cursor-pointer text-center shadow-sm whitespace-nowrap" data-cap="50">$50 USD ⭐</button>
+                </div>
+              </div>
+
+              <!-- 2 y 3. Apalancamiento y Criptomoneda en 2 columnas compactas -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <!-- Apalancamiento -->
+                <div class="space-y-1">
+                  <div class="flex items-center justify-between text-[11px] font-bold text-slate-300">
+                    <span>2. Apalancamiento:</span>
+                    <span id="calcLevLabel" class="text-amber-400 font-mono text-[10.5px]">10x (Recomendado)</span>
+                  </div>
+                  <div class="grid grid-cols-3 gap-1 text-xs">
+                    <button onclick="setCalcLev(5)" class="calc-lev-btn py-1.5 rounded-lg border border-slate-800 bg-[#050811] text-slate-300 font-bold hover:border-slate-700 transition cursor-pointer text-center" data-lev="5">5x</button>
+                    <button onclick="setCalcLev(10)" class="calc-lev-btn py-1.5 rounded-lg border border-amber-500 bg-amber-500/20 text-amber-300 font-bold transition cursor-pointer text-center" data-lev="10">10x</button>
+                    <button onclick="setCalcLev(20)" class="calc-lev-btn py-1.5 rounded-lg border border-slate-800 bg-[#050811] text-slate-300 font-bold hover:border-slate-700 transition cursor-pointer text-center" data-lev="20">20x</button>
+                  </div>
                 </div>
 
-                <div class="p-2.5 rounded-xl bg-[#050811] border border-slate-800/80 flex items-center justify-between">
-                  <div>
-                    <strong class="text-white font-bold block">ETH/USDT (LONG)</strong>
-                    <span class="text-[11px] text-slate-400">Entrada: $2651.43 → Salida: $2653.55 (Trailing BE)</span>
+                <!-- Criptomoneda -->
+                <div class="space-y-1">
+                  <span class="text-[11px] font-bold text-slate-300 block">3. Criptomoneda:</span>
+                  <div class="grid grid-cols-3 gap-1 text-[11px]">
+                    <button onclick="selectCalcSignal('SOL/USDT', 138.40, 136.80, 142.20, 'LONG')" id="calcSigBtn-SOL" class="calc-sig-btn p-1.5 rounded-lg border border-amber-500 bg-amber-500/15 text-white font-bold transition text-center cursor-pointer">
+                      <span>SOL</span>
+                    </button>
+                    <button onclick="selectCalcSignal('BTC/USDT', 64280, 63600, 65850, 'LONG')" id="calcSigBtn-BTC" class="calc-sig-btn p-1.5 rounded-lg border border-slate-800 bg-[#050811] text-slate-300 font-bold transition text-center hover:border-slate-700 cursor-pointer">
+                      <span>BTC</span>
+                    </button>
+                    <button onclick="selectCalcSignal('ETH/USDT', 3485.50, 3525, 3390, 'SHORT')" id="calcSigBtn-ETH" class="calc-sig-btn p-1.5 rounded-lg border border-slate-800 bg-[#050811] text-slate-300 font-bold transition text-center hover:border-slate-700 cursor-pointer">
+                      <span>ETH</span>
+                    </button>
                   </div>
-                  <span class="text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-1 rounded-lg text-[11px] font-mono">
-                    +$0.02 GANADA
-                  </span>
+                </div>
+              </div>
+
+              <!-- RESULTADO DIRECTO ULTRA CLARO -->
+              <div class="bg-[#050811] border border-amber-500/50 rounded-xl p-3 space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="text-[10.5px] font-bold text-amber-400 uppercase tracking-wider">👉 ORDEN EXACTA EN BINANCE:</span>
+                  <span class="text-[10px] text-slate-400 font-mono">Pérdida máx: <strong class="text-emerald-400">$0.50 USD</strong></span>
+                </div>
+                
+                <div class="text-sm sm:text-base font-black text-white" id="calcOutputMaster">
+                  Abre exactamente: <span class="text-amber-400 font-mono font-bold">0.3125 SOL</span> <span class="text-slate-400 text-xs font-normal">($4.33 USD de margen)</span>
                 </div>
 
-                <div class="p-2.5 rounded-xl bg-[#050811] border border-slate-800/80 flex items-center justify-between">
-                  <div>
-                    <strong class="text-white font-bold block">ETH/USDT (LONG)</strong>
-                    <span class="text-[11px] text-slate-400">Entrada: $2634.20 → Salida: $2618.39 (SL)</span>
-                  </div>
-                  <span class="text-rose-400 font-bold bg-rose-500/10 border border-rose-500/30 px-2.5 py-1 rounded-lg text-[11px] font-mono">
-                    -$0.29 PROTEGIDA
-                  </span>
+                <div class="text-[11px] text-slate-300 leading-snug bg-[#0a0f1d] p-2 rounded-lg border border-slate-800/80 flex items-center gap-1.5" id="calcDescMaster">
+                  <span class="text-emerald-400 text-xs">🛡️</span>
+                  <span>Stop Loss en <strong>$136.80</strong>. Pérdida blindada a solo <strong>$0.50 USD</strong>. Sin riesgo de liquidación.</span>
                 </div>
 
-                <div class="p-2.5 rounded-xl bg-[#050811] border border-slate-800/80 flex items-center justify-between">
-                  <div>
-                    <strong class="text-white font-bold block">ETH/USDT (LONG)</strong>
-                    <span class="text-[11px] text-slate-400">Entrada: $2646.97 → Salida: $2631.08 (SL)</span>
-                  </div>
-                  <span class="text-rose-400 font-bold bg-rose-500/10 border border-rose-500/30 px-2.5 py-1 rounded-lg text-[11px] font-mono">
-                    -$0.29 PROTEGIDA
-                  </span>
+                <div class="grid grid-cols-2 gap-2 pt-0.5">
+                  <button onclick="copyCalcParams()" class="bg-[#12192a] hover:bg-[#1c273e] text-slate-200 border border-slate-700 font-bold py-1.5 rounded-lg text-xs transition cursor-pointer flex items-center justify-center gap-1">
+                    <span>📋</span> <span>Copiar Cantidad</span>
+                  </button>
+                  <button onclick="applyToBinanceFutures()" class="bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-black py-1.5 rounded-lg text-xs transition shadow-sm cursor-pointer flex items-center justify-center gap-1">
+                    <span>⚡</span> <span>Ir a Binance</span>
+                  </button>
                 </div>
               </div>
             </div>
-          </div>
+          </section>
 
-          <!-- Bottom Ledger Auditado -->
-          <div class="pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs">
-            <div class="flex items-center gap-1.5 text-slate-400 font-mono text-[11px]">
-              <span class="text-amber-400 font-bold">⬡</span>
-              <span>Bloque Ledger #B942-TX Auditado</span>
+          <!-- HISTORIAL DE RESULTADOS AUDITADO (5 COLS) -->
+          <section id="sec-history" class="lg:col-span-5 bg-[#080d19] border border-slate-800/90 rounded-2xl p-4 flex flex-col justify-between space-y-3">
+            <div class="space-y-3">
+              <!-- Cabecera compacta con métricas integradas -->
+              <div class="flex items-center justify-between pb-2 border-b border-slate-800/60">
+                <div class="flex items-center gap-2">
+                  <div class="w-7 h-7 rounded-lg bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 text-sm shrink-0">
+                    📜
+                  </div>
+                  <div>
+                    <h3 class="text-white font-bold text-sm leading-tight">Historial de Resultados</h3>
+                    <p class="text-[11px] text-slate-400">Últimas operaciones cerradas en tiempo real.</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-1.5 text-right font-mono">
+                  <span class="text-emerald-400 font-bold text-[11px] px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/30">68.4% Acierto</span>
+                </div>
+              </div>
+
+              <!-- Lista compacta de conclusiones -->
+              <div class="space-y-1.5 text-xs">
+                <div id="auditedHistoryList" class="space-y-1.5">
+                  <div class="p-2 rounded-lg bg-[#050811] border border-slate-800/80 flex items-center justify-between">
+                    <div>
+                      <span class="text-white font-bold text-xs">ETH/USDT</span>
+                      <span class="text-[10px] text-slate-400 block">$2645.10 → $2660.97 (TP)</span>
+                    </div>
+                    <span class="text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded text-[10.5px] font-mono">
+                      +$0.24 GANADA
+                    </span>
+                  </div>
+
+                  <div class="p-2 rounded-lg bg-[#050811] border border-slate-800/80 flex items-center justify-between">
+                    <div>
+                      <span class="text-white font-bold text-xs">ETH/USDT</span>
+                      <span class="text-[10px] text-slate-400 block">$2651.43 → $2653.55 (Trailing)</span>
+                    </div>
+                    <span class="text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded text-[10.5px] font-mono">
+                      +$0.02 GANADA
+                    </span>
+                  </div>
+
+                  <div class="p-2 rounded-lg bg-[#050811] border border-slate-800/80 flex items-center justify-between">
+                    <div>
+                      <span class="text-white font-bold text-xs">ETH/USDT</span>
+                      <span class="text-[10px] text-slate-400 block">$2634.20 → $2618.39 (SL)</span>
+                    </div>
+                    <span class="text-rose-400 font-bold bg-rose-500/10 border border-rose-500/30 px-2 py-0.5 rounded text-[10.5px] font-mono">
+                      -$0.29 PROTEGIDA
+                    </span>
+                  </div>
+
+                  <div class="p-2 rounded-lg bg-[#050811] border border-slate-800/80 flex items-center justify-between">
+                    <div>
+                      <span class="text-white font-bold text-xs">ETH/USDT</span>
+                      <span class="text-[10px] text-slate-400 block">$2646.97 → $2631.08 (SL)</span>
+                    </div>
+                    <span class="text-rose-400 font-bold bg-rose-500/10 border border-rose-500/30 px-2 py-0.5 rounded text-[10.5px] font-mono">
+                      -$0.29 PROTEGIDA
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
-            <a href="https://bscscan.com" target="_blank" rel="noopener" class="text-slate-400 hover:text-amber-400 font-mono text-[11px] transition flex items-center gap-1">
-              Ver Hash Fix <span>↗</span>
-            </a>
-          </div>
-        </section>
+          </section>
 
-      </div>
+        </div>
 
     </main>
 
@@ -778,24 +763,24 @@
       renderSignals(defaultSignals);
     }
 
-    // CALCULADORA DE RIESGO
+    // CALCULADORA DE RIESGO COMPACTA
     function setCalcCapital(c) {
       currentCalcCapital = c;
       document.querySelectorAll('.calc-cap-btn').forEach(b => {
-        b.className = "calc-cap-btn py-2 rounded-xl border border-slate-800 bg-[#050811] text-slate-300 font-bold hover:border-slate-700 transition cursor-pointer";
+        b.className = "calc-cap-btn py-1.5 rounded-lg border border-slate-800 bg-[#050811] text-slate-300 font-bold hover:border-slate-700 transition cursor-pointer text-center";
       });
       const active = document.querySelector(`.calc-cap-btn[data-cap="${c}"]`);
-      if (active) active.className = "calc-cap-btn py-2 rounded-xl border border-amber-500 bg-amber-500 text-slate-950 font-black transition cursor-pointer shadow-sm";
+      if (active) active.className = "calc-cap-btn py-1.5 rounded-lg border border-amber-500 bg-amber-500 text-slate-950 font-black transition cursor-pointer text-center shadow-sm";
       recalcMaster();
     }
 
     function setCalcLev(l) {
       currentCalcLev = l;
       document.querySelectorAll('.calc-lev-btn').forEach(b => {
-        b.className = "calc-lev-btn py-1.5 rounded-xl border border-slate-800 bg-[#050811] text-slate-300 font-bold hover:border-slate-700 transition cursor-pointer";
+        b.className = "calc-lev-btn py-1.5 rounded-lg border border-slate-800 bg-[#050811] text-slate-300 font-bold hover:border-slate-700 transition cursor-pointer text-center";
       });
       const active = document.querySelector(`.calc-lev-btn[data-lev="${l}"]`);
-      if (active) active.className = "calc-lev-btn py-1.5 rounded-xl border border-amber-500 bg-amber-500/20 text-amber-300 font-bold transition cursor-pointer";
+      if (active) active.className = "calc-lev-btn py-1.5 rounded-lg border border-amber-500 bg-amber-500/20 text-amber-300 font-bold transition cursor-pointer text-center";
       
       const lbl = document.getElementById('calcLevLabel');
       if (lbl) lbl.textContent = `${l}x (${l === 10 ? 'Recomendado' : (l === 5 ? 'Conservador' : 'Máximo')})`;
@@ -805,11 +790,11 @@
     function selectCalcSignal(sym, entry, sl, tp, side) {
       currentCalcPair = { sym, base: sym.split('/')[0], entry, sl, tp, side };
       document.querySelectorAll('.calc-sig-btn').forEach(b => {
-        b.className = "calc-sig-btn p-2.5 rounded-xl border border-slate-800 bg-[#050811] text-slate-300 font-bold transition text-left hover:border-slate-700 cursor-pointer";
+        b.className = "calc-sig-btn p-1.5 rounded-lg border border-slate-800 bg-[#050811] text-slate-300 font-bold transition text-center hover:border-slate-700 cursor-pointer";
       });
       const id = 'calcSigBtn-' + sym.split('/')[0];
       const active = document.getElementById(id);
-      if (active) active.className = "calc-sig-btn p-2.5 rounded-xl border border-amber-500 bg-amber-500/15 text-white font-bold transition text-left cursor-pointer";
+      if (active) active.className = "calc-sig-btn p-1.5 rounded-lg border border-amber-500 bg-amber-500/15 text-white font-bold transition text-center cursor-pointer";
       recalcMaster();
     }
 
@@ -829,12 +814,12 @@
       const desc = document.getElementById('calcDescMaster');
 
       if (out) {
-        out.innerHTML = `Abre exactamente: <span class="text-amber-400 font-mono font-black">${fmt} ${p.base}</span> <span class="text-slate-400 text-xs font-normal">($${marginUsed.toFixed(2)} USD de margen)</span>`;
+        out.innerHTML = `Abre exactamente: <span class="text-amber-400 font-mono font-bold">${fmt} ${p.base}</span> <span class="text-slate-400 text-xs font-normal">($${marginUsed.toFixed(2)} USD de margen)</span>`;
       }
       if (desc) {
         desc.innerHTML = `
-          <span class="text-emerald-400 text-sm">🛡️</span>
-          <span>Si la operación no sale bien y toca tu Stop Loss en <strong>$${p.sl}</strong>, <strong>SOLO perderás $${currentCalcLoss.toFixed(2)} USD</strong>. Tu cuenta está 100% a salvo de liquidaciones indeseadas.</span>
+          <span class="text-emerald-400 text-xs">🛡️</span>
+          <span>Stop Loss en <strong>$${p.sl}</strong>. Pérdida blindada a solo <strong>$${currentCalcLoss.toFixed(2)} USD</strong>. Sin riesgo de liquidación.</span>
         `;
       }
     }
