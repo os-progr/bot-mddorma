@@ -68,7 +68,15 @@ if (empty($activas) && empty($historial)) {
             }
         }
         if ($pdo) {
-            $stmt = $pdo->query("SELECT simbolo, tipo, entrada, sl, tp, probabilidad, rr, etiqueta, analisis, fecha_registro as fecha_utc FROM bot_senales_log WHERE estado = 'activa' ORDER BY id DESC LIMIT 10");
+            $stmt = $pdo->query("SELECT t1.simbolo, t1.tipo, t1.entrada, t1.sl, t1.tp, t1.probabilidad, t1.rr, t1.etiqueta, t1.analisis, t1.fecha_registro as fecha_utc 
+                                 FROM bot_senales_log t1 
+                                 INNER JOIN (
+                                     SELECT simbolo, MAX(id) as max_id 
+                                     FROM bot_senales_log 
+                                     WHERE estado = 'activa' 
+                                     GROUP BY simbolo
+                                 ) t2 ON t1.id = t2.max_id 
+                                 ORDER BY t1.id DESC LIMIT 6");
             $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             if (!empty($rows)) {
                 $activas = $rows;

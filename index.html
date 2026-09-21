@@ -639,7 +639,19 @@
       if (!c) return;
       c.innerHTML = '';
 
-      const filtered = list.filter(s => {
+      // Deduplicar por símbolo para asegurar 1 sola tarjeta por par (BTC, ETH, SOL, BNB, etc.)
+      const seen = new Set();
+      const uniqueList = [];
+      (list || []).forEach(s => {
+        if (!s || !s.simbolo) return;
+        const sym = String(s.simbolo).toUpperCase();
+        if (!seen.has(sym)) {
+          seen.add(sym);
+          uniqueList.push(s);
+        }
+      });
+
+      const filtered = uniqueList.filter(s => {
         if (currentFilter === 'all') return true;
         const isLong = String(s.tipo).toUpperCase().includes('COMPRA') || String(s.tipo).toUpperCase().includes('LONG');
         return currentFilter === 'long' ? isLong : !isLong;
