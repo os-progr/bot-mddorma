@@ -140,8 +140,8 @@ $userInitial = strtoupper(substr($userName, 0, 1));
         </span>
         <span class="text-slate-700">|</span>
         <span class="flex items-center gap-1.5">
-          <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-          <span class="text-slate-300">BINANCE WS:</span> <span class="text-emerald-400 font-bold">99.99%</span>
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span class="text-slate-300">METATRADER 5 FIX:</span> <span class="text-emerald-400 font-bold">CONECTADO</span>
         </span>
         <span class="text-slate-700">|</span>
         <a href="/vip/" class="text-amber-400 hover:text-amber-300 font-bold tracking-wider uppercase transition">
@@ -492,7 +492,7 @@ $userInitial = strtoupper(substr($userName, 0, 1));
               <table class="w-full text-xs font-mono border-collapse">
                 <thead>
                   <tr class="text-[10px] text-slate-400 border-b border-slate-800 text-left">
-                    <th class="pb-2 font-bold uppercase">Tensor</th>
+                    <th class="pb-2 font-bold uppercase">Tensor MT5</th>
                     <th class="pb-2 text-center font-bold">W1</th>
                     <th class="pb-2 text-center font-bold">W2</th>
                     <th class="pb-2 text-center font-bold">W3</th>
@@ -501,22 +501,22 @@ $userInitial = strtoupper(substr($userName, 0, 1));
                 </thead>
                 <tbody id="matrixTableBody" class="divide-y divide-slate-800/60">
                   <tr>
-                    <td class="py-2 text-white font-bold">BTC OFD</td>
-                    <td class="py-2 text-center"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">+0.89</span></td>
+                    <td class="py-2 text-white font-bold">AUDNZD OFD</td>
+                    <td class="py-2 text-center"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">+0.92</span></td>
                     <td class="py-2 text-center text-slate-300">+0.44</td>
                     <td class="py-2 text-center text-slate-400">+0.08</td>
                     <td class="py-2 text-center text-emerald-400">+0.72</td>
                   </tr>
                   <tr>
-                    <td class="py-2 text-white font-bold">Funding</td>
-                    <td class="py-2 text-center"><span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 font-bold">-0.42</span></td>
+                    <td class="py-2 text-white font-bold">GBPJPY Mom</td>
+                    <td class="py-2 text-center"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">+0.85</span></td>
                     <td class="py-2 text-center text-emerald-400">+0.51</td>
                     <td class="py-2 text-center text-rose-400">-0.29</td>
                     <td class="py-2 text-center text-slate-400">+0.03</td>
                   </tr>
                   <tr>
-                    <td class="py-2 text-white font-bold">OB Imbal</td>
-                    <td class="py-2 text-center"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">+0.95</span></td>
+                    <td class="py-2 text-white font-bold">XAUUSD Liq</td>
+                    <td class="py-2 text-center"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">+0.94</span></td>
                     <td class="py-2 text-center text-slate-300">+0.63</td>
                     <td class="py-2 text-center text-slate-300">+0.38</td>
                     <td class="py-2 text-center text-amber-400 font-bold">+0.91</td>
@@ -538,16 +538,16 @@ $userInitial = strtoupper(substr($userName, 0, 1));
             <div class="flex items-center justify-between">
               <span class="text-slate-400 flex items-center gap-1.5">
                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                BTC Order Flow Delta (W1)
+                AUD/NZD Order Flow Delta (W1)
               </span>
-              <span class="text-emerald-400 font-bold">Weight +0.89 (Poder Long)</span>
+              <span class="text-emerald-400 font-bold">Weight +0.92 (Short Conviction)</span>
             </div>
             <div class="flex items-center justify-between">
               <span class="text-slate-400 flex items-center gap-1.5">
-                <span class="w-1.5 h-1.5 rounded-full bg-rose-400"></span>
-                Funding Skew (W1)
+                <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+                XAU/USD Liquidez M1 (W1)
               </span>
-              <span class="text-rose-400 font-bold">Weight -0.42 (Contra-retail)</span>
+              <span class="text-cyan-400 font-bold">Weight +0.94 (Absorción Alta)</span>
             </div>
           </div>
         </div>
@@ -560,28 +560,28 @@ $userInitial = strtoupper(substr($userName, 0, 1));
                 <span>🎯</span> Disparador al Radar Cuántico
               </h3>
               <span class="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded">
-                1 SEÑAL ACTIVA
+                ORDEN MT5 ACTIVA
               </span>
             </div>
             <p class="text-xs text-slate-400 font-medium mb-3">
-              Inferencia de alta convicción lista para ejecución FIX/API
+              Inferencia directa conectada con MetaTrader 5 en vivo
             </p>
 
-            <!-- Tarjeta de Señal Activa con Convicción 91.8% -->
+            <!-- Tarjeta de Señal Activa con Convicción 94.6% -->
             <div class="bg-[#040814] border border-slate-800/90 rounded-2xl p-3.5 space-y-3">
               
               <!-- Cabecera de la Señal -->
               <div class="flex items-center justify-between">
                 <div class="flex items-center gap-2">
-                  <span class="text-[10px] font-mono font-black uppercase bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 px-2 py-0.5 rounded">
-                    LONG BREAKOUT
+                  <span class="text-[10px] font-mono font-black uppercase bg-rose-500/20 border border-rose-500/40 text-rose-300 px-2 py-0.5 rounded">
+                    SELL INSTITUCIONAL
                   </span>
                   <span id="activeSignalSymbol" class="text-white font-black text-sm tracking-wider">
-                    SOL / USDT
+                    AUDNZD
                   </span>
                 </div>
-                <span id="activeSignalTime" class="text-[10px] font-mono text-slate-500">
-                  Hace 14s
+                <span id="activeSignalTime" class="text-[10px] font-mono text-emerald-400 font-bold">
+                  #10585261453 • En MT5
                 </span>
               </div>
 
@@ -589,29 +589,29 @@ $userInitial = strtoupper(substr($userName, 0, 1));
               <div>
                 <div class="flex items-center justify-between text-xs font-mono mb-1">
                   <span class="text-slate-400 uppercase font-bold text-[10px]">CONVICCIÓN DE LA RED</span>
-                  <span id="convictionVal" class="text-emerald-400 font-black text-sm">91.8%</span>
+                  <span id="convictionVal" class="text-emerald-400 font-black text-sm">94.6%</span>
                 </div>
                 <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
-                  <div id="convictionBar" class="h-full bg-gradient-to-r from-emerald-500 to-cyan-400 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.5)]" style="width: 91.8%"></div>
+                  <div id="convictionBar" class="h-full bg-gradient-to-r from-emerald-500 to-cyan-400 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.5)]" style="width: 94.6%"></div>
                 </div>
               </div>
 
               <!-- Métricas de Entrada & Stop Loss -->
               <div class="grid grid-cols-2 gap-2 text-xs font-mono bg-[#070d1e] p-2.5 rounded-xl border border-slate-800/60">
                 <div>
-                  <span class="text-[9px] text-slate-400 block uppercase">PRECIO ENTRADA REF.</span>
-                  <span id="refPrice" class="text-white font-black text-sm">$142.35</span>
+                  <span class="text-[9px] text-slate-400 block uppercase">ENTRADA REAL MT5</span>
+                  <span id="refPrice" class="text-white font-black text-sm">1.24612</span>
                 </div>
                 <div>
-                  <span class="text-[9px] text-slate-400 block uppercase">SL DINÁMICO SUGERIDO</span>
-                  <span id="slPrice" class="text-amber-400 font-black text-sm">$136.80</span>
+                  <span class="text-[9px] text-slate-400 block uppercase">SL BROKER-SIDE</span>
+                  <span id="slPrice" class="text-amber-400 font-black text-sm">1.24732</span>
                 </div>
               </div>
 
               <!-- Validación Nodos Beta -->
               <div class="flex items-start gap-1.5 text-[11px] text-emerald-400/90 font-mono">
                 <svg class="w-3.5 h-3.5 mt-0.5 shrink-0 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                <span>Validado por 7 nodos Beta: Sin absorción pasiva en $141.50</span>
+                <span>Validado por 7 nodos Beta: TP fijado en 1.24408 (R:R 1:2.0+)</span>
               </div>
 
             </div>
@@ -621,11 +621,55 @@ $userInitial = strtoupper(substr($userName, 0, 1));
           <div class="mt-3">
             <a href="/" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 font-black text-xs text-center flex items-center justify-center gap-2 transition shadow-[0_0_20px_rgba(52,211,153,0.35)] cursor-pointer">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-              <span>Enviar a Terminal de Ejecución</span>
+              <span>Ver Gráfico y Terminal en Vivo</span>
             </a>
           </div>
         </div>
 
+      </div>
+
+      <!-- ================= 6. LLAMADO INSTITUCIONAL: POR QUÉ MT5 ES SUPERIOR A BINANCE PARA IA ================= -->
+      <div class="glass-panel rounded-2xl p-4 sm:p-5 border-l-4 border-l-purple-500 space-y-3">
+        <div class="flex items-center gap-2.5">
+          <span class="w-7 h-7 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-sm font-black">
+            🔬
+          </span>
+          <div>
+            <h4 class="text-sm font-bold text-white tracking-wide">
+              ¿Por qué entrenar la Red Neuronal con MetaTrader 5 es infinitamente más efectivo que con Binance?
+            </h4>
+            <p class="text-xs text-slate-400 font-mono">Arquitectura de Aprendizaje por Refuerzo con Microestructura Interbancaria (RLHF)</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2 text-xs">
+          <div class="bg-[#050813] border border-slate-800/80 rounded-xl p-3 space-y-1">
+            <div class="font-bold text-amber-400 font-mono flex items-center gap-1.5">
+              <span>🏛️</span> 1. Liquidez Interbancaria ($7.5T/día)
+            </div>
+            <p class="text-slate-400 text-[11px] leading-relaxed">
+              En Forex y Oro las órdenes obedecen a flujos macroeconómicos de bancos centrales y balanzas comerciales. No hay "ballenas" individuales manipulando libros con mechas de liquidación artificiales como en altcoins de Binance.
+            </p>
+          </div>
+
+          <div class="bg-[#050813] border border-slate-800/80 rounded-xl p-3 space-y-1">
+            <div class="font-bold text-cyan-400 font-mono flex items-center gap-1.5">
+              <span>⚡</span> 2. Ticks Reales Bid/Ask Broker-Side
+            </div>
+            <p class="text-slate-400 text-[11px] leading-relaxed">
+              MetaTrader 5 entrega micro-ticks con spread dinámico real, tiempo de llenado milimétrico y slippage exacto. La red entrena con la ejecución física y la distancia real a Stop Loss/Take Profit garantizados.
+            </p>
+          </div>
+
+          <div class="bg-[#050813] border border-slate-800/80 rounded-xl p-3 space-y-1">
+            <div class="font-bold text-emerald-400 font-mono flex items-center gap-1.5">
+              <span>🧠</span> 3. Autonomía Progresiva (Sin APIs)
+            </div>
+            <p class="text-slate-400 text-[11px] leading-relaxed">
+              Cada trade cerrado en MT5 alimenta el <code class="text-emerald-300">VectorMemoryEngine</code>. Con 50-100 trades, la red local asimila las reglas de salida y confluencia, reduciendo a cero la dependencia de APIs externas lentas.
+            </p>
+          </div>
+        </div>
       </div>
 
     </main>
@@ -694,7 +738,7 @@ $userInitial = strtoupper(substr($userName, 0, 1));
     // DEFINICIÓN DE CAPAS Y NODOS
     // Entrada: 5 | Alpha: 7 | Beta: 7 | Salida: 4
     const layerDefs = [
-      { name: 'Entrada', color: '#f59e0b', nodes: ['Orderbook', 'Delta CVD', 'Funding', 'Macro DXY', 'Vol Impl'] },
+      { name: 'Entrada', color: '#f59e0b', nodes: ['Ticks M1 MT5', 'Spread Bid/Ask', 'Inercia ATR', 'Macro DXY', 'Vol Dinámica'] },
       { name: 'Alpha', color: '#06b6d4', nodes: ['Attn-1', 'Attn-2', 'Attn-3', 'Attn-4', 'Attn-5', 'Attn-6', 'Attn-7'] },
       { name: 'Beta', color: '#3b82f6', nodes: ['Iceberg', 'Spoof-1', 'Spoof-2', 'Absorb-1', 'Absorb-2', 'Delta-Z', 'Veto-Q'] },
       { name: 'Salida', color: '#10b981', nodes: ['Long Breakout', 'Short Flush', 'Sweep Liq', 'Range Rev'] }
@@ -984,9 +1028,9 @@ $userInitial = strtoupper(substr($userName, 0, 1));
 
     function recalcSynapticWeights() {
       const rows = [
-        { name: 'BTC OFD', w1: '+0.91', w2: '+0.46', w3: '+0.09', w4: '+0.74' },
-        { name: 'Funding', w1: '-0.39', w2: '+0.53', w3: '-0.27', w4: '+0.04' },
-        { name: 'OB Imbal', w1: '+0.96', w2: '+0.65', w3: '+0.40', w4: '+0.93' },
+        { name: 'AUDNZD OFD', w1: '+0.93', w2: '+0.46', w3: '+0.09', w4: '+0.74' },
+        { name: 'GBPJPY Mom', w1: '+0.88', w2: '+0.53', w3: '-0.27', w4: '+0.04' },
+        { name: 'XAUUSD Liq', w1: '+0.96', w2: '+0.65', w3: '+0.40', w4: '+0.93' },
         { name: 'Macro DXY', w1: '-0.81', w2: '-0.42', w3: '-0.02', w4: '-0.58' }
       ];
       const tbody = document.getElementById('matrixTableBody');
