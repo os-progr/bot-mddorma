@@ -429,6 +429,10 @@ rename($tmpH, HISTORIAL_FILE);
 // Persistencia en MySQL (Histórico de Señales Activas / Cerradas)
 if ($pdo) {
     try {
+        // Desactivar cualquier señal activa previa para este mismo símbolo para evitar duplicados
+        $upd = $pdo->prepare("UPDATE bot_senales_log SET estado = 'reemplazada' WHERE simbolo = ? AND estado = 'activa'");
+        $upd->execute([$simbolo]);
+
         $stmt = $pdo->prepare("INSERT INTO bot_senales_log (simbolo, tipo, entrada, sl, tp, probabilidad, rr, etiqueta, resultado, estado, analisis) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         $stmt->execute([
             $simbolo,
@@ -439,7 +443,7 @@ if ($pdo) {
             $prob,
             $rr !== '' ? $rr : '1:2R',
             $etiqueta,
-            $resultado,
+            $resultado ?: ($estado === 'cerrada' ? 'CERRADA' : ''),
             $estado ?: 'activa',
             $analisis
         ]);

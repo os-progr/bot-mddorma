@@ -90,7 +90,18 @@ if (empty($activas) && empty($historial)) {
     } catch (Throwable $e) {
         // Silencioso
     }
+// Deduplicación estricta en PHP (garantía matemática de par único)
+$vistos = [];
+$activas_unicas = [];
+foreach ($activas as $item) {
+    if (!is_array($item) || empty($item['simbolo'])) continue;
+    $sym = strtoupper(trim((string)$item['simbolo']));
+    if (!isset($vistos[$sym])) {
+        $vistos[$sym] = true;
+        $activas_unicas[] = $item;
+    }
 }
+$activas = $activas_unicas;
 
 echo json_encode([
     'success'             => true,
