@@ -327,18 +327,6 @@ $ticket_activo = $primera_pos['ticket'] ?? '10585261453';
           </div>
         </div>
 
-        <!-- Controles Superiores de Visualización -->
-        <div class="absolute top-3 right-3 flex items-center gap-1.5 bg-[#060a14]/85 backdrop-blur-md border border-slate-800/80 p-1.5 rounded-xl z-10 text-slate-400">
-          <button onclick="resetCanvasView()" class="p-1.5 rounded-lg hover:text-white hover:bg-slate-800/80 transition" title="Centrar Red">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-          </button>
-          <button onclick="toggleSpeed()" id="btnSpeed" class="px-2 py-1 rounded-lg text-[10px] font-mono font-bold hover:text-amber-400 hover:bg-slate-800/80 transition" title="Velocidad del Flujo">
-            1X
-          </button>
-          <button onclick="toggleFullscreenCanvas()" class="p-1.5 rounded-lg hover:text-white hover:bg-slate-800/80 transition" title="Pantalla Completa">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
-          </button>
-        </div>
 
         <!-- Leyenda Inferior -->
         <div class="absolute bottom-3 left-4 z-10 pointer-events-none flex items-center gap-3">
