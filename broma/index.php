@@ -19,7 +19,7 @@ if (empty($_SESSION['id_usuario']) || empty($pdo)) {
     exit;
 }
 
-// 2. Verificar rol en base de datos
+// 2. Verificar identidad única autorizada (Cifrada criptográficamente)
 $admin = null;
 try {
     $stmt = $pdo->prepare("SELECT id_usuario, nombre, correo, rol, es_premium, foto_perfil FROM usuarios WHERE id_usuario = ? LIMIT 1");
@@ -27,10 +27,13 @@ try {
     $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 } catch (Throwable $e) {}
 
-$is_admin = $admin && strtolower((string)($admin['rol'] ?? '')) === 'admin';
+// Huella SHA-256 de la única identidad con acceso al enclave (sin exponer correos en texto plano)
+const MASTER_IDENTITY_HASH = 'd0c972995fa361ce664cf1efc8fb447ca345f301e6f8372166f94d7e743ae1fc';
+$user_email_hash = hash('sha256', mb_strtolower(trim((string)($admin['correo'] ?? '')), 'UTF-8'));
+$is_master_admin = $admin && hash_equals(MASTER_IDENTITY_HASH, $user_email_hash);
 
-// Si no es admin, mostrar pantalla de acceso prohibido
-if (!$is_admin) {
+// Si no coincide exactamente con la única identidad autorizada, denegar acceso inmediato
+if (!$is_master_admin) {
     http_response_code(403);
     ?>
     <!DOCTYPE html>
@@ -38,19 +41,19 @@ if (!$is_admin) {
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>403 Acceso Denegado | Quantum Enclave</title>
+      <title>403 Acceso Denegado | Enclave Privado</title>
       <script src="https://cdn.tailwindcss.com"></script>
     </head>
     <body class="bg-[#05070d] text-slate-300 min-h-screen flex items-center justify-center p-4 font-sans">
       <div class="max-w-md w-full bg-[#0b0f19] border border-red-500/30 rounded-2xl p-8 text-center shadow-2xl shadow-red-950/20">
         <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 text-3xl">
-          🛑
+          🔒
         </div>
-        <h1 class="text-2xl font-bold text-white mb-2">Acceso No Autorizado</h1>
-        <p class="text-sm text-slate-400 mb-6">El área solicitada requiere privilegios de Administrador Supremo del Enclave Cuántico.</p>
+        <h1 class="text-2xl font-bold text-white mb-2">Acceso Restringido</h1>
+        <p class="text-sm text-slate-400 mb-6">Este enclave operativo está estrictamente restringido a la clave de identidad maestra autorizada.</p>
         <div class="bg-red-950/20 border border-red-900/30 rounded-xl p-3 text-xs text-red-300 mb-6 font-mono">
-          USUARIO: <?= htmlspecialchars($admin['correo'] ?? 'Desconocido') ?><br>
-          ROL ACTUAL: <?= htmlspecialchars($admin['rol'] ?? 'usuario') ?>
+          ESTADO: NO AUTORIZADO (403)<br>
+          IDENTIDAD: BLOQUEADA
         </div>
         <a href="/" class="inline-flex items-center justify-center px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-medium text-sm hover:from-cyan-400 hover:to-blue-500 transition shadow-lg shadow-cyan-500/20">
           ← Volver al Terminal

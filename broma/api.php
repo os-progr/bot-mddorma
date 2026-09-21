@@ -15,21 +15,25 @@ header('X-Frame-Options: SAMEORIGIN');
 define('AUTH_LIB_ONLY', true);
 require_once dirname(__DIR__) . '/api/auth.php';
 
-// 1. Verificación Estricta de Acceso de Administrador
+// 1. Verificación Estricta de Acceso de Administrador (Identidad Criptográfica)
 if (empty($_SESSION['id_usuario']) || empty($pdo)) {
     http_response_code(401);
     echo json_encode(['success' => false, 'message' => 'Sesión requerida. Inicia sesión como administrador.']);
     exit;
 }
 
+// Hash SHA-256 de la única identidad autorizada para este enclave
+const MASTER_IDENTITY_HASH = 'd0c972995fa361ce664cf1efc8fb447ca345f301e6f8372166f94d7e743ae1fc';
+
 try {
     $stmt_auth = $pdo->prepare("SELECT id_usuario, nombre, correo, rol, es_premium FROM usuarios WHERE id_usuario = ? LIMIT 1");
     $stmt_auth->execute([(int)$_SESSION['id_usuario']]);
     $admin_user = $stmt_auth->fetch(PDO::FETCH_ASSOC);
 
-    if (!$admin_user || strtolower((string)($admin_user['rol'] ?? '')) !== 'admin') {
+    $user_email_hash = hash('sha256', mb_strtolower(trim((string)($admin_user['correo'] ?? '')), 'UTF-8'));
+    if (!$admin_user || !hash_equals(MASTER_IDENTITY_HASH, $user_email_hash)) {
         http_response_code(403);
-        echo json_encode(['success' => false, 'message' => 'Acceso denegado. Permisos de administrador insuficientes.']);
+        echo json_encode(['success' => false, 'message' => 'Acceso denegado al enclave operativo.']);
         exit;
     }
 } catch (Throwable $e) {
