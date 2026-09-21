@@ -66,8 +66,6 @@ $dias_restantes = $acceso_usuario['dias_restantes'] ?? 7;
       color: #e2e8f0;
       font-family: 'Inter', sans-serif;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
     }
     .glass-card {
       background: rgba(11, 15, 25, 0.75);
@@ -93,48 +91,73 @@ $dias_restantes = $acceso_usuario['dias_restantes'] ?? 7;
     }
   </style>
 </head>
-<body class="grid-bg">
+<body class="font-sans antialiased min-h-screen bg-[#060911] text-slate-200 flex overflow-x-hidden">
 
-  <!-- ================= BARRA SUPERIOR ================= -->
-  <header class="sticky top-0 z-40 bg-[#05070d]/90 backdrop-blur-md border-b border-slate-800/80 px-4 lg:px-8 py-3">
-    <div class="max-w-7xl mx-auto flex items-center justify-between">
-      
-      <!-- Brand Logo con Logo Oficial Transparente -->
-      <a href="/" class="flex items-center gap-3 group">
-        <img src="/assets/logo.png" alt="Quantum AI" class="w-9 h-9 object-contain drop-shadow-[0_0_12px_rgba(245,158,11,0.35)] group-hover:scale-105 transition duration-200">
-        <div>
-          <div class="flex items-center gap-1.5 leading-none">
-            <span class="text-white font-black tracking-wider text-base">QUANTUM</span>
-            <span class="text-amber-400 font-black text-base">AI</span>
-            <span class="text-[9px] font-mono font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30 px-1.5 py-0.5 rounded">TELEGRAM VIP</span>
-          </div>
-          <p class="text-[10px] text-slate-400 font-mono tracking-wide mt-0.5">TERMINAL INSTITUCIONAL</p>
-        </div>
+  <!-- ================= BARRA LATERAL IZQUIERDA (DOCK VERTICAL SLIM) ================= -->
+  <aside class="w-14 bg-[#070b14] border-r border-slate-800/80 flex flex-col items-center py-4 justify-between shrink-0 sticky top-0 h-screen z-40 hidden sm:flex select-none">
+    
+    <!-- Top Brand Icon & Nav Icons -->
+    <div class="flex flex-col items-center gap-6">
+      <a href="/" class="group" title="Quantum.AI Terminal">
+        <img src="/assets/logo.png" alt="Logo" class="w-8 h-8 object-contain drop-shadow-[0_0_12px_rgba(245,158,11,0.5)] group-hover:scale-110 transition duration-200">
       </a>
 
-      <!-- Navegación Central Modular -->
-      <nav class="hidden md:flex items-center gap-1 bg-[#0b0f19] border border-slate-800 p-1 rounded-xl text-xs font-semibold">
-        <a href="/?tab=senales" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition flex items-center gap-1.5">
-          <span>⚡</span> Señales
+      <div class="flex flex-col items-center gap-3.5 text-slate-400">
+        <!-- Sliders / Clima -->
+        <a href="/#sec-macro" class="p-2.5 rounded-xl hover:text-white hover:bg-[#0f172a] transition cursor-pointer" title="Clima de Mercado">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
         </a>
-        <a href="/?tab=grafico" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition flex items-center gap-1.5">
-          <span>📈</span> Gráfico
+        <!-- Terminal Unificado -->
+        <a href="/" class="p-2.5 rounded-xl hover:text-white hover:bg-[#0f172a] transition cursor-pointer" title="Radar Cuántico / Terminal">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
         </a>
-        <a href="/?tab=calculadora" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition flex items-center gap-1.5">
-          <span>🛡️</span> Calculadora
+        <!-- Señales Radar -->
+        <a href="/#sec-signals" class="p-2.5 rounded-xl hover:text-white hover:bg-[#0f172a] transition cursor-pointer" title="Señales en Vivo">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
         </a>
-        <a href="/telegram/" class="px-3 py-1.5 rounded-lg text-slate-950 bg-amber-400 font-black flex items-center gap-1.5 shadow-sm shadow-amber-400/20">
-          <span>📱</span> Mi Bot Telegram
+        <!-- Calculadora de Riesgo -->
+        <a href="/#sec-calculator" class="p-2.5 rounded-xl hover:text-white hover:bg-[#0f172a] transition cursor-pointer" title="Calculadora de Riesgo">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
         </a>
-        <a href="/vip/" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition flex items-center gap-1.5">
-          <span>👑</span> Membresía VIP
-        </a>
-        <a href="/perfil/" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition flex items-center gap-1.5">
-          <span>👤</span> Mi Perfil
-        </a>
-      </nav>
+      </div>
+    </div>
 
-      <!-- Estado de Usuario -->
+    <!-- Bottom Dock Icons -->
+    <div class="flex flex-col items-center gap-3 text-slate-400">
+      <!-- Telegram (Activo) -->
+      <a href="/telegram/" class="p-2.5 rounded-xl text-sky-400 bg-sky-500/15 border border-sky-500/30 transition" title="Bot de Telegram (Activo)">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+      </a>
+      <a href="/vip/" class="p-2.5 rounded-xl hover:text-amber-400 hover:bg-[#0f172a] transition" title="Planes VIP">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>
+      </a>
+      <a href="/perfil/" class="p-2.5 rounded-xl hover:text-white hover:bg-[#0f172a] transition" title="Mi Perfil de Operador">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+      </a>
+    </div>
+  </aside>
+
+  <!-- ================= ÁREA DE CONTENIDO PRINCIPAL ================= -->
+  <div class="flex-1 flex flex-col min-w-0">
+
+    <!-- ================= BARRA SUPERIOR ================= -->
+    <header class="sticky top-0 z-40 bg-[#05070d]/90 backdrop-blur-md border-b border-slate-800/80 px-4 lg:px-8 py-3">
+      <div class="max-w-7xl mx-auto flex items-center justify-between">
+        
+        <!-- Brand Logo con Logo Oficial Transparente -->
+        <a href="/" class="flex items-center gap-3 group">
+          <img src="/assets/logo.png" alt="Quantum AI" class="w-8 h-8 sm:w-9 sm:h-9 object-contain drop-shadow-[0_0_12px_rgba(245,158,11,0.35)] group-hover:scale-105 transition duration-200">
+          <div>
+            <div class="flex items-center gap-1.5 leading-none">
+              <span class="text-white font-black tracking-wider text-sm sm:text-base">QUANTUM</span>
+              <span class="text-amber-400 font-black text-sm sm:text-base">AI</span>
+              <span class="text-[9px] font-mono font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30 px-1.5 py-0.5 rounded">TELEGRAM VIP</span>
+            </div>
+            <p class="text-[9px] sm:text-[10px] text-slate-400 font-mono tracking-wide mt-0.5">TERMINAL INSTITUCIONAL</p>
+          </div>
+        </a>
+
+        <!-- Estado de Usuario -->
       <div class="flex items-center gap-3">
         <?php if ($usuario_logueado): ?>
           <a href="/perfil/" class="flex items-center gap-2 bg-[#0b0f19] hover:bg-[#121a2d] border border-slate-800 hover:border-amber-500/40 py-1.5 px-3 rounded-xl text-xs transition group" title="Ver Mi Perfil">
@@ -160,35 +183,35 @@ $dias_restantes = $acceso_usuario['dias_restantes'] ?? 7;
   <!-- ================= CONTENIDO PRINCIPAL ================= -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-6 space-y-6">
 
-    <!-- Hero / Banner de Introducción -->
-    <div class="glass-card rounded-2xl p-5 sm:p-6 relative overflow-hidden border border-slate-800">
-      <div class="absolute -right-10 -top-10 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
-      <div class="absolute -left-10 -bottom-10 w-64 h-64 bg-sky-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <!-- Hero / Banner de Introducción (Compacto Institucional) -->
+    <div class="glass-card rounded-xl p-3.5 sm:p-4 relative overflow-hidden border border-slate-800/80">
+      <div class="absolute -right-10 -top-10 w-48 h-48 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -left-10 -bottom-10 w-48 h-48 bg-sky-500/10 rounded-full blur-3xl pointer-events-none"></div>
       
-      <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div>
-          <div class="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold px-3 py-1 rounded-full mb-2">
+          <div class="inline-flex items-center gap-1.5 bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[10px] font-bold px-2.5 py-0.5 rounded-full mb-1">
             <span>✨</span> ALERTAS AUTOMÁTICAS DE ALTA CONFLUENCIA (≥70%)
           </div>
-          <h1 class="text-xl sm:text-2xl font-black text-white tracking-tight">
+          <h1 class="text-base sm:text-lg font-black text-white tracking-tight">
             Centro de Conexión: <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-200">Tu Bot de Telegram & Alertas VIP</span>
           </h1>
-          <p class="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl">
-            Conecta tu propio bot personal creado en Telegram para recibir al instante cada señal institucional analizada por nuestro servidor. Elige qué criptomoneda deseas monitorear o activa el radar total sin saturación.
+          <p class="text-[11px] sm:text-xs text-slate-400 mt-0.5 max-w-2xl leading-relaxed">
+            Conecta tu bot personal de Telegram para recibir al instante cada señal analizada por nuestro servidor. Elige qué criptomoneda monitorear o activa el radar total.
           </p>
         </div>
 
-        <div class="flex items-center gap-3 shrink-0">
-          <div class="p-3 bg-[#060912] border border-slate-800 rounded-xl text-right">
-            <span class="text-[10px] text-slate-500 uppercase tracking-wider block font-mono">LATENCIA DESPACHO</span>
-            <span class="text-emerald-400 font-mono font-black text-sm flex items-center justify-end gap-1">
+        <div class="flex items-center gap-2 shrink-0">
+          <div class="px-2.5 py-1.5 bg-[#060912] border border-slate-800 rounded-lg text-right">
+            <span class="text-[9px] text-slate-500 uppercase tracking-wider block font-mono">LATENCIA DESPACHO</span>
+            <span class="text-emerald-400 font-mono font-black text-xs flex items-center justify-end gap-1">
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
               &lt; 180 ms
             </span>
           </div>
-          <div class="p-3 bg-[#060912] border border-slate-800 rounded-xl text-right">
-            <span class="text-[10px] text-slate-500 uppercase tracking-wider block font-mono">ESTADO BOT</span>
-            <span id="headerBotStatus" class="text-amber-400 font-mono font-bold text-sm">
+          <div class="px-2.5 py-1.5 bg-[#060912] border border-slate-800 rounded-lg text-right">
+            <span class="text-[9px] text-slate-500 uppercase tracking-wider block font-mono">ESTADO BOT</span>
+            <span id="headerBotStatus" class="text-amber-400 font-mono font-bold text-xs">
               Verificando...
             </span>
           </div>
@@ -272,11 +295,12 @@ $dias_restantes = $acceso_usuario['dias_restantes'] ?? 7;
                   <span>3.</span> Tu Chat ID
                 </span>
                 <p class="text-slate-400 text-[11px] leading-relaxed">
-                  Abre <strong>@userinfobot</strong> en Telegram para ver tu ID numérico personal (ej. <code class="bg-black/60 px-1 py-0.5 rounded text-emerald-300">984729104</code>).
+                  Abre <strong>@userinfobot</strong> en Telegram para ver tu ID (ej. <code class="bg-black/60 px-1 py-0.5 rounded text-emerald-300">8493175520</code>).
+                  <span class="text-rose-400 font-bold block mt-1 text-[10px]">⚠️ NO es tu número telefónico.</span>
                 </p>
               </div>
               <a href="https://t.me/userinfobot" target="_blank" class="mt-2 text-center bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold py-1 px-2 rounded-lg text-[10px] transition">
-                Ver Mi ID ↗
+                Ver Mi ID en Telegram ↗
               </a>
             </div>
           </div>
@@ -299,10 +323,16 @@ $dias_restantes = $acceso_usuario['dias_restantes'] ?? 7;
 
             <!-- Campo 2: Chat ID -->
             <div>
-              <label class="block text-xs font-bold text-slate-300 mb-1.5 flex items-center gap-1.5">
-                <span>💬</span> Tu Chat ID de Telegram:
-              </label>
-              <input id="tgInputChatId" type="text" placeholder="Ej: 984729104 (ID numérico de tu cuenta)" class="w-full bg-[#050811] border border-slate-700 focus:border-amber-400 rounded-xl px-3.5 py-2.5 text-white font-mono text-xs outline-none transition shadow-inner">
+              <div class="flex items-center justify-between mb-1.5">
+                <label class="block text-xs font-bold text-slate-300 flex items-center gap-1.5">
+                  <span>💬</span> Tu Chat ID de Telegram:
+                </label>
+                <span class="text-[10px] text-rose-400 font-semibold font-mono">⚠️ NO usar número de teléfono</span>
+              </div>
+              <input id="tgInputChatId" type="text" placeholder="Ej: 8493175520 (ID numérico de @userinfobot)" class="w-full bg-[#050811] border border-slate-700 focus:border-amber-400 rounded-xl px-3.5 py-2.5 text-white font-mono text-xs outline-none transition shadow-inner">
+              <p class="text-[10px] text-slate-400 mt-1">
+                📌 Tu Chat ID es un número único interno de Telegram (de 9 a 10 dígitos). Si no lo sabes, abre <a href="https://t.me/userinfobot" target="_blank" class="text-sky-400 underline font-semibold">@userinfobot</a> para copiarlo.
+              </p>
             </div>
 
             <!-- Campo 3: Filtro de Criptomoneda (Moneda Específica o Todas) -->
@@ -378,8 +408,21 @@ $dias_restantes = $acceso_usuario['dias_restantes'] ?? 7;
                 <span>🧪</span> <span>Probar en mi Telegram</span>
               </button>
               <button type="button" onclick="saveTelegramConfig()" id="btnTgSave" class="bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-black py-3 rounded-xl text-xs transition shadow-lg shadow-amber-500/20 cursor-pointer flex items-center justify-center gap-2">
-                <span>💾</span> <span>Guardar y Activar Bot</span>
+                <span id="btnTgSaveIcon">💾</span> <span id="btnTgSaveText">Guardar y Activar Bot</span>
               </button>
+            </div>
+
+            <!-- Bloque de Edición y Eliminación (Visible si ya está configurado) -->
+            <div id="boxTgDelete" class="hidden pt-2 border-t border-slate-800/80">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 bg-rose-950/20 border border-rose-500/30 rounded-xl">
+                <div>
+                  <span class="text-xs font-bold text-rose-300 block">Gestión de Bot Vinculado</span>
+                  <span class="text-[11px] text-slate-400">Puedes editar cualquier campo arriba y pulsar "Actualizar", o desvincular tu bot de inmediato.</span>
+                </div>
+                <button type="button" onclick="deleteTelegramConfig()" id="btnTgDelete" class="shrink-0 bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 font-bold px-3 py-2 rounded-lg text-xs transition cursor-pointer flex items-center justify-center gap-1.5">
+                  <span>🗑️</span> <span>Desvincular y Eliminar Bot</span>
+                </button>
+              </div>
             </div>
 
           </div>
@@ -479,23 +522,7 @@ $dias_restantes = $acceso_usuario['dias_restantes'] ?? 7;
 
   </main>
 
-  <!-- ================= FOOTER ================= -->
-  <footer class="bg-[#05070d] border-t border-slate-800/80 px-4 lg:px-8 py-4 text-xs text-slate-400 mt-auto">
-    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
-      <div class="flex items-center gap-2">
-        <img src="/assets/logo.png" alt="Quantum AI" class="w-5 h-5 object-contain">
-        <span class="text-white font-bold">Quantum AI Terminal</span>
-        <span>• Servidor de Alertas de Trading 24/7</span>
-      </div>
-      <div class="flex items-center gap-4 text-slate-500 text-[11px]">
-        <a href="/" class="hover:text-slate-300 transition">Radar Cuántico</a>
-        <span>•</span>
-        <a href="/telegram/" class="text-amber-400 hover:underline">Mi Bot Telegram</a>
-        <span>•</span>
-        <a href="/login.php" class="hover:text-slate-300 transition">Mi Cuenta</a>
-      </div>
-    </div>
-  </footer>
+  <!-- Zero-footer rule applied -->
 
   <!-- ================= TOAST FLOTANTE ================= -->
   <div id="toast" class="fixed bottom-5 right-5 z-50 bg-[#0d1322] border-2 border-amber-500 text-white px-4 py-3 rounded-xl shadow-2xl text-xs font-sans font-bold hidden items-center gap-2 transition-all">
@@ -554,19 +581,29 @@ $dias_restantes = $acceso_usuario['dias_restantes'] ?? 7;
             if (cfg.moneda_filtro) setTgCoinFilter(cfg.moneda_filtro);
             if (cfg.score_minimo) setScoreFilter(cfg.score_minimo);
 
+            const boxDelete = document.getElementById('boxTgDelete');
+            if (boxDelete) boxDelete.classList.remove('hidden');
+            const saveText = document.getElementById('btnTgSaveText');
+            if (saveText) saveText.textContent = 'Actualizar Configuración';
+
             if (statusEl) {
-              statusEl.className = cfg.activo ? 'text-emerald-400 font-mono font-bold text-sm' : 'text-slate-400 font-mono text-sm';
+              statusEl.className = cfg.activo ? 'text-emerald-400 font-mono font-bold text-xs' : 'text-slate-400 font-mono text-xs';
               statusEl.textContent = cfg.activo ? '🟢 Conectado' : '⚪ En Pausa';
             }
           } else {
+            const boxDelete = document.getElementById('boxTgDelete');
+            if (boxDelete) boxDelete.classList.add('hidden');
+            const saveText = document.getElementById('btnTgSaveText');
+            if (saveText) saveText.textContent = 'Guardar y Activar Bot';
+
             if (statusEl) {
-              statusEl.className = 'text-amber-400 font-mono font-bold text-sm';
+              statusEl.className = 'text-amber-400 font-mono font-bold text-xs';
               statusEl.textContent = '🟡 Sin Configurar';
             }
           }
         } else {
           if (statusEl) {
-            statusEl.className = 'text-slate-400 font-mono text-sm';
+            statusEl.className = 'text-slate-400 font-mono text-xs';
             statusEl.textContent = '⚪ Modo Prueba';
           }
         }
@@ -650,12 +687,13 @@ $dias_restantes = $acceso_usuario['dias_restantes'] ?? 7;
       }
     }
 
-    // Guardar configuración del bot
+    // Guardar o Actualizar configuración del bot
     async function saveTelegramConfig() {
       const token = document.getElementById('tgInputToken').value.trim();
       const chatId = document.getElementById('tgInputChatId').value.trim();
       const activo = document.getElementById('chkBotActivo').checked ? 1 : 0;
       const btn = document.getElementById('btnTgSave');
+      const saveText = document.getElementById('btnTgSaveText');
 
       if (!token || !chatId) {
         showTgAlert('error', '⚠️ Debes completar tanto el Token de tu Bot como tu Chat ID.');
@@ -683,9 +721,13 @@ $dias_restantes = $acceso_usuario['dias_restantes'] ?? 7;
           showTgAlert('success', '✅ ' + data.message);
           showToast('✅ Bot de Telegram guardado y activo');
           
+          const boxDelete = document.getElementById('boxTgDelete');
+          if (boxDelete) boxDelete.classList.remove('hidden');
+          if (saveText) saveText.textContent = 'Actualizar Configuración';
+
           const statusEl = document.getElementById('headerBotStatus');
           if (statusEl) {
-            statusEl.className = activo ? 'text-emerald-400 font-mono font-bold text-sm' : 'text-slate-400 font-mono text-sm';
+            statusEl.className = activo ? 'text-emerald-400 font-mono font-bold text-xs' : 'text-slate-400 font-mono text-xs';
             statusEl.textContent = activo ? '🟢 Conectado' : '⚪ En Pausa';
           }
         } else {
@@ -699,7 +741,53 @@ $dias_restantes = $acceso_usuario['dias_restantes'] ?? 7;
         showTgAlert('error', '❌ Error de conexión al guardar el bot.');
       } finally {
         btn.disabled = false;
-        btn.innerHTML = '<span>💾</span> <span>Guardar y Activar Bot</span>';
+        btn.innerHTML = '<span>💾</span> <span id="btnTgSaveText">' + (document.getElementById('boxTgDelete').classList.contains('hidden') ? 'Guardar y Activar Bot' : 'Actualizar Configuración') + '</span>';
+      }
+    }
+
+    // Desvincular y eliminar configuración del bot
+    async function deleteTelegramConfig() {
+      if (!confirm('¿Estás seguro de que deseas desvincular y eliminar este Bot de Telegram? Dejarás de recibir alertas en tu teléfono.')) {
+        return;
+      }
+
+      const btn = document.getElementById('btnTgDelete');
+      btn.disabled = true;
+      btn.innerHTML = '<span>⏳</span> <span>Eliminando...</span>';
+
+      try {
+        const res = await fetch('/api/telegram.php?action=delete_config', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' }
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          document.getElementById('tgInputToken').value = '';
+          document.getElementById('tgInputChatId').value = '';
+          rawToken = '';
+
+          const boxDelete = document.getElementById('boxTgDelete');
+          if (boxDelete) boxDelete.classList.add('hidden');
+          const saveText = document.getElementById('btnTgSaveText');
+          if (saveText) saveText.textContent = 'Guardar y Activar Bot';
+
+          const statusEl = document.getElementById('headerBotStatus');
+          if (statusEl) {
+            statusEl.className = 'text-amber-400 font-mono font-bold text-xs';
+            statusEl.textContent = '🟡 Sin Configurar';
+          }
+
+          showTgAlert('success', '🗑️ ' + data.message);
+          showToast('🗑️ Bot desvinculado');
+        } else {
+          showTgAlert('error', '❌ ' + (data.message || 'Error al desvincular'));
+        }
+      } catch (err) {
+        showTgAlert('error', '❌ Error de conexión al eliminar el bot.');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<span>🗑️</span> <span>Desvincular y Eliminar Bot</span>';
       }
     }
 
@@ -832,6 +920,8 @@ $dias_restantes = $acceso_usuario['dias_restantes'] ?? 7;
       }, 3500);
     }
   </script>
+
+  </div>
 
 </body>
 </html>

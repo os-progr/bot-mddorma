@@ -70,8 +70,6 @@ $mp_public_key = $_ENV['MP_PUBLIC_KEY'] ?? getenv('MP_PUBLIC_KEY') ?: 'APP_USR-6
       color: #e2e8f0;
       font-family: 'Inter', sans-serif;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
     }
     .glass-card {
       background: rgba(11, 15, 25, 0.85);
@@ -89,77 +87,94 @@ $mp_public_key = $_ENV['MP_PUBLIC_KEY'] ?? getenv('MP_PUBLIC_KEY') ?: 'APP_USR-6
     }
   </style>
 </head>
-<body class="grid-bg selection:bg-amber-500 selection:text-black">
+<body class="font-sans antialiased min-h-screen bg-[#060911] text-slate-200 flex overflow-x-hidden selection:bg-amber-500 selection:text-black">
 
-  <!-- ================= BARRA SUPERIOR INSTITUCIONAL ================= -->
-  <header class="sticky top-0 z-40 bg-[#05070d]/90 backdrop-blur-md border-b border-slate-800/80 px-4 lg:px-8 py-3">
-    <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
-      
-      <!-- Brand Logo con Logo Oficial Transparente -->
-      <a href="/" class="flex items-center gap-3 group">
-        <img src="/assets/logo.png" alt="Quantum AI" class="w-9 h-9 object-contain drop-shadow-[0_0_12px_rgba(245,158,11,0.35)] group-hover:scale-105 transition duration-200">
-        <div>
-          <div class="flex items-center gap-1.5 leading-none">
-            <span class="text-white font-black tracking-wider text-base">QUANTUM</span>
-            <span class="text-amber-400 font-black text-base">AI</span>
-            <span class="text-[9px] font-mono font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30 px-1.5 py-0.5 rounded">PLANES VIP</span>
-          </div>
-          <p class="text-[10px] text-slate-400 font-mono tracking-wide mt-0.5">MEMBRESÍA & ACTIVACIÓN</p>
-        </div>
+  <!-- ================= BARRA LATERAL IZQUIERDA (DOCK VERTICAL SLIM) ================= -->
+  <aside class="w-14 bg-[#070b14] border-r border-slate-800/80 flex flex-col items-center py-4 justify-between shrink-0 sticky top-0 h-screen z-40 hidden sm:flex select-none">
+    
+    <!-- Top Brand Icon & Nav Icons -->
+    <div class="flex flex-col items-center gap-6">
+      <a href="/" class="group" title="Quantum.AI Terminal">
+        <img src="/assets/logo.png" alt="Logo" class="w-8 h-8 object-contain drop-shadow-[0_0_12px_rgba(245,158,11,0.5)] group-hover:scale-110 transition duration-200">
       </a>
 
-      <!-- Estado de Usuario -->
-      <div class="flex items-center gap-3">
-        <?php if ($usuario_logueado): ?>
-          <a href="/perfil/" class="flex items-center gap-2 bg-[#0b0f19] hover:bg-[#121a2d] border border-slate-800 hover:border-amber-500/40 py-1.5 px-3 rounded-xl text-xs transition group" title="Ver Mi Perfil">
-            <span class="w-2 h-2 rounded-full <?= $es_vip ? 'bg-amber-400 animate-pulse' : 'bg-emerald-400' ?>"></span>
-            <div class="flex flex-col text-left">
-              <span class="text-white font-bold leading-tight group-hover:text-amber-300 transition"><?= htmlspecialchars($usuario_logueado['nombre'] ?: 'Trader') ?></span>
-              <span class="text-[10px] font-mono <?= $es_vip ? 'text-amber-400 font-bold' : 'text-slate-400' ?>">
-                <?= $es_vip ? '👑 VIP Activo' : "Prueba: {$dias_restantes}d restantes" ?>
-              </span>
+      <div class="flex flex-col items-center gap-3.5 text-slate-400">
+        <!-- Sliders / Clima -->
+        <a href="/#sec-macro" class="p-2.5 rounded-xl hover:text-white hover:bg-[#0f172a] transition cursor-pointer" title="Clima de Mercado">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+        </a>
+        <!-- Terminal Unificado -->
+        <a href="/" class="p-2.5 rounded-xl hover:text-white hover:bg-[#0f172a] transition cursor-pointer" title="Radar Cuántico / Terminal">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        </a>
+        <!-- Señales Radar -->
+        <a href="/#sec-signals" class="p-2.5 rounded-xl hover:text-white hover:bg-[#0f172a] transition cursor-pointer" title="Señales en Vivo">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        </a>
+        <!-- Calculadora de Riesgo -->
+        <a href="/#sec-calculator" class="p-2.5 rounded-xl hover:text-white hover:bg-[#0f172a] transition cursor-pointer" title="Calculadora de Riesgo">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Bottom Dock Icons -->
+    <div class="flex flex-col items-center gap-3 text-slate-400">
+      <a href="/telegram/" class="p-2.5 rounded-xl hover:text-sky-400 hover:bg-[#0f172a] transition" title="Bot de Telegram">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+      </a>
+      <!-- VIP (Activo) -->
+      <a href="/vip/" class="p-2.5 rounded-xl text-amber-400 bg-amber-500/15 border border-amber-500/30 transition" title="Planes VIP (Activo)">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>
+      </a>
+      <a href="/perfil/" class="p-2.5 rounded-xl hover:text-white hover:bg-[#0f172a] transition" title="Mi Perfil de Operador">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+      </a>
+    </div>
+  </aside>
+
+  <!-- ================= ÁREA DE CONTENIDO PRINCIPAL ================= -->
+  <div class="flex-1 flex flex-col min-w-0">
+
+    <!-- ================= BARRA SUPERIOR INSTITUCIONAL ================= -->
+    <header class="sticky top-0 z-40 bg-[#05070d]/90 backdrop-blur-md border-b border-slate-800/80 px-4 lg:px-8 py-3">
+      <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+        
+        <!-- Brand Logo con Logo Oficial Transparente -->
+        <a href="/" class="flex items-center gap-3 group">
+          <img src="/assets/logo.png" alt="Quantum AI" class="w-8 h-8 sm:w-9 sm:h-9 object-contain drop-shadow-[0_0_12px_rgba(245,158,11,0.35)] group-hover:scale-105 transition duration-200">
+          <div>
+            <div class="flex items-center gap-1.5 leading-none">
+              <span class="text-white font-black tracking-wider text-sm sm:text-base">QUANTUM</span>
+              <span class="text-amber-400 font-black text-sm sm:text-base">AI</span>
+              <span class="text-[9px] font-mono font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30 px-1.5 py-0.5 rounded">PLANES VIP</span>
             </div>
-          </a>
-          <a href="/api/auth.php?action=logout&redirect_login=1" title="Cerrar Sesión" class="text-slate-500 hover:text-rose-400 ml-1 transition">✕</a>
-        <?php else: ?>
-          <a href="/login.php" class="bg-[#121a2d] hover:bg-[#18233c] text-sky-300 border border-sky-500/40 text-xs font-bold px-3 py-1.5 rounded-xl transition flex items-center gap-1.5">
-            <span>👤</span> Iniciar Sesión
-          </a>
-        <?php endif; ?>
+            <p class="text-[9px] sm:text-[10px] text-slate-400 font-mono tracking-wide mt-0.5">MEMBRESÍA & ACTIVACIÓN</p>
+          </div>
+        </a>
+
+        <!-- Estado de Usuario -->
+        <div class="flex items-center gap-3">
+          <?php if ($usuario_logueado): ?>
+            <a href="/perfil/" class="flex items-center gap-2 bg-[#0b0f19] hover:bg-[#121a2d] border border-slate-800 hover:border-amber-500/40 py-1.5 px-3 rounded-xl text-xs transition group" title="Ver Mi Perfil">
+              <span class="w-2 h-2 rounded-full <?= $es_vip ? 'bg-amber-400 animate-pulse' : 'bg-emerald-400' ?>"></span>
+              <div class="flex flex-col text-left">
+                <span class="text-white font-bold leading-tight group-hover:text-amber-300 transition"><?= htmlspecialchars($usuario_logueado['nombre'] ?: 'Trader') ?></span>
+                <span class="text-[10px] font-mono <?= $es_vip ? 'text-amber-400 font-bold' : 'text-slate-400' ?>">
+                  <?= $es_vip ? '👑 VIP Activo' : "Prueba: {$dias_restantes}d restantes" ?>
+                </span>
+              </div>
+            </a>
+            <a href="/api/auth.php?action=logout&redirect_login=1" title="Cerrar Sesión" class="text-slate-500 hover:text-rose-400 ml-1 transition">✕</a>
+          <?php else: ?>
+            <a href="/login.php" class="bg-[#121a2d] hover:bg-[#18233c] text-sky-300 border border-sky-500/40 text-xs font-bold px-3 py-1.5 rounded-xl transition flex items-center gap-1.5">
+              <span>👤</span> Iniciar Sesión
+            </a>
+          <?php endif; ?>
+        </div>
+
       </div>
-
-    </div>
-  </header>
-
-  <!-- ================= NAVEGACIÓN MODULAR ================= -->
-  <nav class="bg-[#080d1a] border-b border-slate-800 px-4 lg:px-8 py-2 sticky top-[57px] z-30">
-    <div class="max-w-7xl mx-auto flex items-center justify-between gap-3 overflow-x-auto">
-      <div class="flex items-center gap-1.5 text-xs font-bold shrink-0">
-        <a href="/?tab=senales" class="px-3.5 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800/60 transition flex items-center gap-2">
-          <span>⚡</span> <span>1. Señales en Vivo</span>
-        </a>
-        <a href="/?tab=grafico" class="px-3.5 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800/60 transition flex items-center gap-2">
-          <span>📈</span> <span>2. Gráfico & Mercado</span>
-        </a>
-        <a href="/?tab=calculadora" class="px-3.5 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800/60 transition flex items-center gap-2">
-          <span>🛡️</span> <span>3. Calculadora de Riesgo</span>
-        </a>
-        <a href="/telegram/" class="px-3.5 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800/60 transition flex items-center gap-2">
-          <span>📱</span> <span>4. Mi Bot de Telegram</span>
-        </a>
-        <a href="/vip/" class="px-3.5 py-2 rounded-xl bg-amber-400 text-slate-950 font-black flex items-center gap-2 shadow-sm shadow-amber-400/20">
-          <span>👑</span> <span>5. Membresía VIP</span>
-        </a>
-        <a href="/perfil/" class="px-3.5 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800/60 transition flex items-center gap-2">
-          <span>👤</span> <span>6. Mi Perfil</span>
-        </a>
-      </div>
-
-      <a href="https://www.binance.com/es/futures/SOLUSDT" target="_blank" rel="noopener" class="hidden md:flex items-center gap-1 text-xs font-bold text-amber-400 hover:text-amber-300 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 px-3 py-1.5 rounded-lg transition shrink-0">
-        <span>🟡 Abrir Binance Futuros</span> <span>↗</span>
-      </a>
-    </div>
-  </nav>
+    </header>
 
   <!-- ================= CONTENIDO PRINCIPAL: PLAN VIP EXACTO ================= -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-10 space-y-8">
@@ -718,6 +733,8 @@ $mp_public_key = $_ENV['MP_PUBLIC_KEY'] ?? getenv('MP_PUBLIC_KEY') ?: 'APP_USR-6
       }
     }
   </script>
+
+  </div>
 
 </body>
 </html>

@@ -120,8 +120,6 @@ $inicial_nombre = mb_strtoupper(mb_substr($user['nombre'] ?: 'O', 0, 1));
         linear-gradient(to bottom, rgba(255, 255, 255, 0.012) 1px, transparent 1px);
       background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
     }
 
     .glass-panel {
@@ -154,74 +152,82 @@ $inicial_nombre = mb_strtoupper(mb_substr($user['nombre'] ?: 'O', 0, 1));
     }
   </style>
 </head>
-<body class="font-sans antialiased selection:bg-amber-500 selection:text-black">
+<body class="font-sans antialiased min-h-screen bg-[#060911] text-slate-200 flex overflow-x-hidden selection:bg-amber-500 selection:text-black">
 
-  <!-- ================= BARRA SUPERIOR INSTITUCIONAL ================= -->
-  <header class="sticky top-0 z-40 bg-[#05070d]/90 backdrop-blur-md border-b border-slate-800/80 px-4 lg:px-8 py-3">
-    <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
-      
-      <!-- Brand Logo Oficial -->
-      <a href="/" class="flex items-center gap-3 group">
-        <img src="/assets/logo.png" alt="Quantum AI" class="w-9 h-9 object-contain drop-shadow-[0_0_12px_rgba(245,158,11,0.4)] group-hover:scale-105 transition duration-200">
-        <div>
-          <div class="flex items-center gap-1.5 leading-none">
-            <span class="text-white font-black tracking-wider text-base">QUANTUM</span>
-            <span class="text-amber-400 font-black text-base">AI</span>
-            <span class="text-[9px] font-mono font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30 px-1.5 py-0.5 rounded">PERFIL DE TRADER</span>
-          </div>
-          <p class="text-[10px] text-slate-400 font-mono tracking-wide mt-0.5">ENCLAVE DE USUARIO</p>
-        </div>
+  <!-- ================= BARRA LATERAL IZQUIERDA (DOCK VERTICAL SLIM) ================= -->
+  <aside class="w-14 bg-[#070b14] border-r border-slate-800/80 flex flex-col items-center py-4 justify-between shrink-0 sticky top-0 h-screen z-40 hidden sm:flex select-none">
+    
+    <!-- Top Brand Icon & Nav Icons -->
+    <div class="flex flex-col items-center gap-6">
+      <a href="/" class="group" title="Quantum.AI Terminal">
+        <img src="/assets/logo.png" alt="Logo" class="w-8 h-8 object-contain drop-shadow-[0_0_12px_rgba(245,158,11,0.5)] group-hover:scale-110 transition duration-200">
       </a>
 
-      <!-- Navegación Modular Superior -->
-      <nav class="hidden lg:flex items-center gap-1 bg-[#0b0f19] border border-slate-800 p-1 rounded-xl text-xs font-semibold">
-        <a href="/?tab=senales" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition flex items-center gap-1.5">
-          <span>⚡</span> Señales
+      <div class="flex flex-col items-center gap-3.5 text-slate-400">
+        <!-- Sliders / Clima -->
+        <a href="/#sec-macro" class="p-2.5 rounded-xl hover:text-white hover:bg-[#0f172a] transition cursor-pointer" title="Clima de Mercado">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
         </a>
-        <a href="/?tab=grafico" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition flex items-center gap-1.5">
-          <span>📈</span> Gráfico
+        <!-- Terminal Unificado -->
+        <a href="/" class="p-2.5 rounded-xl hover:text-white hover:bg-[#0f172a] transition cursor-pointer" title="Radar Cuántico / Terminal">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
         </a>
-        <a href="/?tab=calculadora" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition flex items-center gap-1.5">
-          <span>🛡️</span> Calculadora
+        <!-- Señales Radar -->
+        <a href="/#sec-signals" class="p-2.5 rounded-xl hover:text-white hover:bg-[#0f172a] transition cursor-pointer" title="Señales en Vivo">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
         </a>
-        <a href="/telegram/" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition flex items-center gap-1.5">
-          <span>📱</span> Mi Bot Telegram
-        </a>
-        <a href="/vip/" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition flex items-center gap-1.5">
-          <span>👑</span> Membresía VIP
-        </a>
-        <a href="/perfil/" class="px-3 py-1.5 rounded-lg bg-amber-400 text-slate-950 font-black flex items-center gap-1.5 shadow-sm shadow-amber-400/20">
-          <span>👤</span> Mi Perfil
-        </a>
-      </nav>
-
-      <!-- Estado en Vivo & Salir -->
-      <div class="flex items-center gap-3">
-        <div class="hidden sm:flex items-center gap-1.5 text-[11px] font-mono text-emerald-400 font-semibold bg-[#0b0f19] px-2.5 py-1.5 rounded-xl border border-slate-800">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 badge-pulse"></span>
-          <span>FIX 4.4: <strong class="text-white">ACTIVO</strong></span>
-        </div>
-
-        <a href="/api/auth.php?action=logout&redirect_login=1" class="flex items-center gap-1.5 bg-[#141b2d] hover:bg-rose-950/40 text-slate-300 hover:text-rose-400 border border-slate-800 hover:border-rose-500/40 text-xs font-bold px-3 py-1.5 rounded-xl transition duration-150">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-          <span class="hidden sm:inline">Cerrar Sesión</span>
+        <!-- Calculadora de Riesgo -->
+        <a href="/#sec-calculator" class="p-2.5 rounded-xl hover:text-white hover:bg-[#0f172a] transition cursor-pointer" title="Calculadora de Riesgo">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
         </a>
       </div>
-
     </div>
-  </header>
 
-  <!-- ================= SUB-NAVBAR MÓVIL ================= -->
-  <div class="lg:hidden bg-[#080d1a] border-b border-slate-800 px-4 py-2 overflow-x-auto">
-    <div class="flex items-center gap-1.5 text-xs font-bold shrink-0">
-      <a href="/?tab=senales" class="px-3 py-1.5 rounded-lg text-slate-300 hover:text-white bg-slate-800/40">⚡ Señales</a>
-      <a href="/?tab=grafico" class="px-3 py-1.5 rounded-lg text-slate-300 hover:text-white bg-slate-800/40">📈 Gráfico</a>
-      <a href="/?tab=calculadora" class="px-3 py-1.5 rounded-lg text-slate-300 hover:text-white bg-slate-800/40">🛡️ Riesgo</a>
-      <a href="/telegram/" class="px-3 py-1.5 rounded-lg text-slate-300 hover:text-white bg-slate-800/40">📱 Telegram</a>
-      <a href="/vip/" class="px-3 py-1.5 rounded-lg text-amber-400 bg-amber-500/10 border border-amber-500/30">👑 VIP</a>
-      <a href="/perfil/" class="px-3 py-1.5 rounded-lg bg-amber-400 text-slate-950 font-black">👤 Perfil</a>
+    <!-- Bottom Dock Icons -->
+    <div class="flex flex-col items-center gap-3 text-slate-400">
+      <a href="/telegram/" class="p-2.5 rounded-xl hover:text-sky-400 hover:bg-[#0f172a] transition" title="Bot de Telegram">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+      </a>
+      <a href="/vip/" class="p-2.5 rounded-xl hover:text-amber-400 hover:bg-[#0f172a] transition" title="Planes VIP">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>
+      </a>
+      <!-- Profile (Activo) -->
+      <a href="/perfil/" class="p-2.5 rounded-xl text-amber-400 bg-amber-500/15 border border-amber-500/30 transition" title="Mi Perfil de Operador (Activo)">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+      </a>
     </div>
-  </div>
+  </aside>
+
+  <!-- ================= ÁREA DE CONTENIDO PRINCIPAL ================= -->
+  <div class="flex-1 flex flex-col min-w-0">
+
+    <!-- ================= BARRA SUPERIOR INSTITUCIONAL ================= -->
+    <header class="sticky top-0 z-40 bg-[#05070d]/90 backdrop-blur-md border-b border-slate-800/80 px-4 lg:px-8 py-3">
+      <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+        
+        <!-- Brand Logo Oficial -->
+        <a href="/" class="flex items-center gap-3 group">
+          <img src="/assets/logo.png" alt="Quantum AI" class="w-8 h-8 sm:w-9 sm:h-9 object-contain drop-shadow-[0_0_12px_rgba(245,158,11,0.4)] group-hover:scale-105 transition duration-200">
+          <div>
+            <div class="flex items-center gap-1.5 leading-none">
+              <span class="text-white font-black tracking-wider text-sm sm:text-base">QUANTUM</span>
+              <span class="text-amber-400 font-black text-sm sm:text-base">AI</span>
+              <span class="text-[9px] font-mono font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30 px-1.5 py-0.5 rounded">PERFIL DE TRADER</span>
+            </div>
+            <p class="text-[9px] sm:text-[10px] text-slate-400 font-mono tracking-wide mt-0.5">ENCLAVE DE USUARIO</p>
+          </div>
+        </a>
+
+        <!-- Salir -->
+        <div class="flex items-center gap-3">
+          <a href="/api/auth.php?action=logout&redirect_login=1" class="flex items-center gap-1.5 bg-[#141b2d] hover:bg-rose-950/40 text-slate-300 hover:text-rose-400 border border-slate-800 hover:border-rose-500/40 text-xs font-bold px-3 py-1.5 rounded-xl transition duration-150">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+            <span class="hidden sm:inline">Cerrar Sesión</span>
+          </a>
+        </div>
+
+      </div>
+    </header>
 
   <!-- ================= CONTENEDOR PRINCIPAL INSTITUCIONAL ================= -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-6 space-y-6">
@@ -958,6 +964,8 @@ $inicial_nombre = mb_strtoupper(mb_substr($user['nombre'] ?: 'O', 0, 1));
       }
     }
   </script>
+
+  </div>
 
 </body>
 </html>

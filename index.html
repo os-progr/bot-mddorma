@@ -95,10 +95,10 @@
     <!-- Bottom Dock Icons -->
     <div class="flex flex-col items-center gap-3 text-slate-400">
       <a href="/telegram/" class="p-2.5 rounded-xl hover:text-sky-400 hover:bg-[#0f172a] transition" title="Bot de Telegram">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
       </a>
-      <a href="/vip/" class="p-2.5 rounded-xl hover:text-amber-400 hover:bg-[#0f172a] transition" title="Membresía VIP">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      <a href="/vip/" class="p-2.5 rounded-xl hover:text-amber-400 hover:bg-[#0f172a] transition" title="Planes VIP">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>
       </a>
       <a href="/perfil/" class="p-2.5 rounded-xl hover:text-white hover:bg-[#0f172a] transition" title="Mi Perfil de Operador">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
@@ -123,46 +123,6 @@
             <p class="text-[9px] font-mono tracking-widest text-amber-400/90 font-bold uppercase mt-0.5">TERMINAL INSTITUCIONAL</p>
           </div>
         </a>
-      </div>
-
-
-      <!-- Estado en Tiempo Real & Usuario -->
-      <div class="flex items-center gap-2 sm:gap-3 shrink-0">
-        <!-- Latencia Equinix -->
-        <div class="hidden xl:flex items-center gap-1.5 text-[11px] font-mono text-emerald-400 font-semibold bg-[#090f1e] px-2.5 py-1 rounded-lg border border-slate-800">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 badge-pulse"></span>
-          <span>LD4 EQUINIX: <strong class="text-white">4.2ms</strong></span>
-        </div>
-
-        <!-- WebSocket Binance -->
-        <div class="hidden lg:flex items-center gap-1.5 text-[11px] font-mono text-emerald-400 font-semibold bg-[#090f1e] px-2.5 py-1 rounded-lg border border-slate-800">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 badge-pulse"></span>
-          <span>BINANCE WS: <strong class="text-white">99.99%</strong></span>
-        </div>
-
-        <!-- Live Simulated Equity Badge -->
-        <div id="simBalanceBadge" class="hidden sm:flex items-center gap-1.5 text-[11px] font-mono text-amber-300 font-semibold bg-amber-500/10 px-2.5 py-1 rounded-lg border border-amber-500/30" title="Balance simulado en tiempo real">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 badge-pulse"></span>
-          <span>SIM USDT: <strong class="text-white" id="simBalanceVal">$49.39</strong></span>
-        </div>
-
-        <!-- VIP Badge -->
-        <div class="px-2.5 py-1 rounded-lg bg-amber-500/15 border border-amber-500/40 text-amber-300 font-mono text-[10px] font-black tracking-wider">
-          VIP TIER III
-        </div>
-
-        <!-- User Profile Area -->
-        <div id="userHeaderArea" class="flex items-center gap-2 pl-1">
-          <a href="/login.php" class="flex items-center gap-2 bg-[#090f1e] hover:bg-[#11192e] border border-slate-700/80 px-2.5 sm:px-3 py-1 rounded-xl text-xs transition">
-            <div class="w-6 h-6 rounded-full bg-gradient-to-tr from-amber-500 to-amber-300 text-slate-950 font-black text-[10px] flex items-center justify-center">
-              Q
-            </div>
-            <div class="hidden sm:flex flex-col text-left leading-tight">
-              <span class="text-white font-bold text-xs" id="userHeaderName">Quantum Ops</span>
-              <span class="text-[9px] text-slate-400 font-mono">Institutional Prime</span>
-            </div>
-          </a>
-        </div>
       </div>
 
     </header>
@@ -241,29 +201,31 @@
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
               <span>SOL/USDT en Vivo</span>
             </span>
-            <span class="text-[11px] text-slate-400 font-mono bg-[#060911] px-2 py-0.5 rounded border border-slate-800">Temporalidad: 15m</span>
+            <span id="tvTimeframeBadge" class="text-[11px] text-slate-400 font-mono bg-[#060911] px-2 py-0.5 rounded border border-slate-800">Temporalidad: 15m</span>
           </div>
         </div>
 
         <!-- Sub-barra de temporalidades & OHLC metrics (Estilo Stitch) -->
         <div class="flex flex-wrap items-center justify-between gap-2 text-xs font-mono text-slate-400 pt-0.5">
-          <div class="flex items-center gap-1.5">
-            <button class="px-2 py-0.5 rounded bg-[#0f172a] hover:bg-slate-700 text-slate-300 transition cursor-pointer text-[11px]">1m</button>
-            <button class="px-2 py-0.5 rounded bg-[#0f172a] hover:bg-slate-700 text-slate-300 transition cursor-pointer text-[11px]">30m</button>
-            <button class="px-2 py-0.5 rounded bg-[#0f172a] hover:bg-slate-700 text-slate-300 transition cursor-pointer text-[11px]">1h</button>
-            <button class="px-2 py-0.5 rounded bg-slate-700 text-white font-bold transition cursor-pointer text-[11px]">15m</button>
+          <div class="flex items-center gap-1.5" id="tvTimeframeGroup">
+            <button onclick="setTimeframe('1', '1m')" data-tf="1" class="btn-tf px-2 py-0.5 rounded bg-[#0f172a] hover:bg-slate-700 text-slate-300 transition cursor-pointer text-[11px]">1m</button>
+            <button onclick="setTimeframe('15', '15m')" data-tf="15" class="btn-tf px-2 py-0.5 rounded bg-amber-500 text-slate-950 font-bold transition cursor-pointer text-[11px]">15m</button>
+            <button onclick="setTimeframe('30', '30m')" data-tf="30" class="btn-tf px-2 py-0.5 rounded bg-[#0f172a] hover:bg-slate-700 text-slate-300 transition cursor-pointer text-[11px]">30m</button>
+            <button onclick="setTimeframe('60', '1h')" data-tf="60" class="btn-tf px-2 py-0.5 rounded bg-[#0f172a] hover:bg-slate-700 text-slate-300 transition cursor-pointer text-[11px]">1h</button>
+            <button onclick="setTimeframe('240', '4h')" data-tf="240" class="btn-tf px-2 py-0.5 rounded bg-[#0f172a] hover:bg-slate-700 text-slate-300 transition cursor-pointer text-[11px]">4h</button>
+            <button onclick="setTimeframe('D', '1D')" data-tf="D" class="btn-tf px-2 py-0.5 rounded bg-[#0f172a] hover:bg-slate-700 text-slate-300 transition cursor-pointer text-[11px]">1D</button>
             <span class="text-slate-600">|</span>
-            <button class="px-2 py-0.5 rounded bg-[#0f172a] text-slate-300 text-[11px] flex items-center gap-1">
+            <button onclick="toggleIndicators()" id="btnTvIndicators" class="px-2 py-0.5 rounded bg-[#0f172a] hover:bg-slate-700 text-slate-300 text-[11px] flex items-center gap-1 transition cursor-pointer" title="Activar/desactivar indicadores">
               <span>📊</span> Indicadores
             </button>
           </div>
 
           <div class="flex items-center gap-3 text-[11px] text-slate-400 overflow-x-auto" id="candleMetricsBar">
-            <span>O: <strong class="text-white">113.51</strong></span>
-            <span>H: <strong class="text-white">113.79</strong></span>
-            <span>L: <strong class="text-white">113.47</strong></span>
-            <span>C: <strong class="text-emerald-400">109.93 (+0.21%)</strong></span>
-            <span>Vol: <strong class="text-white">23.02K</strong></span>
+            <span>O: <strong class="text-white" id="barOpen">...</strong></span>
+            <span>H: <strong class="text-white" id="barHigh">...</strong></span>
+            <span>L: <strong class="text-white" id="barLow">...</strong></span>
+            <span>C: <strong class="text-emerald-400" id="barClose">...</strong></span>
+            <span>Vol: <strong class="text-white" id="barVol">...</strong></span>
           </div>
         </div>
 
@@ -488,21 +450,7 @@
 
     </main>
 
-    <!-- ================= FOOTER DISCRETO ================= -->
-    <footer class="bg-[#050810] border-t border-slate-800/80 px-4 lg:px-8 py-3.5 text-xs text-slate-400 flex flex-wrap items-center justify-between gap-3 mt-auto select-none">
-      <div class="flex items-center gap-2">
-        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-        <span class="text-white font-bold">Quantum.AI Terminal Institucional</span>
-        <span>• Conexión Ultra-Baja Latencia con Binance Futuros</span>
-      </div>
-      <div class="flex items-center gap-3 text-slate-500 text-[11px]">
-        <a href="/telegram/" class="hover:text-sky-400 transition">📱 Bot Telegram</a>
-        <span>•</span>
-        <a href="/vip/" class="hover:text-amber-400 transition">👑 Membresía VIP</a>
-        <span>•</span>
-        <span>Aviso de Riesgo: Opera siempre con Stop Loss.</span>
-      </div>
-    </footer>
+    <!-- Zero-footer rule applied -->
 
   </div>
 
@@ -524,6 +472,8 @@
     let currentCalcPair = { sym: 'SOL/USDT', base: 'SOL', entry: 138.40, sl: 136.80, tp: 142.20, side: 'LONG' };
     let currentChartSymbol = 'BINANCE:SOLUSDT';
     let currentChartLabel = 'SOL/USDT';
+    let currentInterval = '15';
+    let showIndicators = false;
     let currentFilter = 'all';
 
     // SEÑALES PRECALIBRADAS (EXACTAS STITCH)
@@ -566,7 +516,7 @@
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    // TRADINGVIEW NATIVO COMPACTO
+    // TRADINGVIEW NATIVO COMPACTO CON INTERVALOS & INDICADORES
     function initTvChart() {
       const container = document.getElementById('tvChartContainer');
       if (!container || !window.TradingView) return;
@@ -574,7 +524,7 @@
       new TradingView.widget({
         autosize: true,
         symbol: currentChartSymbol,
-        interval: "15",
+        interval: currentInterval,
         timezone: "America/Lima",
         theme: "dark",
         style: "1",
@@ -585,8 +535,74 @@
         hide_legend: false,
         save_image: false,
         hide_volume: false,
+        studies: showIndicators ? ["RSI@tv-basicstudies", "MASimple@tv-basicstudies"] : [],
         container_id: "tvChartContainer"
       });
+    }
+
+    function setTimeframe(intVal, label) {
+      currentInterval = intVal;
+      const tfBadge = document.getElementById('tvTimeframeBadge');
+      if (tfBadge) tfBadge.textContent = `Temporalidad: ${label || intVal + 'm'}`;
+
+      document.querySelectorAll('.btn-tf').forEach(b => {
+        b.className = "btn-tf px-2 py-0.5 rounded bg-[#0f172a] hover:bg-slate-700 text-slate-300 transition cursor-pointer text-[11px]";
+        if (b.dataset.tf === intVal) {
+          b.className = "btn-tf px-2 py-0.5 rounded bg-amber-500 text-slate-950 font-bold transition cursor-pointer text-[11px]";
+        }
+      });
+      initTvChart();
+      showToast(`⏱️ Temporalidad cambiada a ${label || intVal + 'm'}`);
+    }
+
+    function toggleIndicators() {
+      showIndicators = !showIndicators;
+      const btn = document.getElementById('btnTvIndicators');
+      if (btn) {
+        btn.className = showIndicators 
+          ? "px-2 py-0.5 rounded bg-amber-500 text-slate-950 font-bold text-[11px] flex items-center gap-1 transition cursor-pointer"
+          : "px-2 py-0.5 rounded bg-[#0f172a] hover:bg-slate-700 text-slate-300 text-[11px] flex items-center gap-1 transition cursor-pointer";
+      }
+      initTvChart();
+      showToast(showIndicators ? '📊 Indicadores (RSI / MA) activados' : '📊 Gráfico limpio');
+    }
+
+    // TELEMETRÍA EN VIVO DE VELAS / PRECIOS BINANCE
+    async function fetchCandleMetrics() {
+      try {
+        const rawSym = currentChartLabel.replace('/', '').toUpperCase();
+        const res = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${rawSym}`, { cache: 'no-store' });
+        if (!res.ok) return;
+        const d = await res.json();
+
+        const open = parseFloat(d.openPrice);
+        const high = parseFloat(d.highPrice);
+        const low = parseFloat(d.lowPrice);
+        const close = parseFloat(d.lastPrice);
+        const changePct = parseFloat(d.priceChangePercent);
+        const vol = parseFloat(d.volume);
+
+        const isUp = changePct >= 0;
+        const fmt = (n) => n >= 1000 ? n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : n.toFixed(n < 1 ? 4 : 2);
+        const fmtVol = (v) => v >= 1e6 ? (v / 1e6).toFixed(2) + 'M' : (v >= 1e3 ? (v / 1e3).toFixed(2) + 'K' : v.toFixed(2));
+
+        const bar = document.getElementById('candleMetricsBar');
+        if (bar) {
+          bar.innerHTML = `
+            <span>O: <strong class="text-white">${fmt(open)}</strong></span>
+            <span>H: <strong class="text-white">${fmt(high)}</strong></span>
+            <span>L: <strong class="text-white">${fmt(low)}</strong></span>
+            <span>C: <strong class="${isUp ? 'text-emerald-400' : 'text-rose-400'}">${fmt(close)} (${isUp ? '+' : ''}${changePct.toFixed(2)}%)</strong></span>
+            <span>Vol: <strong class="text-white">${fmtVol(vol)}</strong></span>
+          `;
+        }
+
+        // Actualizar precio en vivo para cálculos
+        const base = currentChartLabel.split('/')[0];
+        if (base && close > 0) {
+          livePrices[base] = close;
+        }
+      } catch (e) {}
     }
 
     function setChart(symbol, label) {
@@ -606,6 +622,7 @@
         }
       });
       initTvChart();
+      fetchCandleMetrics();
       showToast(`📊 Gráfico cambiado a ${label}`);
     }
 
@@ -630,28 +647,43 @@
 
       filtered.forEach(s => {
         const isLong = String(s.tipo).toUpperCase().includes('COMPRA') || String(s.tipo).toUpperCase().includes('LONG');
+        const isShort = String(s.tipo).toUpperCase().includes('VENTA') || String(s.tipo).toUpperCase().includes('SHORT');
         const base = s.simbolo.split('/')[0];
         const card = document.createElement('div');
         card.className = "bg-[#080d19] border border-slate-800 hover:border-amber-500/50 rounded-2xl p-4 flex flex-col justify-between space-y-3.5 shadow-md transition";
+        
+        let typeBadge = '';
+        if (isLong) {
+          typeBadge = '<span class="text-[11px] text-emerald-400 font-bold flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>COMPRA (LONG)</span>';
+        } else if (isShort) {
+          typeBadge = '<span class="text-[11px] text-rose-400 font-bold flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-rose-400"></span>VENTA (SHORT)</span>';
+        } else {
+          typeBadge = '<span class="text-[11px] text-amber-400 font-bold flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>EN ESPERA (HOLD)</span>';
+        }
+
+        const fmtPrice = (val) => {
+          const num = parseFloat(val);
+          if (isNaN(num)) return val;
+          if (num >= 1000) return num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+          if (num < 1) return num.toFixed(4);
+          return num.toFixed(2);
+        };
         
         card.innerHTML = `
           <div>
             <!-- Header Tarjeta -->
             <div class="flex items-center justify-between pb-2.5 border-b border-slate-800">
               <div class="flex items-center gap-2">
-                <span class="w-8 h-8 rounded-xl ${s.badgeBg || 'bg-amber-500/20 text-amber-300 border-amber-500/30'} border flex items-center justify-center font-mono font-black text-xs">
+                <span class="w-8 h-8 rounded-xl ${s.badgeBg || (isLong ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' : (isShort ? 'bg-rose-500/20 text-rose-300 border-rose-500/30' : 'bg-amber-500/20 text-amber-300 border-amber-500/30'))} border flex items-center justify-center font-mono font-black text-xs">
                   ${base}
                 </span>
                 <div>
                   <h3 class="font-extrabold text-sm sm:text-base text-white">${s.simbolo}</h3>
-                  <span class="text-[11px] ${isLong ? 'text-emerald-400' : 'text-rose-400'} font-bold flex items-center gap-1">
-                    <span class="w-1.5 h-1.5 rounded-full ${isLong ? 'bg-emerald-400' : 'bg-rose-400'}"></span>
-                    ${isLong ? 'COMPRA (LONG)' : 'VENTA (SHORT)'}
-                  </span>
+                  ${typeBadge}
                 </div>
               </div>
               <span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 font-mono text-[11px] px-2.5 py-0.5 rounded-full font-bold">
-                ⭐ ${s.probabilidad || 70}% Certeza
+                ⭐ ${Math.round(s.probabilidad || s.score || 70)}% Certeza
               </span>
             </div>
 
@@ -659,21 +691,21 @@
             <div class="grid grid-cols-3 gap-2 my-3 text-center">
               <div class="bg-[#050811] p-2 rounded-xl border border-slate-800">
                 <span class="text-[9px] text-slate-400 block font-bold uppercase font-mono">PRECIO ENTRADA</span>
-                <strong class="text-white font-mono text-xs block mt-0.5">$${s.entrada}</strong>
+                <strong class="text-white font-mono text-xs block mt-0.5">$${fmtPrice(s.entrada)}</strong>
               </div>
               <div class="bg-[#050811] p-2 rounded-xl border border-emerald-500/30">
                 <span class="text-[9px] text-emerald-400 block font-bold uppercase font-mono">GANANCIA (TP)</span>
-                <strong class="text-emerald-400 font-mono text-xs block mt-0.5">$${s.tp}</strong>
+                <strong class="text-emerald-400 font-mono text-xs block mt-0.5">$${fmtPrice(s.tp)}</strong>
               </div>
               <div class="bg-[#050811] p-2 rounded-xl border border-rose-500/30">
                 <span class="text-[9px] text-rose-400 block font-bold uppercase font-mono">PROTECCIÓN (SL)</span>
-                <strong class="text-rose-400 font-mono text-xs block mt-0.5">$${s.sl}</strong>
+                <strong class="text-rose-400 font-mono text-xs block mt-0.5">$${fmtPrice(s.sl)}</strong>
               </div>
             </div>
 
             <!-- Explicación Algorítmica -->
             <p class="text-xs text-slate-300 leading-relaxed bg-[#050811] p-2.5 rounded-xl border border-slate-800/80">
-              💡 ${s.explicacion || 'Señales detectadas con alta precisión algorítmica y volumen favorable.'}
+              💡 ${s.explicacion || s.analisis || 'Señales detectadas con alta precisión algorítmica y volumen favorable.'}
             </p>
           </div>
 
@@ -686,7 +718,7 @@
               <button onclick="goToChartWithPair('${s.simbolo}')" class="bg-[#0f172a] hover:bg-slate-800 text-slate-300 hover:text-white py-1.5 rounded-xl text-center transition flex items-center justify-center gap-1 border border-slate-700 cursor-pointer">
                 <span>📈</span> Gráfico
               </button>
-              <button onclick="goToCalcWithPair('${s.simbolo}', ${s.entrada}, ${s.sl}, ${s.tp}, '${isLong ? 'LONG' : 'SHORT'}')" class="bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 py-1.5 rounded-xl text-center transition flex items-center justify-center gap-1 border border-amber-500/30 cursor-pointer">
+              <button onclick="goToCalcWithPair('${s.simbolo}', ${s.entrada}, ${s.sl}, ${s.tp}, '${isLong ? 'LONG' : (isShort ? 'SHORT' : 'LONG')}')" class="bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 py-1.5 rounded-xl text-center transition flex items-center justify-center gap-1 border border-amber-500/30 cursor-pointer">
                 <span>🛡️</span> Lote
               </button>
               <a href="https://www.binance.com/es/futures/${s.simbolo.replace('/','')}" target="_blank" rel="noopener" class="bg-[#0f172a] hover:bg-slate-800 text-slate-300 hover:text-white py-1.5 rounded-xl text-center transition flex items-center justify-center gap-1 border border-slate-700">
@@ -865,14 +897,19 @@
 
         // 3. Si hay evaluaciones activas, actualizar las tarjetas de señales
         if (Array.isArray(d.evaluaciones) && d.evaluaciones.length > 0) {
-          const mapped = d.evaluaciones.filter(e => e.actionable || e.score >= 50).map(e => ({
+          let cands = d.evaluaciones.filter(e => e.actionable || e.score >= 50);
+          if (cands.length < 3) {
+            const sorted = [...d.evaluaciones].sort((a, b) => (b.score || 0) - (a.score || 0));
+            cands = sorted.slice(0, 3);
+          }
+          const mapped = cands.map(e => ({
             simbolo: e.simbolo,
             tipo: e.direction === 'long' ? 'COMPRA (LONG)' : (e.direction === 'short' ? 'VENTA (SHORT)' : 'EN ESPERA (HOLD)'),
             entrada: e.entrada,
             sl: e.sl,
             tp: e.tp,
             probabilidad: e.score,
-            badgeBg: e.direction === 'long' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' : 'bg-amber-500/20 text-amber-300 border-amber-500/30',
+            badgeBg: e.direction === 'long' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' : (e.direction === 'short' ? 'bg-rose-500/20 text-rose-300 border-rose-500/30' : 'bg-amber-500/20 text-amber-300 border-amber-500/30'),
             explicacion: (e.reasons && e.reasons.length > 0) ? e.reasons.join(', ') : 'Confluencia cuántica institucional detectada.'
           }));
           if (mapped.length > 0) {
@@ -880,6 +917,18 @@
           }
         }
       } catch (err) {}
+    }
+
+    async function fetchSignalsFromApi() {
+      try {
+        const res = await fetch('api/obtener_senales.php', { cache: 'no-store' });
+        if (!res.ok) return;
+        const d = await res.json();
+        const items = d.senales || d['señales'] || [];
+        if (Array.isArray(items) && items.length > 0) {
+          renderSignals(items);
+        }
+      } catch (e) {}
     }
 
     function renderAuditedHistory(items) {
@@ -943,7 +992,11 @@
     // INICIALIZACIÓN
     window.addEventListener('DOMContentLoaded', () => {
       initTvChart();
+      fetchCandleMetrics();
+      setInterval(fetchCandleMetrics, 6000);
       renderSignals(defaultSignals);
+      fetchSignalsFromApi();
+      setInterval(fetchSignalsFromApi, 8000);
       recalcMaster();
       initSseStream();
       checkUserSession();

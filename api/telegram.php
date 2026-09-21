@@ -323,5 +323,31 @@ if ($action === 'test_alert') {
     exit;
 }
 
+// ==========================================
+// 4) ELIMINAR / DESVINCULAR CONFIGURACIÓN
+// ==========================================
+if ($action === 'delete_config') {
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        http_response_code(405);
+        echo json_encode(['success' => false, 'message' => 'Método no permitido.']);
+        exit;
+    }
+
+    try {
+        $stmt = $pdo->prepare("DELETE FROM usuario_telegram_alertas WHERE id_usuario = ?");
+        $stmt->execute([$id_usuario]);
+
+        echo json_encode([
+            'success' => true,
+            'message' => 'Tu bot de Telegram ha sido desvinculado y eliminado correctamente.'
+        ], JSON_UNESCAPED_UNICODE);
+        exit;
+    } catch (Throwable $e) {
+        http_response_code(500);
+        echo json_encode(['success' => false, 'message' => 'Error al eliminar configuración: ' . $e->getMessage()], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+}
+
 http_response_code(400);
 echo json_encode(['success' => false, 'message' => 'Acción no reconocida.'], JSON_UNESCAPED_UNICODE);

@@ -281,7 +281,7 @@ $mostrar_alerta_expirado = ($mensaje === 'session_expired');
       const alertText = document.getElementById('alertText');
       if (alertBox && alertText) {
         alertBox.className = "flex items-start gap-2.5 p-3 rounded-xl bg-amber-950/40 border border-amber-500/40 text-amber-300 text-xs mb-4";
-        alertText.textContent = "Conectando con Google Identity Services...";
+        alertText.textContent = "Conectando con Google...";
         alertBox.classList.remove('hidden');
       }
 
@@ -290,20 +290,8 @@ $mostrar_alerta_expirado = ($mensaje === 'session_expired');
       const returnTarget = encodeURIComponent(window.location.origin + redirectUrl);
       const bridgeUrl = 'https://mddorma.com/api/auth_google_bridge.php?return_to=' + returnTarget;
 
-      const w = 480;
-      const h = 580;
-      const left = Math.max(0, Math.round((window.screen.width - w) / 2));
-      const top = Math.max(0, Math.round((window.screen.height - h) / 2));
-
-      const popup = window.open(
-        bridgeUrl,
-        'QuantumGoogleAuthBridge',
-        `width=${w},height=${h},top=${top},left=${left},scrollbars=yes,resizable=yes`
-      );
-
-      if (!popup || popup.closed || typeof popup.closed === 'undefined') {
-        window.location.href = bridgeUrl;
-      }
+      // Iniciar sesión directamente en la misma ventana (cero ventanas flotantes ni popups)
+      window.location.href = bridgeUrl;
     }
 
     // Escuchar respuesta del popup de Google en mddorma.com
